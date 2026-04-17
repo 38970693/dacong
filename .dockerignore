@@ -1,0 +1,60 @@
+# ── Git ──────────────────────────────────────────────
+.git
+.gitignore
+.gitattributes
+
+# ── Documentation ────────────────────────────────────
+*.md
+docs/
+LICENSE
+
+# ── CI/CD ────────────────────────────────────────────
+.github/
+.gitlab-ci.yml
+.claude/
+
+# ── IDE ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Environment ──────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Dependencies (will be installed in container) ────
+node_modules/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+
+# ── Testing ──────────────────────────────────────────
+coverage/
+htmlcov/
+.coverage
+.pytest_cache/
+test-results/
+
+# ── Logs ─────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Docker ───────────────────────────────────────────
+docker-compose.override.yml
+Dockerfile.dev

@@ -1,0 +1,34 @@
+# Include to specify rules for which files are generated.
+targets:
+  $default:
+    builders:
+      freezed:
+        enabled: true
+        options:
+          # Generate copyWith method
+          copy_with: true
+          # Generate == operator
+          equal: true
+          # Generate toString method
+          to_string: true
+          # Generate map method
+          map: true
+          # Generate when method
+          when: true
+          # Generate maybeWhen method
+          maybe_when: true
+
+      json_serializable:
+        enabled: true
+        options:
+          # Generate fromJson factory
+          any_map: false
+          checked: false
+          create_factory: true
+          create_to_json: true
+          disallow_unrecognized_keys: false
+          explicit_to_json: true
+          field_rename: snake
+          generic_argument_factories: false
+          ignore_unannotated: false
+          include_if_null: false

@@ -1,0 +1,119 @@
+groups:
+  - name: dacong_alerts
+    interval: 1m
+    rules:
+      # 高错误率告警
+      - alert: HighErrorRate
+        expr: |
+          sum(rate({service=~"dacong-.*"} |= "ERROR" [5m]))
+          /
+          sum(rate({service=~"dacong-.*"} [5m]))
+          > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: "{{ $labels.service }}"
+        annotations:
+          summary: "高错误率告警"
+          description: "服务 {{ $labels.service }} 的错误率超过 5%"
+          runbook_url: "https://docs.example.com/runbooks/high-error-rate"
+
+      # 数据库连接失败
+      - alert: DatabaseConnectionFailure
+        expr: |
+          count_over_time({service=~"dacong-.*"} |~ "database.*connection.*failed|ECONNREFUSED.*postgres" [5m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "数据库连接失败"
+          description: "检测到数据库连接失败，请立即检查数据库服务状态"
+          runbook_url: "https://docs.example.com/runbooks/database-connection-failure"
+
+      # 慢请求告警
+      - alert: SlowRequests
+        expr: |
+          sum(rate({service="dacong-api"} | json | duration_ms > 1000 [5m]))
+          /
+          sum(rate({service="dacong-api"} | json | duration_ms > 0 [5m]))
+          > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "慢请求告警"
+          description: "超过 10% 的请求响应时间大于 1 秒"
+          runbook_url: "https://docs.example.com/runbooks/slow-requests"
+
+      # 爬虫失败率过高
+      - alert: SpiderHighFailureRate
+        expr: |
+          sum(rate({service="dacong-spider"} |= "Scrape failed" [10m]))
+          /
+          sum(rate({service="dacong-spider"} |~ "Scrape (started|failed|completed)" [10m]))
+          > 0.2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "爬虫失败率过高"
+          description: "爬虫失败率超过 20%，请检查目标网站状态和爬虫配置"
+          runbook_url: "https://docs.example.com/runbooks/spider-failure"
+
+      # 认证失败次数过多
+      - alert: AuthenticationFailures
+        expr: |
+          count_over_time({service="dacong-api"} |~ "authentication.*failed|unauthorized|401" [5m]) > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "认证失败次数过多"
+          description: "5 分钟内认证失败超过 100 次，可能存在暴力破解攻击"
+          runbook_url: "https://docs.example.com/runbooks/auth-failures"
+
+      # 内存不足
+      - alert: OutOfMemory
+        expr: |
+          count_over_time({service=~"dacong-.*"} |~ "out of memory|OOM|memory.*exhausted" [5m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "内存不足"
+          description: "服务 {{ $labels.service }} 出现内存不足错误，请立即检查"
+          runbook_url: "https://docs.example.com/runbooks/out-of-memory"
+
+      # 日志量异常
+      - alert: AbnormalLogVolume
+        expr: |
+          abs(
+            rate({service=~"dacong-.*"} [5m])
+            -
+            rate({service=~"dacong-.*"} [5m] offset 1h)
+          )
+          /
+          rate({service=~"dacong-.*"} [5m] offset 1h)
+          > 0.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "日志量异常"
+          description: "服务 {{ $labels.service }} 的日志量突然变化超过 50%"
+          runbook_url: "https://docs.example.com/runbooks/abnormal-log-volume"
+
+      # API 5xx 错误
+      - alert: HighServerErrorRate
+        expr: |
+          sum(rate({service="dacong-api"} | json | status_code >= 500 [5m]))
+          /
+          sum(rate({service="dacong-api"} | json | status_code > 0 [5m]))
+          > 0.01
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "服务器错误率过高"
+          description: "API 5xx 错误率超过 1%"
+          runbook_url: "https://docs.example.com/runbooks/server-errors"

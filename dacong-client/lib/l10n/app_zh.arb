@@ -1,0 +1,464 @@
+{
+  "@@locale": "zh",
+  "appTitle": "大聪明",
+  "@appTitle": {
+    "description": "应用标题"
+  },
+  "newsTab": "AI速递",
+  "@newsTab": {
+    "description": "底部导航-AI热点资讯"
+  },
+  "rankingTab": "工具榜",
+  "@rankingTab": {
+    "description": "底部导航-AI工具排行"
+  },
+  "empowerTab": "免费用",
+  "@empowerTab": {
+    "description": "底部导航-免费使用技巧"
+  },
+  "communityTab": "社区",
+  "@communityTab": {
+    "description": "底部导航-社区"
+  },
+  "profileTab": "我的",
+  "@profileTab": {
+    "description": "底部导航-个人中心"
+  },
+
+  "rankOverall": "综合榜",
+  "@rankOverall": {
+    "description": "综合排行榜"
+  },
+  "rankCategory": "分类榜",
+  "@rankCategory": {
+    "description": "分类排行榜"
+  },
+  "rankFreeModels": "免费工具",
+  "@rankFreeModels": {
+    "description": "免费工具分类"
+  },
+  "rankOpenSource": "开源工具",
+  "@rankOpenSource": {
+    "description": "开源工具分类"
+  },
+  "rankNewTech": "新上线",
+  "@rankNewTech": {
+    "description": "新上线分类"
+  },
+  "rankMultimodal": "多模态",
+  "@rankMultimodal": {
+    "description": "多模态工具"
+  },
+  "rankCodeModel": "效率工具",
+  "@rankCodeModel": {
+    "description": "效率工具"
+  },
+
+  "promptSquare": "提示词",
+  "@promptSquare": {
+    "description": "提示词模板"
+  },
+  "workflowTutorials": "免费工具",
+  "@workflowTutorials": {
+    "description": "免费AI工具合集"
+  },
+  "freeModelGuide": "免费AI工具",
+  "@freeModelGuide": {
+    "description": "免费使用大模型的方法"
+  },
+
+  "hotNews": "AI热点",
+  "@hotNews": {
+    "description": "快讯流标题"
+  },
+  "trendingKeywords": "热搜词",
+  "@trendingKeywords": {
+    "description": "热搜词"
+  },
+  "dailyRecommendation": "每日推荐",
+  "@dailyRecommendation": {
+    "description": "每日推荐"
+  },
+  "modelDetails": "工具详情",
+  "@modelDetails": {
+    "description": "工具详情页"
+  },
+  "githubTrending": "GitHub热榜",
+  "@githubTrending": {
+    "description": "GitHub热榜"
+  },
+  "hackerNews": "HackerNews",
+  "@hackerNews": {
+    "description": "HackerNews"
+  },
+
+  "posts": "帖子",
+  "@posts": {
+    "description": "帖子列表"
+  },
+  "comments": "评论",
+  "@comments": {
+    "description": "评论"
+  },
+  "likes": "点赞",
+  "@likes": {
+    "description": "点赞"
+  },
+  "favorites": "收藏",
+  "@favorites": {
+    "description": "收藏"
+  },
+  "settings": "设置",
+  "@settings": {
+    "description": "设置"
+  },
+  "subscriptions": "订阅管理",
+  "@subscriptions": {
+    "description": "订阅管理"
+  },
+
+  "signIn": "登录",
+  "@signIn": {
+    "description": "登录按钮"
+  },
+  "signOut": "退出登录",
+  "@signOut": {
+    "description": "退出登录按钮"
+  },
+  "register": "注册",
+  "@register": {
+    "description": "注册按钮"
+  },
+  "searchPlaceholder": "搜索AI工具、话题...",
+  "@searchPlaceholder": {
+    "description": "搜索框占位符"
+  },
+  "noData": "暂无数据",
+  "@noData": {
+    "description": "空状态提示"
+  },
+  "loading": "加载中...",
+  "@loading": {
+    "description": "加载中"
+  },
+  "error": "加载失败",
+  "@error": {
+    "description": "错误提示"
+  },
+  "retry": "重试",
+  "@retry": {
+    "description": "重试按钮"
+  },
+  "viewMore": "查看更多",
+  "@viewMore": {
+    "description": "查看更多"
+  },
+
+  "publishedAt": "发布于 {time}",
+  "@publishedAt": {
+    "description": "发布时间",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "scoreLabel": "热度：{score}",
+  "@scoreLabel": {
+    "description": "热度标签",
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "downloadsLabel": "{count} 次使用",
+  "@downloadsLabel": {
+    "description": "使用量标签",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "languageLabel": "语言：{lang}",
+  "@languageLabel": {
+    "description": "语言标签",
+    "placeholders": {
+      "lang": {
+        "type": "String"
+      }
+    }
+  },
+  "topicLabel": "话题：{topic}",
+  "@topicLabel": {
+    "description": "话题标签",
+    "placeholders": {
+      "topic": {
+        "type": "String"
+      }
+    }
+  },
+
+  "notificationSettings": "通知设置",
+  "@notificationSettings": {
+    "description": "通知设置"
+  },
+  "privacySettings": "隐私设置",
+  "@privacySettings": {
+    "description": "隐私设置"
+  },
+  "aboutApp": "关于大聪明",
+  "@aboutApp": {
+    "description": "关于应用"
+  },
+  "versionLabel": "版本 {version}",
+  "@versionLabel": {
+    "description": "版本号标签",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "followers": "粉丝",
+  "@followers": {
+    "description": "粉丝数"
+  },
+  "following": "关注",
+  "@following": {
+    "description": "关注数"
+  },
+  "myPosts": "我的帖子",
+  "@myPosts": {
+    "description": "我的帖子"
+  },
+  "myFavorites": "我的收藏",
+  "@myFavorites": {
+    "description": "我的收藏"
+  },
+  "myHistory": "浏览历史",
+  "@myHistory": {
+    "description": "浏览历史"
+  },
+
+  "tagFree": "🆓 免费",
+  "@tagFree": {
+    "description": "免费标签"
+  },
+  "tagOpenSource": "📂 开源",
+  "@tagOpenSource": {
+    "description": "开源标签"
+  },
+  "tagNewModel": "🆕 新工具",
+  "@tagNewModel": {
+    "description": "新工具标签"
+  },
+  "tagHot": "🔥 热门",
+  "@tagHot": {
+    "description": "热门标签"
+  },
+  "tagTrending": "📈 上升",
+  "@tagTrending": {
+    "description": "上升趋势标签"
+  },
+  "tagAPI": "🔑 API",
+  "@tagAPI": {
+    "description": "API可用标签"
+  },
+
+  "comingSoon": "即将上线",
+  "@comingSoon": {
+    "description": "即将上线提示"
+  },
+
+  "homeTitle": "DaCong - AI工具决策助手",
+  "@homeTitle": {
+    "description": "首页标题"
+  },
+  "selectScenario": "选择使用场景",
+  "@selectScenario": {
+    "description": "选择场景提示"
+  },
+  "scenarioCoding": "写代码",
+  "@scenarioCoding": {
+    "description": "编程场景"
+  },
+  "scenarioCodingDesc": "AI编程助手",
+  "@scenarioCodingDesc": {
+    "description": "编程场景描述"
+  },
+  "scenarioVideo": "做视频",
+  "@scenarioVideo": {
+    "description": "视频场景"
+  },
+  "scenarioVideoDesc": "视频创作工具",
+  "@scenarioVideoDesc": {
+    "description": "视频场景描述"
+  },
+  "scenarioImage": "做图片",
+  "@scenarioImage": {
+    "description": "图片场景"
+  },
+  "scenarioImageDesc": "图片生成工具",
+  "@scenarioImageDesc": {
+    "description": "图片场景描述"
+  },
+  "scenarioChat": "日常对话",
+  "@scenarioChat": {
+    "description": "对话场景"
+  },
+  "scenarioChatDesc": "聊天助手",
+  "@scenarioChatDesc": {
+    "description": "对话场景描述"
+  },
+  "recommendationBest": "最佳",
+  "@recommendationBest": {
+    "description": "最佳推荐标签"
+  },
+  "recommendationAlternative": "平替",
+  "@recommendationAlternative": {
+    "description": "平替推荐标签"
+  },
+  "recommendationFree": "免费",
+  "@recommendationFree": {
+    "description": "免费推荐标签"
+  },
+  "pros": "优点",
+  "@pros": {
+    "description": "优点标题"
+  },
+  "cons": "缺点",
+  "@cons": {
+    "description": "缺点标题"
+  },
+  "availableInChina": "国内可用",
+  "@availableInChina": {
+    "description": "国内可用标签"
+  },
+  "needVPN": "需翻墙",
+  "@needVPN": {
+    "description": "需要VPN标签"
+  },
+  "noRecommendations": "暂无推荐",
+  "@noRecommendations": {
+    "description": "无推荐提示"
+  },
+  "pleaseSelectScenario": "请选择一个使用场景",
+  "@pleaseSelectScenario": {
+    "description": "请选择场景提示"
+  },
+
+  "profile": "个人中心",
+  "@profile": {
+    "description": "个人中心标题"
+  },
+  "notLoggedIn": "未登录",
+  "@notLoggedIn": {
+    "description": "未登录提示"
+  },
+  "loginToAccessFeatures": "登录后可使用更多功能",
+  "@loginToAccessFeatures": {
+    "description": "登录提示"
+  },
+  "myContent": "我的内容",
+  "@myContent": {
+    "description": "我的内容标题"
+  },
+  "items": "项",
+  "@items": {
+    "description": "项目单位"
+  },
+  "language": "语言",
+  "@language": {
+    "description": "语言设置"
+  },
+  "theme": "主题",
+  "@theme": {
+    "description": "主题设置"
+  },
+  "lightTheme": "浅色",
+  "@lightTheme": {
+    "description": "浅色主题"
+  },
+  "darkTheme": "深色",
+  "@darkTheme": {
+    "description": "深色主题"
+  },
+  "systemTheme": "跟随系统",
+  "@systemTheme": {
+    "description": "跟随系统主题"
+  },
+  "notifications": "通知",
+  "@notifications": {
+    "description": "通知设置"
+  },
+  "about": "关于",
+  "@about": {
+    "description": "关于标题"
+  },
+  "privacyPolicy": "隐私政策",
+  "@privacyPolicy": {
+    "description": "隐私政策"
+  },
+  "termsOfService": "服务条款",
+  "@termsOfService": {
+    "description": "服务条款"
+  },
+  "confirmSignOut": "确定要退出登录吗？",
+  "@confirmSignOut": {
+    "description": "退出登录确认"
+  },
+  "cancel": "取消",
+  "@cancel": {
+    "description": "取消按钮"
+  },
+  "emptyFavorites": "还没有收藏内容",
+  "@emptyFavorites": {
+    "description": "空收藏提示"
+  },
+  "emptyHistory": "还没有浏览历史",
+  "@emptyHistory": {
+    "description": "空历史提示"
+  },
+  "clearHistory": "清空历史",
+  "@clearHistory": {
+    "description": "清空历史按钮"
+  },
+  "confirmClearHistory": "确定要清空浏览历史吗？",
+  "@confirmClearHistory": {
+    "description": "清空历史确认"
+  },
+  "confirm": "确定",
+  "@confirm": {
+    "description": "确定按钮"
+  },
+  "editProfile": "编辑资料",
+  "@editProfile": {
+    "description": "编辑资料"
+  },
+  "username": "用户名",
+  "@username": {
+    "description": "用户名"
+  },
+  "bio": "个人简介",
+  "@bio": {
+    "description": "个人简介"
+  },
+  "save": "保存",
+  "@save": {
+    "description": "保存按钮"
+  },
+  "appVersion": "应用版本",
+  "@appVersion": {
+    "description": "应用版本"
+  },
+  "checkUpdate": "检查更新",
+  "@checkUpdate": {
+    "description": "检查更新"
+  },
+  "feedback": "意见反馈",
+  "@feedback": {
+    "description": "意见反馈"
+  }
+}

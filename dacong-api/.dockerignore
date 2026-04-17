@@ -1,0 +1,24 @@
+# ── Documentation ────────────────────────────────────
+*.md
+docs/
+ARCHITECTURE.md
+QUICKSTART.md
+
+# ── Environment ──────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Testing ──────────────────────────────────────────
+tests/
+*.test.ts
+*.spec.ts
+
+# ── Development ──────────────────────────────────────
+scripts/
+.vscode/
+.idea/
+
+# ── Logs ─────────────────────────────────────────────
+*.log
+logs/

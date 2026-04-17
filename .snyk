@@ -1,0 +1,37 @@
+# Snyk (https://snyk.io) policy file
+
+version: v1.22.0
+
+# 忽略特定漏洞（需要明确理由）
+ignore: {}
+
+# 手动补丁配置
+patch: {}
+
+# 语言特定配置
+language-settings:
+  python:
+    # Python 依赖扫描配置
+    ignore-requirements-txt: false
+
+  dart:
+    # Flutter/Dart 依赖扫描配置
+    ignore-pubspec: false
+
+# 排除路径（避免扫描测试依赖和示例代码）
+exclude:
+  global:
+    - '**/test/**'
+    - '**/tests/**'
+    - '**/examples/**'
+    - '**/node_modules/**'
+    - '**/.venv/**'
+    - '**/venv/**'
+    - '**/.dart_tool/**'
+    - '**/build/**'
+    - '**/.next/**'
+
+# 漏洞严重性阈值
+fail-on:
+  - high
+  - critical

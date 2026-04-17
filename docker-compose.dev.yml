@@ -1,0 +1,54 @@
+version: '3.8'
+
+# ── Development Override ──────────────────────────
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  # ── API Development ──────────────────────────────
+  api:
+    build:
+      context: ./dacong-api
+      target: base  # Use base stage for development
+    volumes:
+      - ./dacong-api/supabase/functions:/app/supabase/functions:ro
+    environment:
+      LOG_LEVEL: debug
+      DENO_ENV: development
+    command: ["deno", "run", "--watch", "--allow-all", "supabase/functions/serve.ts"]
+
+  # ── Spider Development ──────────────────────────
+  spider:
+    build:
+      context: ./dacong-spider
+      target: base
+    volumes:
+      - ./dacong-spider:/app:ro
+      - /app/__pycache__
+    environment:
+      LOG_LEVEL: debug
+      PYTHONPATH: /app
+    command: ["python", "-u", "main.py"]
+
+  # ── Client Development ──────────────────────────
+  # Note: For Flutter development, use `flutter run -d web-server` locally
+  # This is just for testing the production build
+  client:
+    ports:
+      - "3000:80"
+
+  # ── Admin Development ───────────────────────────
+  admin:
+    ports:
+      - "3001:80"
+
+  # ── PostgreSQL Development ──────────────────────
+  postgres:
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: dacong_dev
+
+  # ── Redis Development ───────────────────────────
+  redis:
+    ports:
+      - "6379:6379"

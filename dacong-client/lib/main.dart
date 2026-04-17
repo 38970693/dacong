@@ -1,15 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/config/sentry_config.dart';
+import 'core/constants/app_constants.dart';
+import 'core/di/injection.dart';
+import 'core/error/error_boundary.dart';
+import 'core/theme/app_theme.dart';
+import 'core/theme/theme_cubit.dart';
+import 'l10n/app_localizations.dart';
+import 'presentation/pages/home/home_page.dart';
+import 'presentation/pages/settings/settings_page.dart';
+import 'presentation/pages/auth/login_page.dart';
+import 'presentation/pages/auth/register_page.dart';
+import 'presentation/pages/auth/reset_password_page.dart';
+import 'presentation/pages/user/profile_edit_page.dart';
+
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  await Supabase.initialize(
-    url: 'YOUR_SUPABASE_URL',
-    anonKey: 'YOUR_SUPABASE_ANON_KEY',
-  );
-  
-  runApp(const DaCongApp());
+  // 初始化 Sentry 并运行应用
+  await SentryConfig.init(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // 初始化异步错误处理
+    AsyncErrorHandler.init();
+
+    // 初始化 Supabase
+    await Supabase.initialize(
+      url: AppConstants.supabaseUrl,
+      anonKey: AppConstants.supabaseAnonKey,
+    );
+
+    // 配置依赖注入
+    configureDependencies();
+
+    // 设置应用标签
+    SentryConfig.setTag('platform', 'flutter');
+    SentryConfig.setTag('app', 'dacong-client');
+
+    runApp(const ErrorBoundary(child: DaCongApp()));
+  });
 }
 
 class DaCongApp extends StatelessWidget {
@@ -17,58 +48,79 @@ class DaCongApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DaCong',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
-
-  final _pages = const [
-    NewsPage(),
-    RankingPage(),
-    EmpowerPage(),
-    CommunityPage(),
-    ProfilePage(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (i) => setState(() => _currentIndex = i),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.trending_up), label: '快讯'),
-          NavigationDestination(icon: Icon(Icons.leaderboard), label: '排行'),
-          NavigationDestination(icon: Icon(Icons.auto_awesome), label: '赋能'),
-          NavigationDestination(icon: Icon(Icons.forum), label: '社区'),
-          NavigationDestination(icon: Icon(Icons.person), label: '我的'),
-        ],
+    return BlocProvider(
+      create: (context) => ThemeCubit()..loadTheme(),
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, themeMode) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: AppConstants.appName,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeMode,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('zh'),
+              Locale('en'),
+            ],
+            routerConfig: _router,
+          );
+        },
       ),
     );
   }
 }
 
-// 占位页面
-class NewsPage extends StatelessWidget { const NewsPage({super.key}); @override Widget build(BuildContext context) => const Center(child: Text('快讯流页面')); }
-class RankingPage extends StatelessWidget { const RankingPage({super.key}); @override Widget build(BuildContext context) => const Center(child: Text('排行榜页面')); }
-class EmpowerPage extends StatelessWidget { const EmpowerPage({super.key}); @override Widget build(BuildContext context) => const Center(child: Text('赋能学习页面')); }
-class CommunityPage extends StatelessWidget { const CommunityPage({super.key}); @override Widget build(BuildContext context) => const Center(child: Text('社区交流页面')); }
-class ProfilePage extends StatelessWidget { const ProfilePage({super.key}); @override Widget build(BuildContext context) => const Center(child: Text('个人中心页面')); }
+// 路由配置
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: '/content/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return Scaffold(
+          appBar: AppBar(title: const Text('内容详情')),
+          body: Center(child: Text('内容 ID: $id')),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/search',
+      builder: (context, state) => Scaffold(
+        appBar: AppBar(title: const Text('搜索')),
+        body: const Center(child: Text('搜索页面')),
+      ),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsPage(),
+    ),
+    // 认证路由
+    GoRoute(
+      path: '/auth/login',
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: '/auth/register',
+      builder: (context, state) => const RegisterPage(),
+    ),
+    GoRoute(
+      path: '/auth/reset-password',
+      builder: (context, state) => const ResetPasswordPage(),
+    ),
+    // 用户路由
+    GoRoute(
+      path: '/user/profile/edit',
+      builder: (context, state) => const ProfileEditPage(),
+    ),
+  ],
+);

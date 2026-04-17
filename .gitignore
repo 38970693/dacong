@@ -91,3 +91,74 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+### Environment Files
+# 环境配置文件（包含敏感信息）
+.env
+.env.local
+.env.*.local
+.env.test.local
+.env.production.local
+
+### Deployment
+# 部署报告和日志
+deployment_report_*.txt
+tests/smoke/results/
+*.log
+
+### IDE
+# VS Code
+.vscode/
+.history/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Vim
+*.swp
+*.swo
+*~
+
+### OS
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.directory
+
+### Temporary Files
+# 临时文件和缓存
+*.tmp
+*.temp
+*.cache
+.cache/
+
+### Supabase
+# Supabase 本地配置
+.supabase/
+
+### Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+### Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+ENV/
+
+### Backup Files
+*.bak
+*.backup
+*.old

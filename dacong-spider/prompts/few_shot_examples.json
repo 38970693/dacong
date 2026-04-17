@@ -1,0 +1,144 @@
+[
+  {
+    "scenario": "写代码",
+    "input_data": {
+      "tools": [
+        {"name": "Claude Code", "stars": 15000, "price": "$20/月"},
+        {"name": "Cursor", "stars": 12000, "price": "$20/月"},
+        {"name": "GitHub Copilot", "stars": 8000, "price": "$10/月"}
+      ]
+    },
+    "output": {
+      "title": "写代码最佳AI助手推荐",
+      "summary": "根据代码能力、价格和易用性，为你推荐3个最适合的编程助手",
+      "recommendations": [
+        {
+          "rank": 1,
+          "name": "Claude Code",
+          "one_liner": "代码能力最强的AI助手",
+          "pros": [
+            "代码质量高，bug少",
+            "推理能力强，能理解复杂需求",
+            "支持多文件编辑"
+          ],
+          "cons": [
+            "价格较贵（$20/月）",
+            "国内访问需要翻墙"
+          ],
+          "best_for": "专业开发者，对代码质量要求高",
+          "price": "$20/月",
+          "access": "需翻墙",
+          "rating": 4.8
+        },
+        {
+          "rank": 2,
+          "name": "Cursor + DeepSeek",
+          "one_liner": "性价比之选，国内友好",
+          "pros": [
+            "国内可用，无需翻墙",
+            "价格适中（$20/月）",
+            "DeepSeek代码能力不错"
+          ],
+          "cons": [
+            "略逊于Claude Code",
+            "需要配置DeepSeek API"
+          ],
+          "best_for": "个人开发者，预算有限",
+          "price": "$20/月",
+          "access": "国内可用",
+          "rating": 4.5
+        },
+        {
+          "rank": 3,
+          "name": "GitHub Copilot",
+          "one_liner": "老牌工具，稳定可靠",
+          "pros": [
+            "价格便宜（$10/月）",
+            "集成度高，开箱即用",
+            "学生免费"
+          ],
+          "cons": [
+            "代码能力一般",
+            "不支持多文件编辑"
+          ],
+          "best_for": "学生、初学者",
+          "price": "$10/月（学生免费）",
+          "access": "需翻墙",
+          "rating": 4.2
+        }
+      ],
+      "confidence": 0.92
+    }
+  },
+  {
+    "scenario": "做视频",
+    "input_data": {
+      "tools": [
+        {"name": "Runway Gen-3", "effect": "最好", "price": "$95/月"},
+        {"name": "可灵AI", "effect": "不错", "price": "免费"},
+        {"name": "Pika", "effect": "适中", "price": "$35/月"}
+      ]
+    },
+    "output": {
+      "title": "AI视频生成工具推荐",
+      "summary": "根据效果、价格和易用性，为你推荐3个视频生成工具",
+      "recommendations": [
+        {
+          "rank": 1,
+          "name": "Runway Gen-3",
+          "one_liner": "效果最好的AI视频生成工具",
+          "pros": [
+            "视频质量高，细节丰富",
+            "支持多种风格",
+            "生成速度快"
+          ],
+          "cons": [
+            "价格贵（$95/月）",
+            "需要翻墙"
+          ],
+          "best_for": "专业视频创作者",
+          "price": "$95/月",
+          "access": "需翻墙",
+          "rating": 4.7
+        },
+        {
+          "rank": 2,
+          "name": "可灵AI",
+          "one_liner": "国内免费，效果不错",
+          "pros": [
+            "完全免费",
+            "国内可用，无需翻墙",
+            "效果接近Runway"
+          ],
+          "cons": [
+            "生成速度较慢",
+            "高峰期需要排队"
+          ],
+          "best_for": "个人创作者，预算有限",
+          "price": "免费",
+          "access": "国内可用",
+          "rating": 4.5
+        },
+        {
+          "rank": 3,
+          "name": "Pika",
+          "one_liner": "价格适中，易上手",
+          "pros": [
+            "价格适中（$35/月）",
+            "操作简单",
+            "支持视频编辑"
+          ],
+          "cons": [
+            "效果不如Runway",
+            "需要翻墙"
+          ],
+          "best_for": "中小企业，预算适中",
+          "price": "$35/月",
+          "access": "需翻墙",
+          "rating": 4.3
+        }
+      ],
+      "confidence": 0.88
+    }
+  }
+]

@@ -1,0 +1,32 @@
+# ── Build artifacts ──────────────────────────────────
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# ── Documentation ────────────────────────────────────
+*.md
+docs/
+
+# ── Testing ──────────────────────────────────────────
+test/
+coverage/
+*.test.dart
+
+# ── Development ──────────────────────────────────────
+.vscode/
+.idea/
+android/
+ios/
+linux/
+macos/
+windows/
+
+# ── Environment ──────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Logs ─────────────────────────────────────────────
+*.log

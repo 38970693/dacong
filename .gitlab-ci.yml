@@ -1,0 +1,572 @@
+# DaCong CI/CD - Flutter Web + Android + iOS 构建 + 爬虫定时调度
+#
+# iOS 构建需要 macOS runner（GitLab.com 免费版无 macOS，请使用自托管 runner 或手动构建）
+# Android 构建使用 cirrusci/flutter 镜像（已包含 Android SDK）
+#
+# 爬虫定时调度：
+#   GitLab CI/CD → Schedules → 新建定时任务 → Interval: 0 * * * *
+#   或直接在 GitLab Schedules 中创建，指向 dacong 分支
+
+stages:
+  - security
+  - lint
+  - test
+  - build
+  - deploy
+  - run
+
+variables:
+  FLUTTER_VERSION: "3.24.0"
+
+# ═══════════════════════════════════════════════
+# 安全检查
+# ═══════════════════════════════════════════════
+
+# 密钥泄露扫描
+scan-secrets:
+  stage: security
+  image: alpine:latest
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash grep git
+  script:
+    - cd dacong-api
+    - chmod +x scripts/scan_for_secrets.sh
+    - ./scripts/scan_for_secrets.sh --ci
+  allow_failure: false
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# 密钥过期检查（定时任务）
+check-key-expiry:
+  stage: security
+  image: alpine:latest
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash jq
+  script:
+    - cd dacong-api
+    - chmod +x scripts/check_key_expiry.sh
+    - ./scripts/check_key_expiry.sh --report
+  artifacts:
+    name: "key-expiry-report"
+    paths:
+      - dacong-api/key_status_report_*.txt
+    expire_in: 30 days
+    when: always
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $SCHEDULE_TYPE == "security"
+  allow_failure: true
+
+# 依赖漏洞扫描 - Flutter 客户端
+security:flutter-client:
+  stage: security
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - docker
+  script:
+    - cd dacong-client
+    - flutter pub get
+    - flutter pub outdated --json > outdated.json || true
+    - |
+      echo "检查 Flutter 依赖漏洞..."
+      # Flutter 没有内置的 audit 命令，使用 pub outdated 检查过期依赖
+      if [ -f outdated.json ]; then
+        cat outdated.json
+      fi
+  artifacts:
+    name: "flutter-client-dependency-report"
+    paths:
+      - dacong-client/outdated.json
+    expire_in: 7 days
+    when: always
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# 依赖漏洞扫描 - Flutter 管理后台
+security:flutter-admin:
+  stage: security
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - docker
+  script:
+    - cd dacong-admin
+    - flutter pub get
+    - flutter pub outdated --json > outdated.json || true
+    - |
+      echo "检查 Flutter 管理后台依赖漏洞..."
+      if [ -f outdated.json ]; then
+        cat outdated.json
+      fi
+  artifacts:
+    name: "flutter-admin-dependency-report"
+    paths:
+      - dacong-admin/outdated.json
+    expire_in: 7 days
+    when: always
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# 依赖漏洞扫描 - Python 爬虫
+security:python:
+  stage: security
+  image: python:3.11-slim
+  tags:
+    - docker
+  before_script:
+    - pip install --no-cache-dir pip-audit safety
+  script:
+    - cd dacong-spider
+    - |
+      echo "使用 pip-audit 扫描 Python 依赖漏洞..."
+      pip-audit --requirement requirements.txt --format json --output pip-audit-report.json || true
+      pip-audit --requirement requirements.txt || true
+    - |
+      echo "使用 Safety 扫描已知漏洞..."
+      safety check --file requirements.txt --json --output safety-report.json || true
+      safety check --file requirements.txt || true
+  artifacts:
+    name: "python-dependency-report"
+    paths:
+      - dacong-spider/pip-audit-report.json
+      - dacong-spider/safety-report.json
+    expire_in: 7 days
+    when: always
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# 依赖漏洞扫描 - Next.js 控制台
+security:npm:
+  stage: security
+  image: node:18-alpine
+  tags:
+    - docker
+  script:
+    - cd dacong-console
+    - npm audit --audit-level=high --json > npm-audit-report.json || true
+    - npm audit --audit-level=high || true
+  artifacts:
+    name: "npm-dependency-report"
+    paths:
+      - dacong-console/npm-audit-report.json
+    expire_in: 7 days
+    when: always
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Trivy 容器和依赖漏洞扫描
+security:trivy:
+  stage: security
+  image: aquasec/trivy:latest
+  tags:
+    - docker
+  script:
+    - trivy fs --security-checks vuln --severity HIGH,CRITICAL --format json --output trivy-report.json .
+    - trivy fs --security-checks vuln --severity HIGH,CRITICAL .
+  artifacts:
+    name: "trivy-security-report"
+    paths:
+      - trivy-report.json
+    expire_in: 30 days
+    when: always
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# ═══════════════════════════════════════════════
+# 代码质量检查
+# ═══════════════════════════════════════════════
+
+# 客户端代码质量检查
+lint:client:
+  stage: lint
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - docker
+  script:
+    - cd dacong-client
+    - flutter pub get
+    - flutter analyze --no-fatal-infos
+    - dart format --set-exit-if-changed lib/ test/
+  allow_failure: false
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# 管理后台代码质量检查
+lint:admin:
+  stage: lint
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - docker
+  script:
+    - cd dacong-admin
+    - flutter pub get
+    - flutter analyze --no-fatal-infos
+    - dart format --set-exit-if-changed lib/ test/
+  allow_failure: false
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# API 代码质量检查
+lint:api:
+  stage: lint
+  image: denoland/deno:alpine
+  tags:
+    - docker
+  script:
+    - cd dacong-api/supabase/functions
+    - deno lint
+    - deno fmt --check
+  allow_failure: false
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# 爬虫代码质量检查
+lint:spider:
+  stage: lint
+  image: python:3.11-slim
+  tags:
+    - docker
+  before_script:
+    - pip install --no-cache-dir black flake8 mypy
+  script:
+    - cd dacong-spider
+    - black --check .
+    - flake8 . --max-line-length=120 --extend-ignore=E203,W503
+    - mypy . --ignore-missing-imports
+  allow_failure: false
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# ═══════════════════════════════════════════════
+# 测试阶段
+# ═══════════════════════════════════════════════
+
+# 客户端测试
+test-client:
+  stage: test
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - docker
+  script:
+    - cd dacong-client
+    - flutter pub get
+    - flutter test --coverage --reporter expanded
+    - |
+      # 计算覆盖率
+      if [ -f coverage/lcov.info ]; then
+        TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
+        COVERED_LINES=$(grep -o "LH:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
+        COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
+        echo "测试覆盖率: $COVERAGE%"
+        echo "目标覆盖率: 80%"
+
+        # 检查是否达到目标
+        if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+          echo "警告: 覆盖率未达到 80% 目标"
+          exit 1
+        fi
+      fi
+  coverage: '/测试覆盖率: (\d+\.\d+)%/'
+  artifacts:
+    name: "client-test-coverage"
+    paths:
+      - dacong-client/coverage/
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: dacong-client/coverage/lcov.info
+    expire_in: 30 days
+    when: always
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# 管理后台测试
+test-admin:
+  stage: test
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - docker
+  script:
+    - cd dacong-admin
+    - flutter pub get
+    - flutter test --coverage --reporter expanded
+    - |
+      # 计算覆盖率
+      if [ -f coverage/lcov.info ]; then
+        TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
+        COVERED_LINES=$(grep -o "LH:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
+        COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
+        echo "测试覆盖率: $COVERAGE%"
+        echo "目标覆盖率: 70%"
+
+        # 检查是否达到目标
+        if (( $(echo "$COVERAGE < 70" | bc -l) )); then
+          echo "警告: 覆盖率未达到 70% 目标"
+          exit 1
+        fi
+      fi
+  coverage: '/测试覆盖率: (\d+\.\d+)%/'
+  artifacts:
+    name: "admin-test-coverage"
+    paths:
+      - dacong-admin/coverage/
+    expire_in: 30 days
+    when: always
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# 后端 API 测试
+test-api:
+  stage: test
+  image: denoland/deno:alpine
+  tags:
+    - docker
+  script:
+    - cd dacong-api/supabase/functions
+    - deno test --allow-all --coverage=coverage
+    - deno coverage coverage --lcov > coverage.lcov
+    - |
+      # 计算覆盖率
+      if [ -f coverage.lcov ]; then
+        TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage.lcov | cut -d: -f2 | awk '{s+=$1} END {print s}')
+        COVERED_LINES=$(grep -o "LH:[0-9]*" coverage.lcov | cut -d: -f2 | awk '{s+=$1} END {print s}')
+        COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
+        echo "测试覆盖率: $COVERAGE%"
+        echo "目标覆盖率: 85%"
+
+        # 检查是否达到目标
+        if (( $(echo "$COVERAGE < 85" | bc -l) )); then
+          echo "警告: 覆盖率未达到 85% 目标"
+          exit 1
+        fi
+      fi
+  coverage: '/测试覆盖率: (\d+\.\d+)%/'
+  artifacts:
+    name: "api-test-coverage"
+    paths:
+      - dacong-api/supabase/functions/coverage/
+      - dacong-api/supabase/functions/coverage.lcov
+    expire_in: 30 days
+    when: always
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# ═══════════════════════════════════════════════
+# Web 构建
+# ═══════════════════════════════════════════════
+flutter-build-web:
+  stage: build
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - docker
+  script:
+    - cd dacong-client
+    - flutter pub get
+    - flutter build web --release
+    - tar -czf ../artifacts/dacong-web.tar.gz build/web/
+  artifacts:
+    name: "dacong-web"
+    paths:
+      - artifacts/dacong-web.tar.gz
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - tags
+
+# ═══════════════════════════════════════════════
+# Android APK 构建
+# ═══════════════════════════════════════════════
+flutter-build-android:
+  stage: build
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - docker
+  before_script:
+    - yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+  script:
+    - cd dacong-client
+    - flutter pub get
+    - flutter build apk --release
+    - tar -czf ../artifacts/dacong-android.tar.gz build/app/outputs/flutter-apk/app-release.apk
+  artifacts:
+    name: "dacong-android"
+    paths:
+      - artifacts/dacong-android.tar.gz
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - tags
+
+# ═══════════════════════════════════════════════
+# iOS 构建（需要 macOS runner）
+# GitLab.com 免费版不支持 macOS，请配置自托管 runner
+# 或在本地 macOS 机器上手动构建
+# ═══════════════════════════════════════════════
+flutter-build-ios:
+  stage: build
+  image: cirrusci/flutter:${FLUTTER_VERSION}
+  tags:
+    - macos
+  script:
+    - cd dacong-client
+    - flutter pub get
+    - flutter build ios --release
+    - tar -czf ../artifacts/dacong-ios.tar.gz build/ios/iphoneos/Runner.ipa
+  artifacts:
+    name: "dacong-ios"
+    paths:
+      - artifacts/dacong-ios.tar.gz
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - tags
+
+# ═══════════════════════════════════════════════
+# 部署阶段
+# ═══════════════════════════════════════════════
+
+# 部署到 Staging 环境
+deploy:staging:
+  stage: deploy
+  image: alpine:latest
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash curl git
+  script:
+    - chmod +x scripts/deploy_staging.sh
+    - ./scripts/deploy_staging.sh
+  environment:
+    name: staging
+    url: https://staging.dacong.ai
+    on_stop: stop:staging
+  artifacts:
+    name: "staging-deployment-log"
+    paths:
+      - deployment-staging.log
+    expire_in: 7 days
+    when: always
+  only:
+    - dev
+    - develop
+
+# 停止 Staging 环境
+stop:staging:
+  stage: deploy
+  image: alpine:latest
+  tags:
+    - docker
+  script:
+    - echo "Stopping staging environment"
+  environment:
+    name: staging
+    action: stop
+  when: manual
+  only:
+    - dev
+    - develop
+
+# 部署到 Production 环境（手动触发）
+deploy:production:
+  stage: deploy
+  image: alpine:latest
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash curl git
+  script:
+    - chmod +x scripts/deploy_production.sh
+    - ./scripts/deploy_production.sh
+  environment:
+    name: production
+    url: https://dacong.ai
+  artifacts:
+    name: "production-deployment-log"
+    paths:
+      - deployment-production.log
+    expire_in: 30 days
+    when: always
+  when: manual
+  only:
+    - main
+
+# 回滚 Production 环境
+rollback:production:
+  stage: deploy
+  image: alpine:latest
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash curl git
+  script:
+    - chmod +x scripts/rollback_cicd.sh
+    - ./scripts/rollback_cicd.sh production ${ROLLBACK_VERSION:-previous}
+  environment:
+    name: production
+    url: https://dacong.ai
+  when: manual
+  only:
+    - main
+
+# ═══════════════════════════════════════════════
+# 爬虫定时调度
+# 在 GitLab CI/CD → Schedules 中创建定时任务：
+#   - Description: "Spider Scheduler"
+#   - Interval pattern: 0 * * * * （每小时）
+#   - Target branch: main
+# ═══════════════════════════════════════════════
+spider-scheduler:
+  stage: run
+  image: python:3.11-slim
+  tags:
+    - docker
+  script:
+    - pip install --no-cache-dir -r dacong-spider/requirements.txt
+    - python -m schedulers.jobs
+  variables:
+    SUPABASE_URL: ${SUPABASE_URL}
+    SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+    SPIDER_LOG_LEVEL: INFO
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+  only:
+    refs:
+      - schedules
+  when: always
+  timeout: 55m       # GitLab free tier job max = 60min

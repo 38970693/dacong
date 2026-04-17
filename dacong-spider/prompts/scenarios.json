@@ -1,0 +1,34 @@
+{
+  "scenarios": [
+    {
+      "id": "coding",
+      "name": "写代码",
+      "description": "编程开发场景",
+      "keywords": ["code", "programming", "development", "IDE", "copilot"]
+    },
+    {
+      "id": "video",
+      "name": "做视频",
+      "description": "视频生成场景",
+      "keywords": ["video", "generation", "runway", "pika"]
+    },
+    {
+      "id": "image",
+      "name": "做图片",
+      "description": "图片生成场景",
+      "keywords": ["image", "generation", "midjourney", "stable diffusion"]
+    },
+    {
+      "id": "chat",
+      "name": "聊天对话",
+      "description": "对话助手场景",
+      "keywords": ["chat", "conversation", "assistant", "chatgpt"]
+    },
+    {
+      "id": "writing",
+      "name": "写文章",
+      "description": "内容创作场景",
+      "keywords": ["writing", "content", "article", "blog"]
+    }
+  ]
+}

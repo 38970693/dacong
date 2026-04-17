@@ -1,0 +1,100 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # API 日志
+  - job_name: dacong-api
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: dacong-api
+          service: api
+          __path__: /app/logs/api/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            message: message
+            function: function
+            context: context
+      - labels:
+          level:
+          function:
+      - timestamp:
+          source: timestamp
+          format: RFC3339
+
+  # 爬虫日志
+  - job_name: dacong-spider
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: dacong-spider
+          service: spider
+          __path__: /app/logs/spider/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            message: message
+            spider_name: spider_name
+            context: context
+      - labels:
+          level:
+          spider_name:
+      - timestamp:
+          source: timestamp
+          format: RFC3339
+
+  # 客户端日志（如果有服务端收集）
+  - job_name: dacong-client
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: dacong-client
+          service: client
+          __path__: /app/logs/client/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            message: message
+            screen: screen
+            context: context
+      - labels:
+          level:
+          screen:
+      - timestamp:
+          source: timestamp
+          format: RFC3339
+
+  # 系统日志
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: system
+          __path__: /var/log/syslog
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<timestamp>\S+\s+\S+\s+\S+)\s+(?P<hostname>\S+)\s+(?P<process>\S+):\s+(?P<message>.*)$'
+      - labels:
+          hostname:
+          process:
+      - timestamp:
+          source: timestamp
+          format: Jan 02 15:04:05

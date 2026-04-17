@@ -1,0 +1,34 @@
+name: Daily Spider Run
+
+# 每天 02:00 UTC = 10:00 北京时间
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  spider:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r dacong-spider/requirements.txt
+
+      - name: Run Spider
+        run: |
+          cd dacong-spider
+          python -m schedulers.jobs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SPIDER_GITHUB_ENABLED: 'true'
+          SPIDER_HUGGINGFACE_ENABLED: 'true'
+          SPIDER_HACKERNEWS_ENABLED: 'true'

@@ -1,0 +1,516 @@
+openapi: 3.0.3
+info:
+  title: Dacong API
+  version: 1.0.0
+  description: |
+    大聪 API - AI工具推荐系统后端接口
+
+    基于 Supabase Edge Functions 构建，提供场景推荐、内容详情、用户反馈等功能。
+
+    ## API 版本管理
+
+    本 API 支持多版本管理，确保向后兼容性。
+
+    ### 版本指定方式
+
+    1. **URL 路径（推荐）**：`/v1/get-recommendations`
+    2. **HTTP Header**：`API-Version: v1`
+
+    ### 当前版本
+
+    - **v1**：稳定版本（当前）
+    - **v2**：开发中
+
+    详细信息请参考 [API 版本管理文档](docs/API_VERSIONING.md)。
+
+servers:
+  - url: https://your-project.supabase.co/functions/v1
+    description: Production server (v1)
+  - url: https://your-project.supabase.co/functions/v2
+    description: Development server (v2)
+
+tags:
+  - name: Recommendations
+    description: 场景推荐相关接口
+  - name: Content
+    description: 内容相关接口
+  - name: Feedback
+    description: 用户反馈相关接口
+  - name: Weekly
+    description: 周报相关接口
+
+paths:
+  /get-recommendations:
+    get:
+      tags:
+        - Recommendations
+      summary: 获取场景推荐
+      description: 根据场景（coding/video/image/chat等）获取推荐内容列表
+      parameters:
+        - name: API-Version
+          in: header
+          required: false
+          schema:
+            type: string
+            enum: [v1, v2]
+            default: v1
+          description: API 版本（也可通过 URL 路径指定）
+        - name: scenario
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [coding, video, image, chat, writing, data]
+          description: 场景类型
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [zh, en]
+            default: zh
+          description: 语言
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+          description: 返回数量限制
+      responses:
+        '200':
+          description: 成功返回推荐列表
+          headers:
+            API-Version:
+              description: 当前使用的 API 版本
+              schema:
+                type: string
+                example: v1
+            Deprecation:
+              description: 版本是否已弃用
+              schema:
+                type: string
+                example: "true"
+            Sunset:
+              description: 版本停用日期（RFC 7231 格式）
+              schema:
+                type: string
+                example: "Wed, 31 Dec 2026 23:59:59 GMT"
+            Link:
+              description: 迁移指南链接
+              schema:
+                type: string
+                example: '<https://docs.dacong.ai/api/migration/v2>; rel="deprecation"'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationsResponse'
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /get-content-detail:
+    get:
+      tags:
+        - Content
+      summary: 获取内容详情
+      description: 根据内容ID获取详细信息
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: 内容ID
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [zh, en]
+            default: zh
+          description: 语言
+        - name: incrementView
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: 是否增加浏览次数
+      responses:
+        '200':
+          description: 成功返回内容详情
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentDetailResponse'
+        '404':
+          description: 内容不存在
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /search-content:
+    get:
+      tags:
+        - Content
+      summary: 搜索内容
+      description: 根据关键词搜索内容
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+          description: 搜索关键词
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [zh, en]
+            default: zh
+          description: 语言
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+          description: 返回数量限制
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: 偏移量（分页）
+      responses:
+        '200':
+          description: 成功返回搜索结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+
+  /submit-feedback:
+    post:
+      tags:
+        - Feedback
+      summary: 提交用户反馈
+      description: 用户对内容进行有用/无用反馈
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitFeedbackRequest'
+      responses:
+        '200':
+          description: 反馈提交成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackResponse'
+        '400':
+          description: 请求参数错误或已提交过反馈
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /get-weekly-report:
+    get:
+      tags:
+        - Weekly
+      summary: 获取周报列表
+      description: 获取最新的周报内容
+      parameters:
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [zh, en]
+            default: zh
+          description: 语言
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+          description: 返回数量限制
+      responses:
+        '200':
+          description: 成功返回周报列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeeklyReportResponse'
+
+components:
+  schemas:
+    RecommendationsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentItem'
+        error:
+          type: string
+          nullable: true
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+            scenario:
+              type: string
+            language:
+              type: string
+
+    ContentDetailResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/ContentDetail'
+        error:
+          type: string
+          nullable: true
+
+    SearchResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentItem'
+        error:
+          type: string
+          nullable: true
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+            limit:
+              type: integer
+            offset:
+              type: integer
+            query:
+              type: string
+
+    FeedbackResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            content_id:
+              type: string
+              format: uuid
+            is_helpful:
+              type: boolean
+            created_at:
+              type: string
+              format: date-time
+        error:
+          type: string
+          nullable: true
+        meta:
+          type: object
+          properties:
+            message:
+              type: string
+
+    WeeklyReportResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/WeeklyReport'
+        error:
+          type: string
+          nullable: true
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+            language:
+              type: string
+
+    ContentItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content_type:
+          type: string
+          enum: [recommendation, guide, comparison, weekly]
+        title:
+          type: string
+        summary:
+          type: string
+          nullable: true
+        scenario:
+          type: string
+          enum: [coding, video, image, chat, writing, data]
+          nullable: true
+        view_count:
+          type: integer
+        helpful_count:
+          type: integer
+        helpful_rate:
+          type: number
+          format: float
+          nullable: true
+        published_at:
+          type: string
+          format: date-time
+
+    ContentDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content_type:
+          type: string
+          enum: [recommendation, guide, comparison, weekly]
+        title:
+          type: string
+        summary:
+          type: string
+          nullable: true
+        content:
+          type: object
+          description: 内容的JSON结构，根据content_type不同而不同
+        scenario:
+          type: string
+          enum: [coding, video, image, chat, writing, data]
+          nullable: true
+        view_count:
+          type: integer
+        helpful_count:
+          type: integer
+        unhelpful_count:
+          type: integer
+        share_count:
+          type: integer
+        helpful_rate:
+          type: number
+          format: float
+          nullable: true
+        published_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    WeeklyReport:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content_type:
+          type: string
+          enum: [weekly]
+        title:
+          type: string
+        summary:
+          type: string
+          nullable: true
+        content:
+          type: object
+          description: 周报内容的JSON结构
+        view_count:
+          type: integer
+        helpful_count:
+          type: integer
+        helpful_rate:
+          type: number
+          format: float
+          nullable: true
+        published_at:
+          type: string
+          format: date-time
+
+    SubmitFeedbackRequest:
+      type: object
+      required:
+        - contentId
+        - isHelpful
+      properties:
+        contentId:
+          type: string
+          format: uuid
+          description: 内容ID
+        isHelpful:
+          type: boolean
+          description: 是否有用（true=有用，false=无用）
+        comment:
+          type: string
+          maxLength: 500
+          description: 可选的文字评论
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        data:
+          type: object
+          nullable: true
+        error:
+          type: string
+          example: "Invalid request parameters"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Supabase JWT Token（可选，用于识别用户身份）
+
+security:
+  - BearerAuth: []

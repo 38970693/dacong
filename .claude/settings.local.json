@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo \"# DaCong Project Exploration\")",
+      "Bash(echo \"\")",
+      "Bash(echo \"Date: 2026-04-17\")",
+      "Bash(echo \"Project: DaCong - AI Model Ranking & Community Platform\")",
+      "Bash(echo \"Repository: GitLab \\(nb1935338/dacong\\)\")",
+      "Bash(flutter pub *)",
+      "Bash(flutter test *)",
+      "Bash(flutter clean *)",
+      "Bash(chmod +x dacong-spider/demo_weekly.py)",
+      "Bash(chmod +x tests/integration/test_end_to_end.sh scripts/health_check.sh scripts/run_all_tests.sh tests/performance/test_api_performance.sh)",
+      "Bash(chmod +x /e/gitlab/dacong/scripts/fix_all.sh)",
+      "Bash(chmod +x scripts/run_all_tests.sh)",
+      "Bash(./scripts/run_all_tests.sh)",
+      "Bash(chmod +x e:/gitlab/dacong/scripts/deploy_test.sh)",
+      "Bash(chmod +x e:/gitlab/dacong/scripts/health_check.sh)",
+      "Bash(chmod +x e:/gitlab/dacong/scripts/rollback.sh)",
+      "Bash(flutter gen-l10n *)",
+      "Bash(deno --version)",
+      "Bash(curl -fsSL https://deno.land/install.sh)",
+      "Bash(sh)",
+      "Bash(chmod +x e:/gitlab/dacong/scripts/check_deployment_setup.sh)",
+      "Bash(bash scripts/check_deployment_setup.sh)",
+      "Bash(cat)",
+      "Bash(bash /tmp/tree_output.txt)",
+      "Bash(python -m pytest tests/test_image_generator.py::TestImageGenerator::test_format_number -v)",
+      "Bash(bash -x scripts/check_deployment_setup.sh)"
+    ]
+  }
+}
