@@ -1,0 +1,516 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, dev, develop]
+  pull_request:
+    branches: [main, dev, develop]
+  schedule:
+    # 每日安全扫描 - 凌晨 2 点
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  # ==========================================
+  # 安全检查
+  # ==========================================
+
+  # 密钥泄露扫描
+  scan-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 扫描密钥泄露
+        run: |
+          cd dacong-api
+          chmod +x scripts/scan_for_secrets.sh
+          ./scripts/scan_for_secrets.sh --ci
+
+  # 密钥过期检查
+  check-key-expiry:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 检查密钥过期
+        run: |
+          cd dacong-api
+          chmod +x scripts/check_key_expiry.sh
+          ./scripts/check_key_expiry.sh --report
+
+      - name: 上传报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: key-expiry-report
+          path: dacong-api/key_status_report_*.txt
+          retention-days: 30
+
+  # Python 依赖漏洞扫描
+  security-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装扫描工具
+        run: pip install pip-audit safety
+
+      - name: 运行 pip-audit
+        run: |
+          cd dacong-spider
+          pip-audit --requirement requirements.txt --format json --output pip-audit-report.json || true
+          pip-audit --requirement requirements.txt || true
+
+      - name: 运行 Safety
+        run: |
+          cd dacong-spider
+          safety check --file requirements.txt --json --output safety-report.json || true
+          safety check --file requirements.txt || true
+
+      - name: 上传报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: python-security-report
+          path: |
+            dacong-spider/pip-audit-report.json
+            dacong-spider/safety-report.json
+          retention-days: 7
+
+  # Flutter 客户端依赖扫描
+  security-flutter-client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 检查依赖
+        run: |
+          cd dacong-client
+          flutter pub get
+          flutter pub outdated --json > outdated.json || true
+          flutter pub outdated || true
+
+      - name: 上传报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: flutter-client-dependency-report
+          path: dacong-client/outdated.json
+          retention-days: 7
+
+  # Flutter 管理后台依赖扫描
+  security-flutter-admin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 检查依赖
+        run: |
+          cd dacong-admin
+          flutter pub get
+          flutter pub outdated --json > outdated.json || true
+          flutter pub outdated || true
+
+      - name: 上传报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: flutter-admin-dependency-report
+          path: dacong-admin/outdated.json
+          retention-days: 7
+
+  # NPM 依赖扫描
+  security-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: NPM 审计
+        run: |
+          cd dacong-console
+          npm audit --audit-level=high --json > npm-audit-report.json || true
+          npm audit --audit-level=high || true
+
+      - name: 上传报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: npm-security-report
+          path: dacong-console/npm-audit-report.json
+          retention-days: 7
+
+  # Trivy 容器和依赖扫描
+  security-trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 运行 Trivy 扫描
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'HIGH,CRITICAL'
+
+      - name: 上传到 GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: 生成 JSON 报告
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'json'
+          output: 'trivy-report.json'
+          severity: 'HIGH,CRITICAL'
+
+      - name: 上传报告
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trivy-security-report
+          path: trivy-report.json
+          retention-days: 30
+
+  # ==========================================
+  # 代码质量检查
+  # ==========================================
+
+  # Flutter 客户端代码检查
+  lint-client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 代码检查
+        run: |
+          cd dacong-client
+          flutter pub get
+          flutter analyze --no-fatal-infos
+          dart format --set-exit-if-changed lib/ test/
+
+  # Flutter 管理后台代码检查
+  lint-admin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 代码检查
+        run: |
+          cd dacong-admin
+          flutter pub get
+          flutter analyze --no-fatal-infos
+          dart format --set-exit-if-changed lib/ test/
+
+  # API 代码检查
+  lint-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: 代码检查
+        run: |
+          cd dacong-api/supabase/functions
+          deno lint
+          deno fmt --check
+
+  # Python 爬虫代码检查
+  lint-spider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装检查工具
+        run: pip install black flake8 mypy
+
+      - name: 代码检查
+        run: |
+          cd dacong-spider
+          black --check .
+          flake8 . --max-line-length=120 --extend-ignore=E203,W503
+          mypy . --ignore-missing-imports
+
+  # ==========================================
+  # 测试阶段
+  # ==========================================
+
+  # Flutter 客户端测试
+  test-client:
+    runs-on: ubuntu-latest
+    needs: [lint-client]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 运行测试
+        run: |
+          cd dacong-client
+          flutter pub get
+          flutter test --coverage --reporter expanded
+
+      - name: 检查覆盖率
+        run: |
+          cd dacong-client
+          if [ -f coverage/lcov.info ]; then
+            TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
+            COVERED_LINES=$(grep -o "LH:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
+            COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
+            echo "测试覆盖率: $COVERAGE%"
+            if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+              echo "警告: 覆盖率未达到 80% 目标"
+              exit 1
+            fi
+          fi
+
+      - name: 上传覆盖率报告
+        uses: codecov/codecov-action@v4
+        with:
+          files: dacong-client/coverage/lcov.info
+          flags: flutter-client
+          name: flutter-client-coverage
+
+  # Flutter 管理后台测试
+  test-admin:
+    runs-on: ubuntu-latest
+    needs: [lint-admin]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 运行测试
+        run: |
+          cd dacong-admin
+          flutter pub get
+          flutter test --coverage --reporter expanded
+
+      - name: 检查覆盖率
+        run: |
+          cd dacong-admin
+          if [ -f coverage/lcov.info ]; then
+            TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
+            COVERED_LINES=$(grep -o "LH:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
+            COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
+            echo "测试覆盖率: $COVERAGE%"
+            if (( $(echo "$COVERAGE < 70" | bc -l) )); then
+              echo "警告: 覆盖率未达到 70% 目标"
+              exit 1
+            fi
+          fi
+
+      - name: 上传覆盖率报告
+        uses: codecov/codecov-action@v4
+        with:
+          files: dacong-admin/coverage/lcov.info
+          flags: flutter-admin
+          name: flutter-admin-coverage
+
+  # API 测试
+  test-api:
+    runs-on: ubuntu-latest
+    needs: [lint-api]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: 运行测试
+        run: |
+          cd dacong-api/supabase/functions
+          deno test --allow-all --coverage=coverage
+          deno coverage coverage --lcov > coverage.lcov
+
+      - name: 检查覆盖率
+        run: |
+          cd dacong-api/supabase/functions
+          if [ -f coverage.lcov ]; then
+            TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage.lcov | cut -d: -f2 | awk '{s+=$1} END {print s}')
+            COVERED_LINES=$(grep -o "LH:[0-9]*" coverage.lcov | cut -d: -f2 | awk '{s+=$1} END {print s}')
+            COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
+            echo "测试覆盖率: $COVERAGE%"
+            if (( $(echo "$COVERAGE < 85" | bc -l) )); then
+              echo "警告: 覆盖率未达到 85% 目标"
+              exit 1
+            fi
+          fi
+
+      - name: 上传覆盖率报告
+        uses: codecov/codecov-action@v4
+        with:
+          files: dacong-api/supabase/functions/coverage.lcov
+          flags: api
+          name: api-coverage
+
+  # ==========================================
+  # 构建阶段
+  # ==========================================
+
+  # Flutter Web 构建
+  build-web:
+    runs-on: ubuntu-latest
+    needs: [test-client]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 构建 Web
+        run: |
+          cd dacong-client
+          flutter pub get
+          flutter build web --release
+
+      - name: 打包产物
+        run: |
+          cd dacong-client
+          tar -czf ../dacong-web.tar.gz build/web/
+
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: dacong-web
+          path: dacong-web.tar.gz
+          retention-days: 7
+
+  # Android APK 构建
+  build-android:
+    runs-on: ubuntu-latest
+    needs: [test-client]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 构建 APK
+        run: |
+          cd dacong-client
+          flutter pub get
+          flutter build apk --release
+
+      - name: 打包产物
+        run: |
+          cd dacong-client
+          tar -czf ../dacong-android.tar.gz build/app/outputs/flutter-apk/app-release.apk
+
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: dacong-android
+          path: dacong-android.tar.gz
+          retention-days: 7
+
+  # iOS 构建（需要 macOS runner）
+  build-ios:
+    runs-on: macos-latest
+    needs: [test-client]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: 构建 iOS
+        run: |
+          cd dacong-client
+          flutter pub get
+          flutter build ios --release --no-codesign
+
+      - name: 打包产物
+        run: |
+          cd dacong-client
+          tar -czf ../dacong-ios.tar.gz build/ios/iphoneos/
+
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: dacong-ios
+          path: dacong-ios.tar.gz
+          retention-days: 7
