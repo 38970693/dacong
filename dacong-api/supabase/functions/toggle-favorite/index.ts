@@ -5,8 +5,6 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { Container } from "../_shared/core/Container.ts";
-import { ToggleFavoriteRequestSchema } from "../_shared/dto/ToggleFavoriteRequest.ts";
 import {
   corsResponse,
   errorResponse,
@@ -14,64 +12,111 @@ import {
   successResponse,
   validateMethod,
 } from "../_shared/utils/http.ts";
+import { initSentry, withSentry } from "../_shared/utils/sentry.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
-serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return corsResponse();
-  }
-
-  try {
-    validateMethod(req, ["POST"]);
-
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // 获取用户信息（必须登录）
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return errorResponse("Authorization required", 401);
-    }
-
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
-
-    if (authError || !user) {
-      return errorResponse("Invalid authorization", 401);
-    }
-
-    const container = Container.getInstance(supabase);
-    const favoriteService = container.getFavoriteService();
-
-    // 获取请求体
-    const body = await getRequestBody<{ contentId: string }>(req);
-
-    // 验证请求数据
-    const validatedData = ToggleFavoriteRequestSchema.parse(body);
-
-    // 切换收藏状态
-    const result = await favoriteService.toggleFavorite(
-      user.id,
-      validatedData.contentId
-    );
-
-    return successResponse({
-      favorited: result.favorited,
-      contentId: validatedData.contentId,
-      ...(result.favorite && {
-        favoriteId: result.favorite.id,
-        createdAt: result.favorite.createdAt.toISOString(),
-      }),
-    });
-  } catch (error) {
-    console.error("Error in toggle-favorite:", error);
-
-    if (error instanceof Error) {
-      return errorResponse(error.message, 400);
-    }
-
-    return errorResponse("Internal server error", 500);
-  }
+// 请求验证 Schema
+const ToggleFavoriteRequestSchema = z.object({
+  content_id: z.string().uuid(),
 });
+
+// 初始化 Sentry
+initSentry({
+  functionName: "toggle-favorite",
+});
+
+serve(
+  withSentry(
+    async (req) => {
+      if (req.method === "OPTIONS") {
+        return corsResponse();
+      }
+
+      validateMethod(req, ["POST"]);
+
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+      const authHeader = req.headers.get("Authorization");
+
+      if (!authHeader) {
+        return errorResponse("Missing authorization header", 401);
+      }
+
+      const supabase = createClient(supabaseUrl, supabaseKey, {
+        global: {
+          headers: { Authorization: authHeader },
+        },
+      });
+
+      // 验证用户身份
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError || !user) {
+        return errorResponse("Unauthorized", 401);
+      }
+
+      const body = await getRequestBody(req);
+      const validatedData = ToggleFavoriteRequestSchema.parse(body);
+
+      // 检查内容是否存在
+      const { data: content, error: contentError } = await supabase
+        .from("published_content")
+        .select("id")
+        .eq("id", validatedData.content_id)
+        .single();
+
+      if (contentError || !content) {
+        return errorResponse("Content not found", 404);
+      }
+
+      // 检查是否已收藏
+      const { data: existingFavorite } = await supabase
+        .from("favorites")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("content_id", validatedData.content_id)
+        .maybeSingle();
+
+      if (existingFavorite) {
+        // 已收藏，执行取消收藏
+        const { error: deleteError } = await supabase
+          .from("favorites")
+          .delete()
+          .eq("id", existingFavorite.id);
+
+        if (deleteError) {
+          return errorResponse("Failed to remove favorite", 500);
+        }
+
+        return successResponse({
+          is_favorited: false,
+          message: "Favorite removed successfully",
+        });
+      } else {
+        // 未收藏，执行添加收藏
+        const { error: insertError } = await supabase
+          .from("favorites")
+          .insert({
+            user_id: user.id,
+            content_id: validatedData.content_id,
+          });
+
+        if (insertError) {
+          return errorResponse("Failed to add favorite", 500);
+        }
+
+        return successResponse({
+          is_favorited: true,
+          message: "Favorite added successfully",
+        });
+      }
+    },
+    {
+      functionName: "toggle-favorite",
+      captureErrors: true,
+    },
+  ),
+);

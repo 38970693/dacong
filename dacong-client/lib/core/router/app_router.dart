@@ -7,6 +7,7 @@ import '../../presentation/pages/ranking/ranking_page.dart';
 import '../../presentation/pages/empower/empower_page.dart';
 import '../../presentation/pages/community/community_page.dart';
 import '../../presentation/pages/profile/profile_page.dart';
+import '../../presentation/pages/recommendation_detail/recommendation_detail_page.dart';
 import '../../presentation/widgets/common/shell_scaffold.dart';
 import '../../presentation/providers/locale_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,6 +24,13 @@ final appRouter = GoRouter(initialLocation: '/', routes: [
     ],
   ),
   // 非 Shell 全屏页面
+  GoRoute(
+    path: '/recommendation/:contentId',
+    name: 'recommendationDetail',
+    builder: (_, state) => RecommendationDetailPage(
+      contentId: state.pathParameters['contentId']!,
+    ),
+  ),
   GoRoute(path: '/model/:id',    name: 'modelDetail', builder: (_, state) => Scaffold(
     appBar: AppBar(title: const Text('Model')),
     body: Center(child: Text('Model: ${state.pathParameters["id"]}')),

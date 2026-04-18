@@ -47,13 +47,21 @@ export class ContentService {
     query: string,
     language: "zh" | "en" = "zh",
     limit = 20,
-    offset = 0
+    offset = 0,
+    filters?: {
+      scenario?: string;
+      isFree?: boolean;
+      availableInChina?: boolean;
+    },
+    sortBy: "relevance" | "rating" | "viewCount" = "relevance"
   ): Promise<{ items: Content[]; total: number }> {
     const items = await this.contentRepository.search(
       query,
       language,
       limit,
-      offset
+      offset,
+      filters,
+      sortBy
     );
     const total = await this.contentRepository.count();
 

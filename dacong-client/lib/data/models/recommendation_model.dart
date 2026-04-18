@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../domain/entities/recommendation.dart';
+import '../../core/domain/entities/recommendation.dart';
 
 part 'recommendation_model.freezed.dart';
 part 'recommendation_model.g.dart';

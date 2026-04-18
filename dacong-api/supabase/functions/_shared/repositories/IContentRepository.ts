@@ -23,7 +23,13 @@ export interface IContentRepository {
     query: string,
     language: "zh" | "en",
     limit?: number,
-    offset?: number
+    offset?: number,
+    filters?: {
+      scenario?: string;
+      isFree?: boolean;
+      availableInChina?: boolean;
+    },
+    sortBy?: "relevance" | "rating" | "viewCount"
   ): Promise<Content[]>;
 
   /**

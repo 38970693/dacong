@@ -114,9 +114,7 @@ class _HomeContentState extends State<_HomeContent> {
                 );
               } else if (state is RecommendationLoaded) {
                 if (state.recommendations.isEmpty) {
-                  return Center(
-                    child: Text(l10n.noRecommendations),
-                  );
+                  return _buildEmptyState(context, l10n);
                 }
                 return RefreshIndicator(
                   onRefresh: () async {
@@ -134,14 +132,7 @@ class _HomeContentState extends State<_HomeContent> {
                     itemCount: state.recommendations.length + (state.hasMore ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index >= state.recommendations.length) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: state.isLoadingMore
-                                ? const CircularProgressIndicator()
-                                : const SizedBox.shrink(),
-                          ),
-                        );
+                        return _buildLoadMoreIndicator(state.isLoadingMore);
                       }
                       final recommendation = state.recommendations[index];
                       return AnimatedOpacity(
@@ -157,7 +148,7 @@ class _HomeContentState extends State<_HomeContent> {
                               'position': index,
                             });
                             context.push(
-                              '/content/${recommendation.contentId}',
+                              '/recommendation/${recommendation.contentId}',
                             );
                           },
                         ),
@@ -166,37 +157,108 @@ class _HomeContentState extends State<_HomeContent> {
                   ),
                 );
               } else if (state is RecommendationError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        size: 64,
-                        color: Colors.red,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(state.message),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_selectedScenario != null) {
-                            context.read<RecommendationBloc>().add(
-                                  LoadRecommendations(_selectedScenario!),
-                                );
-                          }
-                        },
-                        child: Text(l10n.retry),
-                      ),
-                    ],
-                  ),
-                );
+                return _buildErrorState(context, l10n, state.message);
               }
               return const SizedBox.shrink();
             },
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context, AppLocalizations l10n) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.inbox_outlined,
+            size: 80,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            l10n.noRecommendations,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Colors.grey[600],
+                ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '暂时没有推荐内容，请稍后再试',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey[500],
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoadMoreIndicator(bool isLoadingMore) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: isLoadingMore
+            ? const CircularProgressIndicator()
+            : const SizedBox.shrink(),
+      ),
+    );
+  }
+
+  Widget _buildErrorState(
+    BuildContext context,
+    AppLocalizations l10n,
+    String message,
+  ) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 80,
+              color: Colors.red[300],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '加载失败',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              message,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () {
+                if (_selectedScenario != null) {
+                  context.read<RecommendationBloc>().add(
+                        LoadRecommendations(_selectedScenario!),
+                      );
+                }
+              },
+              icon: const Icon(Icons.refresh),
+              label: Text(l10n.retry),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

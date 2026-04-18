@@ -5,7 +5,6 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { Container } from "../_shared/core/Container.ts";
 import {
   corsResponse,
   errorResponse,
@@ -13,102 +12,90 @@ import {
   successResponse,
   validateMethod,
 } from "../_shared/utils/http.ts";
+import { initSentry, withSentry } from "../_shared/utils/sentry.ts";
 
-serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return corsResponse();
-  }
-
-  try {
-    validateMethod(req, ["GET"]);
-
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // 获取用户信息（必须登录）
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return errorResponse("Authorization required", 401);
-    }
-
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
-
-    if (authError || !user) {
-      return errorResponse("Invalid authorization", 401);
-    }
-
-    const container = Container.getInstance(supabase);
-    const favoriteService = container.getFavoriteService();
-
-    // 获取查询参数
-    const params = getQueryParams(req);
-    const page = parseInt(params.get("page") || "1", 10);
-    const pageSize = parseInt(params.get("pageSize") || "20", 10);
-
-    // 验证分页参数
-    if (page < 1 || pageSize < 1 || pageSize > 100) {
-      return errorResponse("Invalid pagination parameters", 400);
-    }
-
-    // 获取收藏列表
-    const result = await favoriteService.getUserFavorites(
-      user.id,
-      page,
-      pageSize
-    );
-
-    // 获取收藏内容的详细信息
-    const contentIds = result.favorites.map((f) => f.contentId);
-    const { data: contents } = await supabase
-      .from("published_content")
-      .select("*")
-      .in("id", contentIds);
-
-    // 合并收藏和内容信息
-    const favoritesWithContent = result.favorites.map((favorite) => {
-      const content = contents?.find((c) => c.id === favorite.contentId);
-      return {
-        id: favorite.id,
-        contentId: favorite.contentId,
-        createdAt: favorite.createdAt.toISOString(),
-        content: content
-          ? {
-              id: content.id,
-              contentType: content.content_type,
-              titleZh: content.title_zh,
-              summaryZh: content.summary_zh,
-              scenario: content.scenario,
-              viewCount: content.view_count,
-              helpfulCount: content.helpful_count,
-              shareCount: content.share_count,
-              publishedAt: content.published_at,
-            }
-          : null,
-      };
-    });
-
-    return successResponse(
-      {
-        favorites: favoritesWithContent,
-      },
-      {
-        total: result.total,
-        page: result.page,
-        pageSize: result.pageSize,
-        totalPages: Math.ceil(result.total / result.pageSize),
-      }
-    );
-  } catch (error) {
-    console.error("Error in get-favorites:", error);
-
-    if (error instanceof Error) {
-      return errorResponse(error.message, 400);
-    }
-
-    return errorResponse("Internal server error", 500);
-  }
+// 初始化 Sentry
+initSentry({
+  functionName: "get-favorites",
 });
+
+serve(
+  withSentry(
+    async (req) => {
+      if (req.method === "OPTIONS") {
+        return corsResponse();
+      }
+
+      validateMethod(req, ["GET"]);
+
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+      const authHeader = req.headers.get("Authorization");
+
+      if (!authHeader) {
+        return errorResponse("Missing authorization header", 401);
+      }
+
+      const supabase = createClient(supabaseUrl, supabaseKey, {
+        global: {
+          headers: { Authorization: authHeader },
+        },
+      });
+
+      // 验证用户身份
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError || !user) {
+        return errorResponse("Unauthorized", 401);
+      }
+
+      // 获取分页参数
+      const params = getQueryParams(req);
+      const page = parseInt(params.get("page") || "1");
+      const limit = Math.min(parseInt(params.get("limit") || "20"), 100);
+      const language = params.get("language") || "zh";
+      const offset = (page - 1) * limit;
+
+      // 查询收藏列表（使用视图）
+      const { data: favorites, error: favoritesError, count } = await supabase
+        .from("user_favorites_detail")
+        .select("*", { count: "exact" })
+        .eq("user_id", user.id)
+        .order("favorited_at", { ascending: false })
+        .range(offset, offset + limit - 1);
+
+      if (favoritesError) {
+        return errorResponse("Failed to fetch favorites", 500);
+      }
+
+      // 格式化响应数据
+      const formattedFavorites = (favorites || []).map((fav) => ({
+        favorite_id: fav.favorite_id,
+        content_id: fav.content_id,
+        content_type: fav.content_type,
+        title: language === "zh" ? fav.title_zh : fav.title_zh,
+        summary: language === "zh" ? fav.summary_zh : fav.summary_zh,
+        scenario: fav.scenario,
+        view_count: fav.view_count,
+        helpful_count: fav.helpful_count,
+        share_count: fav.share_count,
+        published_at: fav.published_at,
+        favorited_at: fav.favorited_at,
+      }));
+
+      return successResponse(formattedFavorites, {
+        total: count || 0,
+        page,
+        limit,
+        total_pages: Math.ceil((count || 0) / limit),
+      });
+    },
+    {
+      functionName: "get-favorites",
+      captureErrors: true,
+    },
+  ),
+);

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../domain/entities/content.dart';
+import '../../core/domain/entities/content.dart';
 
 part 'content_model.freezed.dart';
 part 'content_model.g.dart';

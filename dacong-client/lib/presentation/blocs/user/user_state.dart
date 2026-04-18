@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../domain/entities/user.dart';
+import '../../../domain/entities/favorite_content.dart';
 
 part 'user_state.freezed.dart';
 
@@ -11,6 +12,7 @@ class UserState with _$UserState {
     User? user,
     UserPreferences? preferences,
     @Default([]) List<String> favorites,
+    @Default([]) List<FavoriteContent> favoriteContents,
     @Default([]) List<HistoryItem> history,
     String? error,
   }) = _UserState;

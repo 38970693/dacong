@@ -1,14 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../domain/entities/user.dart';
-import '../../../domain/usecases/user/add_history.dart';
-import '../../../domain/usecases/user/clear_history.dart';
 import '../../../domain/usecases/user/get_current_user.dart';
-import '../../../domain/usecases/user/get_history.dart';
 import '../../../domain/usecases/user/get_user_preferences.dart';
-import '../../../domain/usecases/user/manage_favorites.dart';
+import '../../../domain/usecases/user/manage_favorites.dart' as favorites_usecases;
 import '../../../domain/usecases/user/update_user_preferences.dart';
 import '../../../domain/usecases/user/update_user_profile.dart';
+import '../../../domain/usecases/user/manage_history.dart' as history_usecases;
 import 'user_event.dart';
 import 'user_state.dart';
 
@@ -19,13 +17,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final UpdateUserProfile _updateUserProfile;
   final GetUserPreferences _getUserPreferences;
   final UpdateUserPreferences _updateUserPreferences;
-  final GetFavorites _getFavorites;
-  final AddFavorite _addFavorite;
-  final RemoveFavorite _removeFavorite;
-  final IsFavorite _isFavorite;
-  final GetHistory _getHistory;
-  final AddHistory _addHistory;
-  final ClearHistory _clearHistory;
+  final favorites_usecases.GetFavorites _getFavorites;
+  final favorites_usecases.AddFavorite _addFavorite;
+  final favorites_usecases.RemoveFavorite _removeFavorite;
+  final favorites_usecases.IsFavorite _isFavorite;
+  final history_usecases.GetHistory _getHistory;
+  final history_usecases.AddHistory _addHistory;
+  final history_usecases.ClearHistory _clearHistory;
 
   UserBloc(
     this._getCurrentUser,
@@ -180,11 +178,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Future<void> _onLoadFavorites(LoadFavorites event, Emitter<UserState> emit) async {
+    emit(state.copyWith(isLoading: true, error: null));
+
     final result = await _getFavorites();
 
     result.fold(
-      (failure) => emit(state.copyWith(error: failure.message)),
-      (favorites) => emit(state.copyWith(favorites: favorites)),
+      (failure) => emit(state.copyWith(isLoading: false, error: failure.message)),
+      (favorites) => emit(state.copyWith(isLoading: false, favorites: favorites)),
     );
   }
 

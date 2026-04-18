@@ -24,5 +24,9 @@ abstract class IContentRepository {
     String query, {
     int limit = 20,
     int offset = 0,
+    String? scenario,
+    bool? isFree,
+    bool? availableInChina,
+    String sortBy = 'relevance',
   });
 }

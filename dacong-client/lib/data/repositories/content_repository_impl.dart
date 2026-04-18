@@ -71,12 +71,20 @@ class ContentRepositoryImpl implements IContentRepository {
     String query, {
     int limit = 20,
     int offset = 0,
+    String? scenario,
+    bool? isFree,
+    bool? availableInChina,
+    String sortBy = 'relevance',
   }) async {
     try {
       final models = await _remoteDataSource.searchContent(
         query,
         limit: limit,
         offset: offset,
+        scenario: scenario,
+        isFree: isFree,
+        availableInChina: availableInChina,
+        sortBy: sortBy,
       );
       final entities = models.map((model) => model.toEntity()).toList();
       return Right(entities);

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import '../../core/error/failures.dart';
 import '../entities/user.dart';
+import '../entities/favorite_content.dart';
 
 /// 用户仓储接口
 abstract class IUserRepository {
@@ -20,8 +21,14 @@ abstract class IUserRepository {
   /// 更新用户偏好设置
   Future<Either<Failure, Unit>> updateUserPreferences(UserPreferences preferences);
 
-  /// 获取收藏列表
+  /// 获取收藏列表（仅ID）
   Future<Either<Failure, List<String>>> getFavorites();
+
+  /// 获取收藏列表（完整内容）
+  Future<Either<Failure, List<FavoriteContent>>> getFavoritesWithDetails({
+    int page = 1,
+    int limit = 20,
+  });
 
   /// 添加收藏
   Future<Either<Failure, Unit>> addFavorite(String contentId);

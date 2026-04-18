@@ -3,16 +3,23 @@ import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 import '../../core/error/failures.dart';
 import '../../domain/entities/user.dart';
+import '../../domain/entities/favorite_content.dart';
 import '../../domain/repositories/i_user_repository.dart';
 import '../datasources/local_data_source.dart';
+import '../datasources/favorites_remote_data_source.dart';
 
 /// 用户仓储实现
 @LazySingleton(as: IUserRepository)
 class UserRepositoryImpl implements IUserRepository {
   final SupabaseClient _supabaseClient;
   final LocalDataSource _localDataSource;
+  final FavoritesRemoteDataSource _favoritesRemoteDataSource;
 
-  UserRepositoryImpl(this._supabaseClient, this._localDataSource);
+  UserRepositoryImpl(
+    this._supabaseClient,
+    this._localDataSource,
+    this._favoritesRemoteDataSource,
+  );
 
   @override
   Future<Either<Failure, User>> getCurrentUser() async {
@@ -125,40 +132,113 @@ class UserRepositoryImpl implements IUserRepository {
   @override
   Future<Either<Failure, List<String>>> getFavorites() async {
     try {
-      final favorites = await _localDataSource.getFavoriteContentIds();
-      return Right(favorites);
+      final favorites = await _favoritesRemoteDataSource.getFavorites();
+      final contentIds = favorites.map((f) => f['content_id'] as String).toList();
+
+      // 同步到本地缓存
+      await _localDataSource.clearFavorites();
+      for (final id in contentIds) {
+        await _localDataSource.addFavorite(id);
+      }
+
+      return Right(contentIds);
+    } on AuthException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      return Left(CacheFailure(e.toString()));
+      // 如果网络请求失败，尝试从本地缓存获取
+      try {
+        final cachedFavorites = await _localDataSource.getFavoriteContentIds();
+        return Right(cachedFavorites);
+      } catch (_) {
+        return Left(ServerFailure(e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<FavoriteContent>>> getFavoritesWithDetails({
+    int page = 1,
+    int limit = 20,
+  }) async {
+    try {
+      final favorites = await _favoritesRemoteDataSource.getFavorites(
+        page: page,
+        limit: limit,
+      );
+
+      final favoriteContents = favorites.map((json) {
+        return FavoriteContent(
+          favoriteId: json['favorite_id'] as String,
+          contentId: json['content_id'] as String,
+          contentType: json['content_type'] as String,
+          title: json['title'] as String,
+          summary: json['summary'] as String?,
+          scenario: json['scenario'] as String?,
+          viewCount: json['view_count'] as int? ?? 0,
+          helpfulCount: json['helpful_count'] as int? ?? 0,
+          shareCount: json['share_count'] as int? ?? 0,
+          publishedAt: DateTime.parse(json['published_at'] as String),
+          favoritedAt: DateTime.parse(json['favorited_at'] as String),
+        );
+      }).toList();
+
+      return Right(favoriteContents);
+    } on AuthException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 
   @override
   Future<Either<Failure, Unit>> addFavorite(String contentId) async {
     try {
-      await _localDataSource.addFavorite(contentId);
+      final isFavorited = await _favoritesRemoteDataSource.toggleFavorite(contentId);
+
+      if (isFavorited) {
+        // 同步到本地缓存
+        await _localDataSource.addFavorite(contentId);
+      }
+
       return const Right(unit);
+    } on AuthException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      return Left(CacheFailure(e.toString()));
+      return Left(ServerFailure(e.toString()));
     }
   }
 
   @override
   Future<Either<Failure, Unit>> removeFavorite(String contentId) async {
     try {
-      await _localDataSource.removeFavorite(contentId);
+      final isFavorited = await _favoritesRemoteDataSource.toggleFavorite(contentId);
+
+      if (!isFavorited) {
+        // 同步到本地缓存
+        await _localDataSource.removeFavorite(contentId);
+      }
+
       return const Right(unit);
+    } on AuthException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
-      return Left(CacheFailure(e.toString()));
+      return Left(ServerFailure(e.toString()));
     }
   }
 
   @override
   Future<Either<Failure, bool>> isFavorite(String contentId) async {
     try {
-      final isFav = await _localDataSource.isFavorite(contentId);
+      final isFav = await _favoritesRemoteDataSource.isFavorite(contentId);
       return Right(isFav);
     } catch (e) {
-      return Left(CacheFailure(e.toString()));
+      // 如果网络请求失败，尝试从本地缓存获取
+      try {
+        final cachedIsFav = await _localDataSource.isFavorite(contentId);
+        return Right(cachedIsFav);
+      } catch (_) {
+        return Left(ServerFailure(e.toString()));
+      }
     }
   }
 

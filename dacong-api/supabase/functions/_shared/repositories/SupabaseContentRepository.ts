@@ -46,20 +46,38 @@ export class SupabaseContentRepository implements IContentRepository {
     query: string,
     language: "zh" | "en" = "zh",
     limit = 20,
-    offset = 0
+    offset = 0,
+    filters?: {
+      scenario?: string;
+      isFree?: boolean;
+      availableInChina?: boolean;
+    },
+    sortBy: "relevance" | "rating" | "viewCount" = "relevance"
   ): Promise<Content[]> {
-    const titleColumn = language === "zh" ? "title_zh" : "title_en";
-    const summaryColumn = language === "zh" ? "summary_zh" : "summary_en";
+    // 过滤特殊字符
+    const sanitizedQuery = query.trim().replace(/[^\w\s\u4e00-\u9fa5]/g, " ");
 
-    const { data, error } = await this.supabase
-      .from(this.tableName)
-      .select("*")
-      .or(`${titleColumn}.ilike.%${query}%,${summaryColumn}.ilike.%${query}%`)
-      .order("published_at", { ascending: false })
-      .range(offset, offset + limit - 1);
+    if (sanitizedQuery.length === 0) {
+      return [];
+    }
 
-    if (error || !data) return [];
-    return data.map((row) => Content.fromDatabase(row));
+    // 调用 PostgreSQL 搜索函数
+    const { data, error } = await this.supabase.rpc("search_content", {
+      search_query: sanitizedQuery,
+      search_scenario: filters?.scenario || null,
+      search_is_free: filters?.isFree ?? null,
+      search_available_in_china: filters?.availableInChina ?? null,
+      sort_by: sortBy,
+      result_limit: limit,
+      result_offset: offset,
+    });
+
+    if (error || !data) {
+      console.error("Search error:", error);
+      return [];
+    }
+
+    return data.map((row: any) => Content.fromDatabase(row));
   }
 
   async findPopular(limit = 10): Promise<Content[]> {

@@ -129,6 +129,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       _currentQuery,
       limit: _pageSize,
       offset: _currentOffset,
+      scenario: _currentScenario,
+      isFree: _currentIsFree,
+      availableInChina: _currentAvailableInChina,
+      sortBy: _sortTypeToString(_currentSortType),
     );
 
     result.fold(
@@ -192,6 +196,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       _currentQuery,
       limit: _pageSize,
       offset: _currentOffset,
+      scenario: _currentScenario,
+      isFree: _currentIsFree,
+      availableInChina: _currentAvailableInChina,
+      sortBy: _sortTypeToString(_currentSortType),
     );
 
     result.fold(
@@ -302,6 +310,18 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     }
 
     return sorted;
+  }
+
+  /// 将排序类型转换为字符串
+  String _sortTypeToString(SearchSortType sortType) {
+    switch (sortType) {
+      case SearchSortType.relevance:
+        return 'relevance';
+      case SearchSortType.rating:
+        return 'rating';
+      case SearchSortType.viewCount:
+        return 'viewCount';
+    }
   }
 
   String _mapFailureToMessage(Failure failure) {

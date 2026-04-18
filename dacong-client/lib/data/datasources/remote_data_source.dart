@@ -70,17 +70,44 @@ class RemoteDataSource {
     String query, {
     int limit = 20,
     int offset = 0,
+    String? scenario,
+    bool? isFree,
+    bool? availableInChina,
+    String sortBy = 'relevance',
   }) async {
     try {
-      final response = await _client
-          .from('published_content')
-          .select('*')
-          .or('name.ilike.%$query%,description.ilike.%$query%')
-          .range(offset, offset + limit - 1);
+      // 构建查询参数
+      final queryParams = <String, String>{
+        'q': query,
+        'limit': limit.toString(),
+        'offset': offset.toString(),
+        'sort_by': sortBy,
+      };
 
-      return (response as List)
-          .map((json) => ContentModel.fromJson(json))
-          .toList();
+      if (scenario != null) {
+        queryParams['scenario'] = scenario;
+      }
+      if (isFree != null) {
+        queryParams['is_free'] = isFree.toString();
+      }
+      if (availableInChina != null) {
+        queryParams['available_in_china'] = availableInChina.toString();
+      }
+
+      // 调用 Edge Function
+      final response = await _client.functions.invoke(
+        'search-content',
+        queryParameters: queryParams,
+      );
+
+      if (response.status != 200) {
+        throw ServerException('搜索失败: ${response.status}');
+      }
+
+      final data = response.data as Map<String, dynamic>;
+      final results = data['data'] as List;
+
+      return results.map((json) => ContentModel.fromJson(json)).toList();
     } catch (e) {
       throw ServerException('搜索失败: $e');
     }
