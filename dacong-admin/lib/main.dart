@@ -11,6 +11,7 @@ import 'pages/content_management_page.dart';
 import 'pages/user_management_page.dart';
 import 'pages/comment_moderation_page.dart';
 import 'pages/analytics_page.dart';
+import 'pages/audit_logs_page.dart';
 
 void main() async {
   // 初始化 Sentry 并运行应用
@@ -96,6 +97,10 @@ final _router = GoRouter(
           path: '/analytics',
           builder: (context, state) => const AnalyticsPage(),
         ),
+        GoRoute(
+          path: '/audit-logs',
+          builder: (context, state) => const AuditLogsPage(),
+        ),
       ],
     ),
   ],
@@ -136,6 +141,10 @@ class AdminShell extends StatelessWidget {
                 icon: Icon(Icons.analytics),
                 label: Text('数据分析'),
               ),
+              NavigationRailDestination(
+                icon: Icon(Icons.history),
+                label: Text('操作日志'),
+              ),
             ],
             selectedIndex: _getSelectedIndex(context),
             onDestinationSelected: (index) => _onDestinationSelected(context, index),
@@ -155,6 +164,7 @@ class AdminShell extends StatelessWidget {
     if (location.startsWith('/users')) return 2;
     if (location.startsWith('/comments')) return 3;
     if (location.startsWith('/analytics')) return 4;
+    if (location.startsWith('/audit-logs')) return 5;
     return 0;
   }
 
@@ -174,6 +184,9 @@ class AdminShell extends StatelessWidget {
         break;
       case 4:
         context.go('/analytics');
+        break;
+      case 5:
+        context.go('/audit-logs');
         break;
     }
   }
