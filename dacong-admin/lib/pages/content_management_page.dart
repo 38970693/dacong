@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/admin_api_service.dart';
 import '../services/export_service.dart';
+import '../widgets/batch_selection_widget.dart';
 
 class ContentManagementPage extends ConsumerStatefulWidget {
   const ContentManagementPage({super.key});
@@ -74,27 +75,146 @@ class _ContentManagementPageState extends ConsumerState<ContentManagementPage> {
   }
 
   Future<void> _moderateContent(String action, List<String> ids, {String? reason}) async {
-    try {
-      await _apiService.moderateContent(
-        action: action,
-        contentIds: ids,
-        reason: reason,
-      );
+    if (ids.isEmpty) return;
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('操作成功')),
+    // 单个操作直接执行
+    if (ids.length == 1) {
+      try {
+        await _apiService.moderateContent(
+          action: action,
+          contentIds: ids,
+          reason: reason,
         );
-      }
 
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('操作成功')),
+          );
+        }
+
+        _selectedIds.clear();
+        _loadContents();
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('操作失败: $e')),
+          );
+        }
+      }
+      return;
+    }
+
+    // 批量操作显示进度对话框
+    final success = await BatchOperationDialog.show(
+      context: context,
+      title: '批量${_getActionText(action)}',
+      totalCount: ids.length,
+      operation: (updateProgress) async {
+        for (int i = 0; i < ids.length; i++) {
+          final id = ids[i];
+          final content = _contents.firstWhere(
+            (c) => c['id'] == id,
+            orElse: () => {'title': '未知'},
+          );
+
+          updateProgress(i, content['title'] ?? '未知');
+
+          await _apiService.moderateContent(
+            action: action,
+            contentIds: [id],
+            reason: reason,
+          );
+
+          // 避免请求过快
+          if (i < ids.length - 1) {
+            await Future.delayed(const Duration(milliseconds: 100));
+          }
+        }
+
+        updateProgress(ids.length, null);
+      },
+    );
+
+    if (success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('成功${_getActionText(action)} ${ids.length} 项')),
+      );
       _selectedIds.clear();
       _loadContents();
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('操作失败: $e')),
-        );
-      }
+    }
+  }
+
+  String _getActionText(String action) {
+    switch (action) {
+      case 'approve':
+        return '通过';
+      case 'reject':
+        return '拒绝';
+      case 'delete':
+        return '删除';
+      default:
+        return '处理';
+    }
+  }
+
+  Future<void> _batchDeleteContent() async {
+    if (_selectedIds.isEmpty) return;
+
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('确认删除'),
+        content: Text('确定要删除 ${_selectedIds.length} 条内容吗？此操作不可恢复。'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('取消'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.red,
+            ),
+            child: const Text('删除'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    final ids = _selectedIds.toList();
+    final success = await BatchOperationDialog.show(
+      context: context,
+      title: '批量删除内容',
+      totalCount: ids.length,
+      operation: (updateProgress) async {
+        for (int i = 0; i < ids.length; i++) {
+          final id = ids[i];
+          final content = _contents.firstWhere(
+            (c) => c['id'] == id,
+            orElse: () => {'title': '未知'},
+          );
+
+          updateProgress(i, content['title'] ?? '未知');
+
+          await _apiService.deleteContent([id]);
+
+          if (i < ids.length - 1) {
+            await Future.delayed(const Duration(milliseconds: 100));
+          }
+        }
+
+        updateProgress(ids.length, null);
+      },
+    );
+
+    if (success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('成功删除 ${ids.length} 项')),
+      );
+      _selectedIds.clear();
+      _loadContents();
     }
   }
 
@@ -245,44 +365,7 @@ class _ContentManagementPageState extends ConsumerState<ContentManagementPage> {
               TextButton.icon(
                 icon: const Icon(Icons.delete),
                 label: Text('批量删除 (${_selectedIds.length})'),
-                onPressed: () async {
-                  final confirm = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('确认删除'),
-                      content: Text('确定要删除 ${_selectedIds.length} 条内容吗？'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('取消'),
-                        ),
-                        FilledButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text('删除'),
-                        ),
-                      ],
-                    ),
-                  );
-
-                  if (confirm == true) {
-                    try {
-                      await _apiService.deleteContent(_selectedIds.toList());
-                      if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('删除成功')),
-                        );
-                      }
-                      _selectedIds.clear();
-                      _loadContents();
-                    } catch (e) {
-                      if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('删除失败: $e')),
-                        );
-                      }
-                    }
-                  }
-                },
+                onPressed: _batchDeleteContent,
               ),
               const SizedBox(width: 8),
               TextButton.icon(
@@ -413,6 +496,33 @@ class _ContentManagementPageState extends ConsumerState<ContentManagementPage> {
                     '快捷键: 1-通过 | 2-拒绝 | E-编辑 | N-下一条',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
+                  const Spacer(),
+                  if (_contents.isNotEmpty) ...[
+                    TextButton.icon(
+                      icon: Icon(
+                        _selectedIds.length == _contents.length
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank,
+                        size: 18,
+                      ),
+                      label: Text(
+                        _selectedIds.length == _contents.length ? '取消全选' : '全选',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          if (_selectedIds.length == _contents.length) {
+                            _selectedIds.clear();
+                          } else {
+                            _selectedIds.clear();
+                            for (var content in _contents) {
+                              _selectedIds.add(content['id']);
+                            }
+                          }
+                        });
+                      },
+                    ),
+                  ],
                 ],
               ),
             ),

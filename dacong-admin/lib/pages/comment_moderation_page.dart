@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/admin_api_service.dart';
+import '../widgets/batch_selection_widget.dart';
 
 class CommentModerationPage extends ConsumerStatefulWidget {
   const CommentModerationPage({super.key});
@@ -59,28 +60,87 @@ class _CommentModerationPageState extends ConsumerState<CommentModerationPage> {
     String? reason,
     bool banUser = false,
   }) async {
-    try {
-      await _apiService.moderateComment(
-        action: action,
-        commentIds: ids,
-        reason: reason,
-        banUser: banUser,
-      );
+    if (ids.isEmpty) return;
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('操作成功')),
+    // 单个操作直接执行
+    if (ids.length == 1) {
+      try {
+        await _apiService.moderateComment(
+          action: action,
+          commentIds: ids,
+          reason: reason,
+          banUser: banUser,
         );
-      }
 
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('操作成功')),
+          );
+        }
+
+        _selectedIds.clear();
+        _loadComments();
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('操作失败: $e')),
+          );
+        }
+      }
+      return;
+    }
+
+    // 批量操作显示进度对话框
+    final success = await BatchOperationDialog.show(
+      context: context,
+      title: '批量${_getActionText(action)}',
+      totalCount: ids.length,
+      operation: (updateProgress) async {
+        for (int i = 0; i < ids.length; i++) {
+          final id = ids[i];
+          final comment = _comments.firstWhere(
+            (c) => c['id'] == id,
+            orElse: () => {'content': '未知'},
+          );
+
+          final content = comment['content'] ?? '未知';
+          final preview = content.length > 20 ? '${content.substring(0, 20)}...' : content;
+          updateProgress(i, preview);
+
+          await _apiService.moderateComment(
+            action: action,
+            commentIds: [id],
+            reason: reason,
+            banUser: banUser,
+          );
+
+          // 避免请求过快
+          if (i < ids.length - 1) {
+            await Future.delayed(const Duration(milliseconds: 100));
+          }
+        }
+
+        updateProgress(ids.length, null);
+      },
+    );
+
+    if (success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('成功${_getActionText(action)} ${ids.length} 项')),
+      );
       _selectedIds.clear();
       _loadComments();
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('操作失败: $e')),
-        );
-      }
+    }
+  }
+
+  String _getActionText(String action) {
+    switch (action) {
+      case 'approve':
+        return '通过';
+      case 'delete':
+        return '删除';
+      default:
+        return '处理';
     }
   }
 
@@ -203,6 +263,71 @@ class _CommentModerationPageState extends ConsumerState<CommentModerationPage> {
     );
   }
 
+  void _showBatchDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        bool banUser = false;
+        final reasonController = TextEditingController();
+
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: Text('批量删除评论 (${_selectedIds.length} 项)'),
+            content: SizedBox(
+              width: 400,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('确定要删除 ${_selectedIds.length} 条评论吗？'),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: reasonController,
+                    decoration: const InputDecoration(
+                      labelText: '处理原因（可选）',
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 2,
+                  ),
+                  const SizedBox(height: 16),
+                  CheckboxListTile(
+                    value: banUser,
+                    onChanged: (value) {
+                      setState(() => banUser = value ?? false);
+                    },
+                    title: const Text('同时封禁这些用户'),
+                    dense: true,
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('取消'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _moderateComment(
+                    'delete',
+                    _selectedIds.toList(),
+                    reason: reasonController.text,
+                    banUser: banUser,
+                  );
+                },
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text('删除'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -219,7 +344,7 @@ class _CommentModerationPageState extends ConsumerState<CommentModerationPage> {
             TextButton.icon(
               icon: const Icon(Icons.delete),
               label: Text('批量删除 (${_selectedIds.length})'),
-              onPressed: () => _moderateComment('delete', _selectedIds.toList()),
+              onPressed: _showBatchDeleteDialog,
             ),
           ],
           const SizedBox(width: 16),
@@ -263,6 +388,32 @@ class _CommentModerationPageState extends ConsumerState<CommentModerationPage> {
                   },
                 ),
                 const Spacer(),
+                if (_comments.isNotEmpty) ...[
+                  TextButton.icon(
+                    icon: Icon(
+                      _selectedIds.length == _comments.length
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
+                      size: 18,
+                    ),
+                    label: Text(
+                      _selectedIds.length == _comments.length ? '取消全选' : '全选',
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (_selectedIds.length == _comments.length) {
+                          _selectedIds.clear();
+                        } else {
+                          _selectedIds.clear();
+                          for (var comment in _comments) {
+                            _selectedIds.add(comment['id']);
+                          }
+                        }
+                      });
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                ],
                 IconButton(
                   icon: const Icon(Icons.refresh),
                   onPressed: _loadComments,

@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class DacongLineChart extends StatefulWidget {
-  final List<LineChartData> datasets;
+  final List<LineChartDataset> datasets;
   final String title;
   final List<String> labels;
   final bool showGrid;
@@ -233,12 +233,12 @@ class _DacongLineChartState extends State<DacongLineChart> {
   }
 }
 
-class LineChartData {
+class LineChartDataset {
   final String label;
   final List<FlSpot> spots;
   final Color color;
 
-  LineChartData({
+  LineChartDataset({
     required this.label,
     required this.spots,
     required this.color,

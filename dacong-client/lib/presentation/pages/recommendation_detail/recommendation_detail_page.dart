@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/analytics/analytics_service.dart';
@@ -429,21 +429,58 @@ class _RecommendationDetailPageState extends State<RecommendationDetailPage> {
     // 调用API提交反馈（待实现）
   }
 
-  void _handleShare(BuildContext context) {
+  Future<void> _handleShare(BuildContext context) async {
     _analytics.track('content_share', properties: {
       'content_id': widget.contentId,
     });
 
-    // 复制链接到剪贴板
-    Clipboard.setData(
-      ClipboardData(text: 'https://dacong.app/recommendation/${widget.contentId}'),
-    );
+    // 生成分享文本
+    final shareText = _generateShareText();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('链接已复制到剪贴板'),
-        duration: Duration(seconds: 2),
-      ),
-    );
+    try {
+      // 调用系统分享
+      await Share.share(
+        shareText,
+        subject: '工具推荐',
+      );
+    } catch (e) {
+      // 分享失败，显示错误提示
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('分享失败，请稍后重试'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  String _generateShareText() {
+    final buffer = StringBuffer();
+
+    // 标题
+    buffer.writeln('【工具推荐】');
+    buffer.writeln();
+
+    // 描述
+    buffer.writeln('这是一个强大的AI工具，帮助你提高工作效率');
+    buffer.writeln();
+
+    // 优点
+    buffer.writeln('✅ 优点：');
+    buffer.writeln('• 功能强大，易于使用');
+    buffer.writeln('• 性价比高');
+    buffer.writeln('• 社区活跃，文档完善');
+    buffer.writeln();
+
+    // 价格
+    buffer.writeln('💰 价格：¥99/月 或 \$20/月');
+    buffer.writeln();
+
+    // 链接
+    buffer.writeln('查看详情：https://dacong.app/recommendation/${widget.contentId}');
+
+    return buffer.toString();
   }
 }

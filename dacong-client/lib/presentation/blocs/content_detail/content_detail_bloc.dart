@@ -1,9 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../core/domain/usecases/get_content_detail.dart';
 import '../../../core/domain/usecases/submit_feedback.dart';
 import '../../../core/domain/repositories/i_content_repository.dart';
 import '../../../core/domain/repositories/i_feedback_repository.dart';
+import '../../../core/domain/entities/feedback.dart';
+import '../../../core/domain/entities/content.dart';
 import 'content_detail_event.dart';
 import 'content_detail_state.dart';
 
@@ -143,7 +146,56 @@ class ContentDetailBloc extends Bloc<ContentDetailEvent, ContentDetailState> {
     ShareContent event,
     Emitter<ContentDetailState> emit,
   ) async {
-    // TODO: 实现分享功能
-    // 可以使用 share_plus 包
+    final currentState = state;
+    if (currentState is! ContentDetailLoaded) return;
+
+    final content = currentState.content;
+
+    // 生成分享文本
+    final shareText = _generateShareText(content);
+
+    try {
+      // 调用系统分享
+      await Share.share(
+        shareText,
+        subject: content.name,
+      );
+    } catch (e) {
+      // 分享失败时不需要改变状态，只是静默失败
+      // 用户会看到系统的分享对话框关闭
+    }
+  }
+
+  String _generateShareText(Content content) {
+    final buffer = StringBuffer();
+
+    // 标题
+    buffer.writeln('【${content.name}】');
+    buffer.writeln();
+
+    // 描述
+    buffer.writeln(content.description);
+    buffer.writeln();
+
+    // 价格信息
+    if (content.priceInfo.isFree) {
+      buffer.writeln('💰 免费使用');
+    } else if (content.priceInfo.paidDescription != null) {
+      buffer.writeln('💰 ${content.priceInfo.paidDescription}');
+    }
+
+    // 国内可用性
+    if (content.accessInfo.availableInChina) {
+      buffer.writeln('🌏 国内可用');
+    } else if (content.accessInfo.needsVpn) {
+      buffer.writeln('🌏 需要VPN访问');
+    }
+
+    buffer.writeln();
+
+    // 链接
+    buffer.writeln('查看详情：https://dacong.app/content/${content.id}');
+
+    return buffer.toString();
   }
 }
