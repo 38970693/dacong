@@ -15,8 +15,9 @@ import {
   successResponse,
   validateMethod,
 } from "../_shared/utils/http.ts";
+import { withSentry, reportApiError } from "../_shared/monitoring/sentry.ts";
 
-serve(async (req) => {
+serve(withSentry(async (req) => {
   // 处理CORS预检请求
   if (req.method === "OPTIONS") {
     return corsResponse();
@@ -98,6 +99,16 @@ serve(async (req) => {
       language: validatedData.language,
     });
   } catch (error) {
+    // 报告错误到 Sentry
+    reportApiError(error, {
+      endpoint: "/get-recommendations",
+      method: req.method,
+      extras: {
+        scenario: params.get("scenario"),
+        language: params.get("language"),
+      },
+    });
+
     // Zod验证错误
     if (error && typeof error === "object" && "issues" in error) {
       const zodError = error as { issues: Array<{ message: string }> };
@@ -114,4 +125,4 @@ serve(async (req) => {
 
     return errorResponse("Internal server error", 500);
   }
-});
+}, { functionName: "get-recommendations", tags: { service: "recommendations" } }));

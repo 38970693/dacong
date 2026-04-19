@@ -12,8 +12,9 @@ import {
   successResponse,
   validateMethod,
 } from "../_shared/utils/http.ts";
+import { withSentry, reportApiError, reportDatabaseError } from "../_shared/monitoring/sentry.ts";
 
-serve(async (req) => {
+serve(withSentry(async (req) => {
   if (req.method === "OPTIONS") {
     return corsResponse();
   }
@@ -63,7 +64,12 @@ serve(async (req) => {
     });
 
     if (error) {
-      console.error("Search error:", error);
+      reportDatabaseError(error, {
+        operation: "search_content",
+        table: "contents",
+        query: sanitizedQuery,
+        extras: { scenario, isFree, availableInChina },
+      });
       return errorResponse("Search failed: " + error.message, 500);
     }
 
@@ -104,7 +110,14 @@ serve(async (req) => {
       sort_by: sortBy,
     });
   } catch (error) {
-    console.error("Error in search-content:", error);
+    reportApiError(error, {
+      endpoint: "/search-content",
+      method: req.method,
+      extras: {
+        query: params.get("q") || params.get("query"),
+        scenario: params.get("scenario"),
+      },
+    });
 
     if (error instanceof Error) {
       return errorResponse(error.message, 400);
@@ -112,4 +125,4 @@ serve(async (req) => {
 
     return errorResponse("Internal server error", 500);
   }
-});
+}, { functionName: "search-content", tags: { service: "search" } }));

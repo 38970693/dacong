@@ -12,7 +12,7 @@ import {
   successResponse,
   validateMethod,
 } from "../_shared/utils/http.ts";
-import { initSentry, withSentry } from "../_shared/utils/sentry.ts";
+import { withSentry, reportApiError, reportDatabaseError, setUser } from "../_shared/monitoring/sentry.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 // 请求验证 Schema
@@ -20,14 +20,7 @@ const ToggleFavoriteRequestSchema = z.object({
   content_id: z.string().uuid(),
 });
 
-// 初始化 Sentry
-initSentry({
-  functionName: "toggle-favorite",
-});
-
-serve(
-  withSentry(
-    async (req) => {
+serve(withSentry(async (req) => {
       if (req.method === "OPTIONS") {
         return corsResponse();
       }
@@ -58,6 +51,9 @@ serve(
         return errorResponse("Unauthorized", 401);
       }
 
+      // 设置用户上下文到 Sentry
+      setUser(user.id, { email: user.email });
+
       const body = await getRequestBody(req);
       const validatedData = ToggleFavoriteRequestSchema.parse(body);
 
@@ -69,6 +65,13 @@ serve(
         .single();
 
       if (contentError || !content) {
+        if (contentError) {
+          reportDatabaseError(contentError, {
+            operation: "select",
+            table: "published_content",
+            extras: { content_id: validatedData.content_id },
+          });
+        }
         return errorResponse("Content not found", 404);
       }
 
@@ -88,6 +91,11 @@ serve(
           .eq("id", existingFavorite.id);
 
         if (deleteError) {
+          reportDatabaseError(deleteError, {
+            operation: "delete",
+            table: "favorites",
+            extras: { favorite_id: existingFavorite.id },
+          });
           return errorResponse("Failed to remove favorite", 500);
         }
 
@@ -105,6 +113,11 @@ serve(
           });
 
         if (insertError) {
+          reportDatabaseError(insertError, {
+            operation: "insert",
+            table: "favorites",
+            extras: { user_id: user.id, content_id: validatedData.content_id },
+          });
           return errorResponse("Failed to add favorite", 500);
         }
 
@@ -113,10 +126,4 @@ serve(
           message: "Favorite added successfully",
         });
       }
-    },
-    {
-      functionName: "toggle-favorite",
-      captureErrors: true,
-    },
-  ),
-);
+}, { functionName: "toggle-favorite", tags: { service: "favorites" } }));
