@@ -27,7 +27,10 @@
       "Bash(bash /tmp/tree_output.txt)",
       "Bash(python -m pytest tests/test_image_generator.py::TestImageGenerator::test_format_number -v)",
       "Bash(bash -x scripts/check_deployment_setup.sh)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(chmod +x fix_freezed.sh)",
+      "Bash(bash fix_freezed.sh)"
     ]
   }
 }
