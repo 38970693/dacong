@@ -15,6 +15,7 @@ import { initSentry, withSentry } from "../_shared/utils/sentry.ts";
 import { requireAdmin, Permissions, requirePermission } from "../_shared/middleware/admin.ts";
 import { logAudit, AuditActions, AuditResources, extractAuditInfo } from "../_shared/utils/audit.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { csrfMiddleware } from "../_shared/middleware/csrf.ts";
 
 initSentry({ functionName: "admin-batch-approve" });
 
@@ -36,6 +37,10 @@ serve(
       try {
         const { user, supabase } = await requireAdmin(req);
         requirePermission(user, Permissions.MODERATE_CONTENT);
+
+        // CSRF 保护
+        const csrfError = await csrfMiddleware(req, supabase, user.id);
+        if (csrfError) return csrfError;
 
         const body = await getRequestBody(req);
         const { content_ids, status, reason } = batchApproveSchema.parse(body);

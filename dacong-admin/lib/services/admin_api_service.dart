@@ -1,9 +1,15 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
+import 'csrf_service.dart';
 
 /// 管理后台 API 服务
 class AdminApiService {
   final SupabaseClient _supabase = Supabase.instance.client;
+  late final CsrfService _csrfService;
+
+  AdminApiService() {
+    _csrfService = CsrfService(_supabase);
+  }
 
   Future<Map<String, String>> get _headers async {
     final session = _supabase.auth.currentSession;
@@ -11,9 +17,13 @@ class AdminApiService {
       throw Exception('Not authenticated');
     }
 
+    // 获取 CSRF Token
+    final csrfToken = await _csrfService.getCsrfToken();
+
     return {
       'Authorization': 'Bearer ${session.accessToken}',
       'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken,
     };
   }
 

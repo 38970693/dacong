@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,12 +16,60 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
+  bool _rememberPassword = false;
+
+  // 开发模式标志（从环境变量读取）
+  static const bool _isDevMode = bool.fromEnvironment('DEV_MODE', defaultValue: true);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedCredentials();
+  }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  /// 加载保存的账号密码
+  Future<void> _loadSavedCredentials() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final savedEmail = prefs.getString('saved_email');
+      final savedPassword = prefs.getString('saved_password');
+      final rememberPassword = prefs.getBool('remember_password') ?? false;
+
+      if (rememberPassword && savedEmail != null && savedPassword != null) {
+        setState(() {
+          _emailController.text = savedEmail;
+          _passwordController.text = savedPassword;
+          _rememberPassword = true;
+        });
+      }
+    } catch (e) {
+      // 忽略加载错误
+    }
+  }
+
+  /// 保存账号密码
+  Future<void> _saveCredentials() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (_rememberPassword) {
+        await prefs.setString('saved_email', _emailController.text.trim());
+        await prefs.setString('saved_password', _passwordController.text);
+        await prefs.setBool('remember_password', true);
+      } else {
+        await prefs.remove('saved_email');
+        await prefs.remove('saved_password');
+        await prefs.setBool('remember_password', false);
+      }
+    } catch (e) {
+      // 忽略保存错误
+    }
   }
 
   Future<void> _login() async {
@@ -56,14 +105,17 @@ class _LoginPageState extends State<LoginPage> {
         throw Exception('您没有管理员权限');
       }
 
-      // 3. 记录登录日志
+      // 3. 保存账号密码（如果勾选了记住密码）
+      await _saveCredentials();
+
+      // 4. 记录登录日志
       await Supabase.instance.client.from('admin_logs').insert({
         'admin_id': response.user!.id,
         'action': 'login',
         'details': {'email': _emailController.text.trim()},
       });
 
-      // 4. 跳转到看板
+      // 5. 跳转到看板
       if (mounted) {
         context.go('/');
       }
@@ -82,6 +134,23 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     }
+  }
+
+  /// 开发模式直接进入（跳过登录验证）
+  void _devModeEnter() {
+    if (!mounted) return;
+
+    // 显示提示
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('🔧 开发模式：已跳过登录验证'),
+        backgroundColor: Colors.orange,
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    // 直接跳转到看板（路由守卫已在 main.dart 中配置为开发模式跳过验证）
+    context.go('/');
   }
 
   @override
@@ -153,6 +222,22 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 24),
 
+                    // 记住密码选项
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _rememberPassword,
+                          onChanged: (value) {
+                            setState(() {
+                              _rememberPassword = value ?? false;
+                            });
+                          },
+                        ),
+                        const Text('记住密码'),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+
                     // 错误信息
                     if (_errorMessage != null)
                       Padding(
@@ -175,6 +260,29 @@ class _LoginPageState extends State<LoginPage> {
                             )
                           : const Text('登录'),
                     ),
+
+                    // 开发模式进入按钮
+                    if (_isDevMode) ...[
+                      const SizedBox(height: 12),
+                      OutlinedButton.icon(
+                        onPressed: _devModeEnter,
+                        icon: const Icon(Icons.developer_mode, size: 18),
+                        label: const Text('开发模式进入'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.orange,
+                          side: const BorderSide(color: Colors.orange),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '⚠️ 仅开发环境可用',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.orange,
+                          fontSize: 11,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ],
                 ),
               ),

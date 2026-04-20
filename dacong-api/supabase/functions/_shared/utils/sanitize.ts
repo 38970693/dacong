@@ -203,3 +203,175 @@ export function sanitizeJson(jsonString: string): string | null {
     return null;
   }
 }
+
+/**
+ * 清理 Markdown - 允许安全的 Markdown 语法
+ * @param markdown Markdown 文本
+ * @returns 清理后的 Markdown
+ */
+export function sanitizeMarkdown(markdown: string): string {
+  // 移除 HTML 标签（Markdown 中的 HTML）
+  let sanitized = markdown.replace(/<script[^>]*>.*?<\/script>/gi, "");
+  sanitized = sanitized.replace(/<iframe[^>]*>.*?<\/iframe>/gi, "");
+  sanitized = sanitized.replace(/<object[^>]*>.*?<\/object>/gi, "");
+  sanitized = sanitized.replace(/<embed[^>]*>/gi, "");
+
+  // 移除危险的事件处理器
+  sanitized = sanitized.replace(/on\w+\s*=/gi, "");
+
+  // 移除 javascript: 协议
+  sanitized = sanitized.replace(/javascript:/gi, "");
+
+  return sanitized.trim();
+}
+
+/**
+ * 检查字符串长度（考虑多字节字符）
+ * @param text 文本
+ * @param maxLength 最大长度
+ * @returns 是否超过长度限制
+ */
+export function exceedsLength(text: string, maxLength: number): boolean {
+  // 使用 Array.from 正确处理多字节字符（如 emoji）
+  return Array.from(text).length > maxLength;
+}
+
+/**
+ * 截断文本（考虑多字节字符）
+ * @param text 文本
+ * @param maxLength 最大长度
+ * @param suffix 后缀（如 "..."）
+ * @returns 截断后的文本
+ */
+export function truncateText(text: string, maxLength: number, suffix = "..."): string {
+  const chars = Array.from(text);
+  if (chars.length <= maxLength) {
+    return text;
+  }
+  return chars.slice(0, maxLength - suffix.length).join("") + suffix;
+}
+
+/**
+ * 清理 SQL 标识符（表名、列名等）
+ * 注意：这不能替代参数化查询，仅用于动态标识符验证
+ * @param identifier 标识符
+ * @returns 清理后的标识符或 null
+ */
+export function sanitizeSqlIdentifier(identifier: string): string | null {
+  // 仅允许字母、数字、下划线
+  if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(identifier)) {
+    return null;
+  }
+
+  // 检查 SQL 关键字
+  const sqlKeywords = [
+    "SELECT", "INSERT", "UPDATE", "DELETE", "DROP", "CREATE", "ALTER",
+    "TABLE", "DATABASE", "INDEX", "VIEW", "PROCEDURE", "FUNCTION",
+    "TRIGGER", "GRANT", "REVOKE", "UNION", "WHERE", "FROM", "JOIN",
+  ];
+
+  if (sqlKeywords.includes(identifier.toUpperCase())) {
+    return null;
+  }
+
+  return identifier;
+}
+
+/**
+ * 清理搜索查询 - 移除特殊字符
+ * @param query 搜索查询
+ * @returns 清理后的查询
+ */
+export function sanitizeSearchQuery(query: string): string {
+  // 移除特殊字符，保留字母、数字、空格、中文字符
+  let sanitized = query.replace(/[^\w\s\u4e00-\u9fa5]/g, " ");
+
+  // 规范化空白
+  sanitized = sanitized.replace(/\s+/g, " ").trim();
+
+  return sanitized;
+}
+
+/**
+ * 验证并清理颜色代码
+ * @param color 颜色代码
+ * @returns 清理后的颜色代码或 null
+ */
+export function sanitizeColor(color: string): string | null {
+  const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+
+  if (hexColorRegex.test(color)) {
+    return color.toLowerCase();
+  }
+
+  return null;
+}
+
+/**
+ * 清理标签名称
+ * @param tag 标签名称
+ * @returns 清理后的标签
+ */
+export function sanitizeTag(tag: string): string {
+  // 转小写
+  let sanitized = tag.toLowerCase().trim();
+
+  // 移除特殊字符，保留字母、数字、连字符、下划线
+  sanitized = sanitized.replace(/[^a-z0-9\-_]/g, "");
+
+  // 移除多余的连字符
+  sanitized = sanitized.replace(/-+/g, "-");
+
+  // 移除首尾连字符
+  sanitized = sanitized.replace(/^-+|-+$/g, "");
+
+  return sanitized;
+}
+
+/**
+ * 清理 Slug
+ * @param text 文本
+ * @returns Slug
+ */
+export function sanitizeSlug(text: string): string {
+  let slug = text.toLowerCase().trim();
+
+  // 替换空格为连字符
+  slug = slug.replace(/\s+/g, "-");
+
+  // 移除特殊字符
+  slug = slug.replace(/[^a-z0-9\-]/g, "");
+
+  // 移除多余的连字符
+  slug = slug.replace(/-+/g, "-");
+
+  // 移除首尾连字符
+  slug = slug.replace(/^-+|-+$/g, "");
+
+  return slug;
+}
+
+/**
+ * 深度清理对象（递归清理所有字符串字段）
+ * @param obj 对象
+ * @returns 清理后的对象
+ */
+export function deepSanitize<T>(obj: T): T {
+  if (typeof obj === "string") {
+    return sanitizeUserInput(obj) as T;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => deepSanitize(item)) as T;
+  }
+
+  if (obj !== null && typeof obj === "object") {
+    const sanitized: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj)) {
+      sanitized[key] = deepSanitize(value);
+    }
+    return sanitized as T;
+  }
+
+  return obj;
+}

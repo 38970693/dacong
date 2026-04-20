@@ -16,6 +16,7 @@ import { initSentry, withSentry } from "../_shared/utils/sentry.ts";
 import { loginSchema, validateInput } from "../_shared/schemas/auth_schemas.ts";
 import { createRateLimiter, RateLimitPresets } from "../_shared/middleware/rate_limiter.ts";
 import { logAudit, AuditActions, AuditResources, extractAuditInfo } from "../_shared/utils/audit.ts";
+import { csrfMiddleware } from "../_shared/middleware/csrf.ts";
 
 initSentry({ functionName: "auth-login" });
 
@@ -37,6 +38,10 @@ serve(
       if (rateLimitResponse) {
         return rateLimitResponse;
       }
+
+      // CSRF 保护
+      const csrfError = await csrfMiddleware(req);
+      if (csrfError) return csrfError;
 
       const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
       const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;

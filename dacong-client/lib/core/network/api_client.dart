@@ -1,17 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import '../../error/exceptions.dart';
+import '../error/exceptions.dart';
+import '../security/csrf_service.dart';
+import '../security/csrf_interceptor.dart';
 
 /// HTTP 客户端（单一职责：处理网络请求）
 @lazySingleton
 class ApiClient {
   final Dio _dio;
+  final CsrfService _csrfService;
 
-  ApiClient(this._dio) {
+  ApiClient(this._dio, this._csrfService) {
     _setupInterceptors();
   }
 
   void _setupInterceptors() {
+    // CSRF 拦截器（必须在其他拦截器之前）
+    _dio.interceptors.add(CsrfInterceptor(_csrfService));
+
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {

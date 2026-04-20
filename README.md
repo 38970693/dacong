@@ -2,51 +2,100 @@
 
 AI 模型排行榜 + 社区交流 + 赋能学习的聚合平台。
 
+## 🚀 快速启动
+
+### 一键启动所有服务
+
+**Windows:**
+```bash
+start-all.bat
+```
+
+**Linux/Mac:**
+```bash
+./start-all.sh
+```
+
+启动后访问：
+- **前台客户端**: http://localhost:8081
+- **后台管理**: http://localhost:8080
+- **爬虫服务**: 后台运行（查看 `logs/spider.log`）
+
+### 快速测试
+
+**Windows:**
+```bash
+test-services.bat
+```
+
+**Linux/Mac:**
+```bash
+./test-services.sh
+```
+
+📖 详细启动说明见 [README_STARTUP.md](README_STARTUP.md)
+
 ## 项目结构
 
 ```
 dacong/
-├── dacong-client/          # 前端 (Flutter Web/Android/iOS)
-├── dacong-api/             # 后端 (Supabase Edge Functions + PostgreSQL)
-├── dacong-spider/          # 爬虫层 (Python / VPS 自动调度)
-├── dacong-docs/            # 项目文档
+├── dacong-client/          # 前台客户端 (Flutter Web/Android/iOS)
+├── dacong-admin/           # 后台管理 (Flutter Web)
+├── dacong-api/             # 后端 API (Supabase Edge Functions)
+├── dacong-spider/          # 爬虫服务 (Python)
+├── dacong-console/         # 控制台 (Next.js) - 可选
 └── README.md
 ```
 
-## 快速开始
+## 手动启动
 
-### 前端
+### 1. 前台客户端
 
 ```bash
 cd dacong-client
 flutter pub get
-flutter run -d chrome       # Web 开发
-flutter run -d android      # Android
-flutter run -d ios           # iOS（仅 macOS）
+flutter run -d chrome --web-port=8081 \
+  --dart-define=DEV_MODE=true \
+  --dart-define=SUPABASE_URL=https://twrxnqrisplmetbceyqm.supabase.co \
+  --dart-define=SUPABASE_ANON_KEY=你的anon_key
 ```
 
-### 后端
-
-Supabase Cloud 免费版即可运行，配置环境变量后直接部署 Edge Functions。
+### 2. 后台管理
 
 ```bash
-cd dacong-api
-supabase link --project-ref <ref>
-supabase db push
-supabase functions deploy model-rank-calc
-supabase functions deploy content-moderation
-supabase functions deploy push-trigger
+cd dacong-admin
+flutter pub get
+flutter run -d chrome --web-port=8080 \
+  --dart-define=DEV_MODE=true \
+  --dart-define=SUPABASE_URL=https://twrxnqrisplmetbceyqm.supabase.co \
+  --dart-define=SUPABASE_ANON_KEY=你的anon_key
 ```
 
-### 爬虫
+或使用快捷脚本：
+```bash
+cd dacong-admin
+./start-dev-with-config.bat  # Windows
+```
+
+### 3. 爬虫服务
 
 ```bash
 cd dacong-spider
 pip install -r requirements.txt
+python main.py
+```
 
-# 配置环境变量
-export SUPABASE_URL="https://xxx.supabase.co"
-export SUPABASE_SERVICE_ROLE_KEY="your-key"
+### 4. 部署 Edge Functions
+
+```bash
+cd dacong-api
+supabase link --project-ref twrxnqrisplmetbceyqm
+supabase functions deploy auth-login
+supabase functions deploy auth-register
+supabase functions deploy admin-get-users
+supabase functions deploy admin-handle-report
+supabase functions deploy admin-get-reports
+supabase functions deploy csrf-token
 
 # 方式1：持续运行（定时调度，自动更新数据库）
 python -m schedulers.jobs

@@ -267,7 +267,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       title: '用户活跃趋势',
       labels: trend.labels,
       datasets: [
-        custom.LineChartData(
+        custom.LineChartDataset(
           label: 'DAU',
           spots: trend.dauData
               .asMap()
@@ -276,7 +276,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               .toList(),
           color: Colors.blue,
         ),
-        custom.LineChartData(
+        custom.LineChartDataset(
           label: 'PV',
           spots: trend.pvData
               .asMap()
@@ -285,7 +285,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               .toList(),
           color: Colors.green,
         ),
-        custom.LineChartData(
+        custom.LineChartDataset(
           label: 'UV',
           spots: trend.uvData
               .asMap()

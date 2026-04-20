@@ -30,7 +30,8 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(chmod +x fix_freezed.sh)",
-      "Bash(bash fix_freezed.sh)"
+      "Bash(bash fix_freezed.sh)",
+      "Bash(npx supabase *)"
     ]
   }
 }

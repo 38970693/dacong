@@ -4,6 +4,7 @@
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0';
+import { devMode } from '../config/dev-mode.ts';
 
 export interface AdminUser {
   id: string;
@@ -22,6 +23,25 @@ export interface AuthContext {
  * 验证管理员身份
  */
 export async function requireAdmin(req: Request): Promise<AuthContext> {
+  // 开发模式下可以禁用认证验证
+  if (!devMode.enableAuth) {
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+    );
+
+    return {
+      user: {
+        id: 'dev-admin-id',
+        email: 'dev-admin@example.com',
+        role: 'admin',
+        permissions: {},
+        is_active: true,
+      },
+      supabase,
+    };
+  }
+
   const authHeader = req.headers.get('Authorization');
   if (!authHeader) {
     throw new Error('Missing authorization header');

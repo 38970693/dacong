@@ -58,8 +58,16 @@ class DaCongAdminApp extends StatelessWidget {
 final _router = GoRouter(
   initialLocation: '/login',
   redirect: (context, state) {
+    // 开发模式：允许未登录访问
+    const isDevMode = bool.fromEnvironment('DEV_MODE', defaultValue: false);
+
     final isLoggedIn = Supabase.instance.client.auth.currentUser != null;
     final isLoginPage = state.matchedLocation == '/login';
+
+    // 开发模式下跳过登录检查
+    if (isDevMode && !isLoginPage) {
+      return null;
+    }
 
     if (!isLoggedIn && !isLoginPage) {
       return '/login';
