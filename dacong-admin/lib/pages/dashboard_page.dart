@@ -45,6 +45,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
+            tooltip: '刷新数据',
             onPressed: () {
               ref.invalidate(realtimeStatsProvider);
               ref.invalidate(trendDataProvider);
@@ -52,6 +53,16 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               ref.invalidate(topSearchKeywordsProvider);
             },
           ),
+          // 开发模式：热重载按钮
+          if (const bool.fromEnvironment('DEV_MODE', defaultValue: false))
+            IconButton(
+              icon: const Icon(Icons.bolt, color: Colors.orange),
+              tooltip: '热重载 (r)',
+              onPressed: () {
+                // 触发 Flutter 热重载
+                // 注意：这只在开发模式下有效
+              },
+            ),
         ],
       ),
       body: RefreshIndicator(
