@@ -9,7 +9,30 @@ class DashboardService {
   DateTime? _lastFetchTime;
   DashboardStats? _cachedStats;
 
+  // 开发模式标志
+  static const bool _isDevMode = bool.fromEnvironment('DEV_MODE', defaultValue: false);
+
   Future<DashboardStats> getRealtimeStats() async {
+    // 开发模式：返回模拟数据
+    if (_isDevMode) {
+      return DashboardStats(
+        todayDau: 342,
+        todayPv: 5420,
+        todayUv: 1250,
+        newUsers: 28,
+        publishedContent: 856,
+        totalUsers: 1250,
+        totalContent: 856,
+        pendingReview: 12,
+        totalComments: 3421,
+        pendingComments: 8,
+        dauChange: 5.2,
+        pvChange: 12.8,
+        uvChange: 8.5,
+        newUsersChange: -2.3,
+      );
+    }
+
     // 检查缓存
     if (_cachedStats != null &&
         _lastFetchTime != null &&
@@ -40,6 +63,20 @@ class DashboardService {
   }
 
   Future<TrendData> getTrendData({int days = 7}) async {
+    // 开发模式：返回模拟数据
+    if (_isDevMode) {
+      final now = DateTime.now();
+      return TrendData(
+        labels: List.generate(days, (i) {
+          final date = now.subtract(Duration(days: days - i - 1));
+          return '${date.month}/${date.day}';
+        }),
+        dauData: List.generate(days, (i) => 300.0 + i * 10),
+        pvData: List.generate(days, (i) => 5000.0 + i * 100),
+        uvData: List.generate(days, (i) => 1200.0 + i * 20),
+      );
+    }
+
     try {
       final response = await _supabase.functions.invoke(
         'get-trend-data',
@@ -54,6 +91,20 @@ class DashboardService {
   }
 
   Future<List<TopContent>> getTopContent({int limit = 10}) async {
+    // 开发模式：返回模拟数据
+    if (_isDevMode) {
+      return List.generate(
+        limit,
+        (i) => TopContent(
+          id: 'content_$i',
+          title: '热门内容 ${i + 1}',
+          views: 1000 - i * 50,
+          likes: 200 - i * 10,
+          helpfulRate: 0.85 - i * 0.02,
+        ),
+      );
+    }
+
     try {
       final response = await _supabase
           .from('contents')
@@ -89,6 +140,16 @@ class DashboardService {
 
   /// 获取待处理事项统计
   Future<PendingTasks> getPendingTasks() async {
+    // 开发模式：返回模拟数据
+    if (_isDevMode) {
+      return PendingTasks(
+        pendingContents: 12,
+        pendingComments: 8,
+        pendingReports: 5,
+        pendingAppeals: 3,
+      );
+    }
+
     try {
       // 并行查询多个待处理事项
       final results = await Future.wait([
@@ -106,7 +167,7 @@ class DashboardService {
 
         // 举报数量
         _supabase
-            .from('reports')
+            .from('comment_reports')
             .select('id')
             .eq('status', 'pending'),
 
