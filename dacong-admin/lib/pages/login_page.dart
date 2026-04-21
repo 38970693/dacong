@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _rememberPassword = false;
 
   // 开发模式标志（从环境变量读取）
-  static const bool _isDevMode = bool.fromEnvironment('DEV_MODE', defaultValue: true);
+  static const bool _isDevMode = bool.fromEnvironment('DEV_MODE', defaultValue: false);
 
   @override
   void initState() {
@@ -34,41 +34,37 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  /// 加载保存的账号密码
+  /// 加载保存的账号（仅加载邮箱）
   Future<void> _loadSavedCredentials() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final savedEmail = prefs.getString('saved_email');
-      final savedPassword = prefs.getString('saved_password');
       final rememberPassword = prefs.getBool('remember_password') ?? false;
 
-      if (rememberPassword && savedEmail != null && savedPassword != null) {
+      if (rememberPassword && savedEmail != null) {
         setState(() {
           _emailController.text = savedEmail;
-          _passwordController.text = savedPassword;
           _rememberPassword = true;
         });
       }
     } catch (e) {
-      // 忽略加载错误
+      debugPrint('加载凭据失败: $e');
     }
   }
 
-  /// 保存账号密码
+  /// 保存账号（仅保存邮箱，不保存密码）
   Future<void> _saveCredentials() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       if (_rememberPassword) {
         await prefs.setString('saved_email', _emailController.text.trim());
-        await prefs.setString('saved_password', _passwordController.text);
         await prefs.setBool('remember_password', true);
       } else {
         await prefs.remove('saved_email');
-        await prefs.remove('saved_password');
         await prefs.setBool('remember_password', false);
       }
     } catch (e) {
-      // 忽略保存错误
+      debugPrint('保存凭据失败: $e');
     }
   }
 
@@ -109,11 +105,17 @@ class _LoginPageState extends State<LoginPage> {
       await _saveCredentials();
 
       // 4. 记录登录日志
-      await Supabase.instance.client.from('admin_logs').insert({
-        'admin_id': response.user!.id,
-        'action': 'login',
-        'details': {'email': _emailController.text.trim()},
-      });
+      try {
+        await Supabase.instance.client.from('admin_logs').insert({
+          'admin_id': response.user!.id,
+          'action': 'login',
+          'details': {
+            'email': _emailController.text.trim().replaceAll(RegExp(r'[^\w@.]'), '')
+          },
+        });
+      } catch (e) {
+        debugPrint('记录登录日志失败: $e');
+      }
 
       // 5. 跳转到看板
       if (mounted) {
@@ -123,9 +125,14 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _errorMessage = e.message;
       });
-    } catch (e) {
+    } on Exception catch (e) {
       setState(() {
         _errorMessage = e.toString().replaceAll('Exception: ', '');
+      });
+    } catch (e) {
+      debugPrint('未预期的登录错误: $e');
+      setState(() {
+        _errorMessage = '登录失败，请稍后重试';
       });
     } finally {
       if (mounted) {
@@ -196,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                         if (value == null || value.isEmpty) {
                           return '请输入邮箱';
                         }
-                        if (!value.contains('@')) {
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                           return '请输入有效的邮箱';
                         }
                         return null;
@@ -222,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 24),
 
-                    // 记住密码选项
+                    // 记住邮箱选项
                     Row(
                       children: [
                         Checkbox(
@@ -233,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           },
                         ),
-                        const Text('记住密码'),
+                        const Text('记住邮箱'),
                       ],
                     ),
                     const SizedBox(height: 8),

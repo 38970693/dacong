@@ -56,7 +56,7 @@ class DaCongAdminApp extends StatelessWidget {
 
 // 路由配置
 final _router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: const bool.fromEnvironment('DEV_MODE', defaultValue: false) ? '/' : '/login',
   redirect: (context, state) {
     // 开发模式：允许未登录访问
     const isDevMode = bool.fromEnvironment('DEV_MODE', defaultValue: false);

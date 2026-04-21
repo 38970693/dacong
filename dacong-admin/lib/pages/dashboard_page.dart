@@ -17,7 +17,15 @@ class DashboardPage extends ConsumerStatefulWidget {
 }
 
 class _DashboardPageState extends ConsumerState<DashboardPage> {
+  static const int _topItemsLimit = 10;
   int _selectedTrendDays = 7;
+
+  void _refreshAllData() {
+    ref.invalidate(realtimeStatsProvider);
+    ref.invalidate(trendDataProvider);
+    ref.invalidate(topContentProvider);
+    ref.invalidate(topSearchKeywordsProvider);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +34,8 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
 
     final statsAsync = ref.watch(realtimeStatsProvider);
     final trendAsync = ref.watch(trendDataProvider(_selectedTrendDays));
-    final topContentAsync = ref.watch(topContentProvider(10));
-    final topKeywordsAsync = ref.watch(topSearchKeywordsProvider(10));
+    final topContentAsync = ref.watch(topContentProvider(_topItemsLimit));
+    final topKeywordsAsync = ref.watch(topSearchKeywordsProvider(_topItemsLimit));
     final pendingTasksAsync = ref.watch(pendingTasksProvider);
 
     return Scaffold(
@@ -46,32 +54,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: '刷新数据',
-            onPressed: () {
-              ref.invalidate(realtimeStatsProvider);
-              ref.invalidate(trendDataProvider);
-              ref.invalidate(topContentProvider);
-              ref.invalidate(topSearchKeywordsProvider);
-            },
+            onPressed: _refreshAllData,
           ),
-          // 开发模式：热重载按钮
-          if (const bool.fromEnvironment('DEV_MODE', defaultValue: false))
-            IconButton(
-              icon: const Icon(Icons.bolt, color: Colors.orange),
-              tooltip: '热重载 (r)',
-              onPressed: () {
-                // 触发 Flutter 热重载
-                // 注意：这只在开发模式下有效
-              },
-            ),
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(realtimeStatsProvider);
-          ref.invalidate(trendDataProvider);
-          ref.invalidate(topContentProvider);
-          ref.invalidate(topSearchKeywordsProvider);
-        },
+        onRefresh: () async => _refreshAllData(),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -198,7 +186,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     );
   }
 
-  Widget _buildStatsCards(stats) {
+  Widget _buildStatsCards(DashboardStats stats) {
     return Row(
       children: [
         Expanded(
@@ -273,7 +261,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     );
   }
 
-  Widget _buildTrendChart(trend) {
+  Widget _buildTrendChart(TrendData trend) {
     return custom.DacongLineChart(
       title: '用户活跃趋势',
       labels: trend.labels,
@@ -283,7 +271,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           spots: trend.dauData
               .asMap()
               .entries
-              .map((e) => FlSpot(e.key.toDouble(), e.value))
+              .map((e) => FlSpot(e.key.toDouble(), (e.value as num).toDouble()))
               .toList(),
           color: Colors.blue,
         ),
@@ -292,7 +280,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           spots: trend.pvData
               .asMap()
               .entries
-              .map((e) => FlSpot(e.key.toDouble(), e.value))
+              .map((e) => FlSpot(e.key.toDouble(), (e.value as num).toDouble()))
               .toList(),
           color: Colors.green,
         ),
@@ -301,7 +289,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           spots: trend.uvData
               .asMap()
               .entries
-              .map((e) => FlSpot(e.key.toDouble(), e.value))
+              .map((e) => FlSpot(e.key.toDouble(), (e.value as num).toDouble()))
               .toList(),
           color: Colors.orange,
         ),
@@ -309,7 +297,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     );
   }
 
-  Widget _buildContentStats(stats) {
+  Widget _buildContentStats(DashboardStats stats) {
     return DacongPieChart(
       title: '内容分布',
       sections: [
@@ -332,7 +320,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     );
   }
 
-  Widget _buildUserStats(stats) {
+  Widget _buildUserStats(DashboardStats stats) {
     return DacongBarChart(
       title: '用户概览',
       labels: ['总用户', '今日活跃', '新增用户'],
@@ -402,11 +390,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               ),
             ),
             title: Text(
-              item.title,
+              item.title ?? '无标题',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            subtitle: Text('${item.views} views, ${(item.helpfulRate * 100).toStringAsFixed(0)}% helpful'),
+            subtitle: Text('${item.views ?? 0} views, ${((item.helpfulRate ?? 0) * 100).toStringAsFixed(0)}% helpful'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
               // TODO: 跳转到内容详情
@@ -450,9 +438,9 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 ),
               ),
             ),
-            title: Text(item.keyword),
+            title: Text(item.keyword ?? ''),
             trailing: Chip(
-              label: Text('${item.count}'),
+              label: Text('${item.count ?? 0}'),
               backgroundColor: isDark ? Colors.blue.shade900 : Colors.blue.shade50,
             ),
           );

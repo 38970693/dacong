@@ -22,29 +22,47 @@ class ErrorBoundary extends StatefulWidget {
 
 class _ErrorBoundaryState extends State<ErrorBoundary> {
   FlutterErrorDetails? _errorDetails;
+  void Function(FlutterErrorDetails)? _originalErrorHandler;
 
   @override
   void initState() {
     super.initState();
 
+    // 保存原始错误处理器
+    _originalErrorHandler = FlutterError.onError;
+
     // 捕获 Flutter 框架错误
     FlutterError.onError = (details) {
+      // 调用原始处理器（如果存在）
+      _originalErrorHandler?.call(details);
+
       // 上报到 Sentry
       Sentry.captureException(
         details.exception,
         stackTrace: details.stack,
       );
 
-      // 更新 UI 显示错误
+      // 更新 UI 显示错误（延迟到下一帧）
       if (mounted) {
-        setState(() {
-          _errorDetails = details;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              _errorDetails = details;
+            });
+          }
         });
       }
 
       // 打印到控制台
       FlutterError.presentError(details);
     };
+  }
+
+  @override
+  void dispose() {
+    // 恢复原始错误处理器
+    FlutterError.onError = _originalErrorHandler;
+    super.dispose();
   }
 
   @override
@@ -106,6 +124,9 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
 }
 
 /// 异步错误处理器
+///
+/// 在应用启动时调用 `AsyncErrorHandler.init()` 来捕获所有未处理的异步错误。
+/// 通常在 `main()` 函数中的 `runApp()` 之前调用。
 class AsyncErrorHandler {
   static void init() {
     // 捕获异步错误
