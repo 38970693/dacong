@@ -25,7 +25,7 @@ dependencies:
   # 工具库
   intl: ^0.20.2
   uuid: ^4.0.0
-  csv: ^6.0.0
+  csv: ^8.0.0
   path_provider: ^2.1.0
   shared_preferences: ^2.2.0
 
