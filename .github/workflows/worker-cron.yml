@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '20'
 
-      - run: npm ci
+      - run: npm install
         working-directory: dacong-worker
 
       - run: npm run crawl
@@ -50,7 +50,7 @@ jobs:
         with:
           node-version: '20'
 
-      - run: npm ci
+      - run: npm install
         working-directory: dacong-worker
 
       - run: npm run trending
