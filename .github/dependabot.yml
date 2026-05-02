@@ -88,6 +88,12 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # ESLint 10 需要新的 flat config 格式，暂不升级
+      - dependency-name: "eslint"
+        versions: [">=10.0.0"]
+      # TypeScript 6 有 API 变化，暂不升级
+      - dependency-name: "typescript"
+        versions: [">=6.0.0"]
 
   # GitHub Actions 工作流依赖
   - package-ecosystem: "github-actions"
