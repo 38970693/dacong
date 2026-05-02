@@ -57,7 +57,7 @@ dependencies:
   share_plus: ^10.1.2
 
   # Error Monitoring
-  sentry_flutter: ^7.18.0
+  sentry_flutter: ^8.14.2
 
 dev_dependencies:
   flutter_test:
