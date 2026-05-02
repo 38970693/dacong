@@ -59,20 +59,9 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ## 🔜 待手动完成
 
-### 1. Supabase 数据库迁移（最关键）
-在 [Supabase SQL Editor](https://supabase.com/dashboard) 执行：
-```sql
--- 运行 dacong-console/supabase/migrations/001_initial_schema.sql 中的内容
-```
-
-### 2. 添加示例数据
-迁移后可在 SQL Editor 执行：
-```sql
-INSERT INTO posts (title, content, source, views, likes, comments_count, status)
-VALUES
-  ('36氪发布最新创业报告', '2024年创业趋势分析...', '36kr', 1234, 89, 12, 'approved'),
-  ('虎嗅深度分析文章', '关于科技行业的深度观察...', 'huxiu', 567, 45, 8, 'approved');
-```
+### 1. Supabase 数据库迁移
+- [x] 运行 `001_initial_schema.sql` 完成数据库迁移
+- [x] 运行 `sample-data.sql` 添加示例数据（10条 posts + 40条 trending_cache）
 
 ### 3. GitHub 配置
 - [x] 创建 GitHub 仓库或更新远程地址
@@ -81,13 +70,12 @@ VALUES
   - `VERCEL_TOKEN`
   - `VERCEL_ORG_ID` = team_V7Og2pSepqErwAMoE1G3psTu
   - `VERCEL_PROJECT_ID` = prj_iCcurdVp4XJEQmRUwhuSTFGvp55
-  - [ ] `SUPABASE_URL`
-  - [ ] `SUPABASE_SERVICE_ROLE_KEY`
+  - [x] `SUPABASE_URL` = https://prszkdbdgffbdqclbgol.supabase.co
+  - [x] `SUPABASE_SERVICE_ROLE_KEY` = 已配置
 
 ### 4. 部署
 - [x] 部署前端到 Vercel (https://dacong-weld.vercelapp.com)
-- [ ] 部署 Worker 到 Railway
-- [ ] Supabase 数据库迁移（等恢复后执行）
+- [x] Worker 部署到 GitHub Actions (每5分钟定时任务)
 
 ### 5. 可选功能（Phase 2+）
 - [ ] FCM 推送集成

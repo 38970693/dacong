@@ -1,9 +1,12 @@
 name: Worker Cron Jobs
 
 on:
+  # 每5分钟运行一次爬虫 + 审核
   schedule:
     - cron: '*/5 * * * *'
+  # 支持手动触发
   workflow_dispatch:
+  # 也可以在代码推送时触发
   push:
     branches:
       - main
@@ -17,22 +20,27 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - run: npm install
+      - name: Install dependencies
+        run: npm install
         working-directory: dacong-worker
 
-      - run: npm run crawl
+      - name: Run Crawler
+        run: npm run crawl
         working-directory: dacong-worker
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
-      - run: npm run moderate
+      - name: Run Moderator
+        run: npm run moderate
         working-directory: dacong-worker
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -44,16 +52,20 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - run: npm install
+      - name: Install dependencies
+        run: npm install
         working-directory: dacong-worker
 
-      - run: npm run trending
+      - name: Update Trending Cache
+        run: npm run trending
         working-directory: dacong-worker
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
