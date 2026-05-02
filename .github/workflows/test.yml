@@ -3,229 +3,66 @@ name: Test Suite
 on:
   push:
     branches: [ main, develop ]
+    paths:
+      # 只在 dacong-console 和 dacong-worker 变更时运行
+      - 'dacong-console/**'
+      - 'dacong-worker/**'
   pull_request:
     branches: [ main, develop ]
-  schedule:
-    # 每天凌晨 2 点运行
-    - cron: '0 2 * * *'
+    paths:
+      - 'dacong-console/**'
+      - 'dacong-worker/**'
+
+# 旧的 Flutter/Deno 项目已归档，暂不运行测试
+# dacong-client, dacong-admin, dacong-api 需要单独维护
 
 jobs:
-  # 客户端测试
-  test-client:
-    name: Client Tests
+  # Console (Next.js) 测试
+  test-console:
+    name: Console Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          flutter-version: '3.24.0'
-          channel: 'stable'
-          cache: true
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: dacong-console/package-lock.json
 
       - name: Install dependencies
-        working-directory: dacong-client
-        run: flutter pub get
+        run: npm ci
+        working-directory: dacong-console
 
-      - name: Run tests with coverage
-        working-directory: dacong-client
-        run: flutter test --coverage --reporter expanded
+      - name: Run tests
+        run: npm test -- --run
+        working-directory: dacong-console
 
-      - name: Calculate coverage
-        working-directory: dacong-client
-        run: |
-          if [ -f coverage/lcov.info ]; then
-            TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERED_LINES=$(grep -o "LH:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
-            echo "测试覆盖率: $COVERAGE%"
-            echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
-
-            # 检查是否达到目标
-            if (( $(echo "$COVERAGE < 80" | bc -l) )); then
-              echo "::warning::覆盖率 $COVERAGE% 未达到 80% 目标"
-              exit 1
-            fi
-          fi
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: dacong-client/coverage/lcov.info
-          flags: client
-          name: client-coverage
-          fail_ci_if_error: false
-
-      - name: Archive coverage report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: client-coverage
-          path: dacong-client/coverage/
-          retention-days: 30
-
-  # 管理后台测试
-  test-admin:
-    name: Admin Tests
+  # Worker 测试
+  test-worker:
+    name: Worker Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          flutter-version: '3.24.0'
-          channel: 'stable'
-          cache: true
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: dacong-worker/package-lock.json
 
       - name: Install dependencies
-        working-directory: dacong-admin
-        run: flutter pub get
+        run: npm ci
+        working-directory: dacong-worker
 
-      - name: Run tests with coverage
-        working-directory: dacong-admin
-        run: flutter test --coverage --reporter expanded
-
-      - name: Calculate coverage
-        working-directory: dacong-admin
-        run: |
-          if [ -f coverage/lcov.info ]; then
-            TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERED_LINES=$(grep -o "LH:[0-9]*" coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
-            echo "测试覆盖率: $COVERAGE%"
-            echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
-
-            # 检查是否达到目标
-            if (( $(echo "$COVERAGE < 70" | bc -l) )); then
-              echo "::warning::覆盖率 $COVERAGE% 未达到 70% 目标"
-              exit 1
-            fi
-          fi
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: dacong-admin/coverage/lcov.info
-          flags: admin
-          name: admin-coverage
-          fail_ci_if_error: false
-
-      - name: Archive coverage report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: admin-coverage
-          path: dacong-admin/coverage/
-          retention-days: 30
-
-  # 后端 API 测试
-  test-api:
-    name: API Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
-
-      - name: Run tests with coverage
-        working-directory: dacong-api/supabase/functions
-        run: |
-          deno test --allow-all --coverage=coverage
-          deno coverage coverage --lcov > coverage.lcov
-
-      - name: Calculate coverage
-        working-directory: dacong-api/supabase/functions
-        run: |
-          if [ -f coverage.lcov ]; then
-            TOTAL_LINES=$(grep -o "LF:[0-9]*" coverage.lcov | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERED_LINES=$(grep -o "LH:[0-9]*" coverage.lcov | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERAGE=$(awk "BEGIN {printf \"%.2f\", ($COVERED_LINES/$TOTAL_LINES)*100}")
-            echo "测试覆盖率: $COVERAGE%"
-            echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
-
-            # 检查是否达到目标
-            if (( $(echo "$COVERAGE < 85" | bc -l) )); then
-              echo "::warning::覆盖率 $COVERAGE% 未达到 85% 目标"
-              exit 1
-            fi
-          fi
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: dacong-api/supabase/functions/coverage.lcov
-          flags: api
-          name: api-coverage
-          fail_ci_if_error: false
-
-      - name: Archive coverage report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: api-coverage
-          path: dacong-api/supabase/functions/coverage/
-          retention-days: 30
-
-  # 生成测试报告
-  generate-report:
-    name: Generate Test Report
-    runs-on: ubuntu-latest
-    needs: [test-client, test-admin, test-api]
-    if: always()
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download all coverage reports
-        uses: actions/download-artifact@v4
-        with:
-          path: coverage-reports
-
-      - name: Generate summary
-        run: |
-          echo "# 测试覆盖率报告" > $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| 模块 | 覆盖率 | 目标 | 状态 |" >> $GITHUB_STEP_SUMMARY
-          echo "|------|--------|------|------|" >> $GITHUB_STEP_SUMMARY
-
-          # 客户端
-          if [ -f coverage-reports/client-coverage/lcov.info ]; then
-            TOTAL=$(grep -o "LF:[0-9]*" coverage-reports/client-coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERED=$(grep -o "LH:[0-9]*" coverage-reports/client-coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COV=$(awk "BEGIN {printf \"%.2f\", ($COVERED/$TOTAL)*100}")
-            STATUS=$(awk "BEGIN {if ($COV >= 80) print \"✅\"; else print \"⚠️\"}")
-            echo "| 客户端 | $COV% | 80% | $STATUS |" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          # 管理后台
-          if [ -f coverage-reports/admin-coverage/lcov.info ]; then
-            TOTAL=$(grep -o "LF:[0-9]*" coverage-reports/admin-coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERED=$(grep -o "LH:[0-9]*" coverage-reports/admin-coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COV=$(awk "BEGIN {printf \"%.2f\", ($COVERED/$TOTAL)*100}")
-            STATUS=$(awk "BEGIN {if ($COV >= 70) print \"✅\"; else print \"⚠️\"}")
-            echo "| 管理后台 | $COV% | 70% | $STATUS |" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          # 后端 API
-          if [ -f coverage-reports/api-coverage/coverage.lcov ]; then
-            TOTAL=$(grep -o "LF:[0-9]*" coverage-reports/api-coverage/coverage.lcov | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COVERED=$(grep -o "LH:[0-9]*" coverage-reports/api-coverage/coverage.lcov | cut -d: -f2 | awk '{s+=$1} END {print s}')
-            COV=$(awk "BEGIN {printf \"%.2f\", ($COVERED/$TOTAL)*100}")
-            STATUS=$(awk "BEGIN {if ($COV >= 85) print \"✅\"; else print \"⚠️\"}")
-            echo "| 后端 API | $COV% | 85% | $STATUS |" >> $GITHUB_STEP_SUMMARY
-          fi
+      - name: Run tests
+        run: npm test -- --run
+        working-directory: dacong-worker
