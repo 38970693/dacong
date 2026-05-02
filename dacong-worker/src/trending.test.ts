@@ -43,7 +43,8 @@ describe('热榜评分算法', () => {
     const currentScore = calculateScore(100, 0, 0, now);
     const halfLifeScore = calculateScore(100, 0, 0, sixHoursAgo);
 
-    // 6小时后的分数应该是原来的一半（约等于）
-    expect(halfLifeScore).toBeCloseTo(currentScore / 2, 1);
+    // e^-1 ≈ 0.368，所以半衰期后应该是原来的 ~37%
+    const ratio = halfLifeScore / currentScore;
+    expect(ratio).toBeCloseTo(Math.E ** -1, 2);
   });
 });

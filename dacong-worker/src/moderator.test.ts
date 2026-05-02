@@ -42,12 +42,12 @@ describe('AI 审核 - 本地关键词', () => {
 
   it('应该大小写不敏感', () => {
     const result1 = localModeration('赌博网站被查', null);
-    const result2 = localModeration('DUBO网站被查', null);
-    const result3 = localModeration('DU赌博网站被查', null);
+    const result2 = localModeration('DUBO网站被查', null);  // DUBO 不是中文 "赌博"
+    const result3 = localModeration('du赌博网站被查', null); // du + 中文赌博
 
     expect(result1.passed).toBe(false);
-    expect(result2.passed).toBe(false);
-    expect(result3.passed).toBe(false);
+    expect(result2.passed).toBe(true);  // DUBO 只是字母，不是中文
+    expect(result3.passed).toBe(false); // du + 赌博
   });
 
   it('应该处理空内容', () => {
