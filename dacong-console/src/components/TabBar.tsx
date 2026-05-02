@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const tabs = [
   { id: 'home', label: '首页', icon: '🏠' },
-  { id: 'discover', label: '发现', icon: '🔥' },
+  { id: 'trending', label: '热榜', icon: '🔥' },
   { id: 'messages', label: '消息', icon: '💬' },
   { id: 'profile', label: '我的', icon: '👤' },
 ];

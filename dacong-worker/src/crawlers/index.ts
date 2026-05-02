@@ -1,0 +1,123 @@
+import { crawl36kr } from './36kr';
+import { crawlHuxiu } from './huxiu';
+import { crawlSinaFinance } from './sina';
+import { crawl163Tech } from './163tech';
+import { crawlJiemian } from './jiemian';
+import type { CrawlResult } from '../types';
+import { logger } from '../logger';
+import { createSupabaseAdmin } from '../supabase';
+
+// 可用的爬虫列表
+export const crawlers = {
+  '36kr': crawl36kr,
+  'huxiu': crawlHuxiu,
+  'sina': crawlSinaFinance,
+  '163tech': crawl163Tech,
+  'jiemian': crawlJiemian,
+};
+
+export type CrawlerName = keyof typeof crawlers;
+
+// 获取所有可用的数据源名称
+export function getAvailableSources(): CrawlerName[] {
+  return Object.keys(crawlers) as CrawlerName[];
+}
+
+// 爬取所有数据源
+export async function crawlAll(): Promise<CrawlResult[]> {
+  logger.info('开始全量爬取...');
+
+  const sources = getAvailableSources();
+  const results: CrawlResult[] = [];
+
+  for (const source of sources) {
+    try {
+      const crawler = crawlers[source];
+      const result = await crawler();
+      results.push(result);
+
+      // 如果爬取成功，立即将数据写入 posts 表
+      if (result.success && result.posts.length > 0) {
+        await publishPosts(source);
+      }
+    } catch (error) {
+      logger.error(`爬取 ${source} 失败:`, error);
+      results.push({
+        source,
+        posts: [],
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        crawledCount: 0,
+      });
+    }
+  }
+
+  // 统计
+  const totalCrawled = results.reduce((sum, r) => sum + r.crawledCount, 0);
+  const successCount = results.filter(r => r.success).length;
+
+  logger.info(`爬取完成: ${totalCrawled} 条数据, ${successCount}/${sources.length} 个来源成功`);
+
+  return results;
+}
+
+// 爬取指定数据源
+export async function crawlSource(source: CrawlerName): Promise<CrawlResult> {
+  const crawler = crawlers[source];
+  if (!crawler) {
+    return {
+      source,
+      posts: [],
+      success: false,
+      error: `Unknown source: ${source}`,
+      crawledCount: 0,
+    };
+  }
+
+  const result = await crawler();
+
+  // 如果成功，发布到 posts 表
+  if (result.success && result.posts.length > 0) {
+    await publishPosts(source);
+  }
+
+  return result;
+}
+
+// 将爬取的数据快速发布到 posts 表
+async function publishPosts(source: string) {
+  const supabase = createSupabaseAdmin();
+
+  // 获取该来源的待审核数据
+  const { data: rawPosts, error } = await supabase
+    .from('raw_posts')
+    .select('*')
+    .eq('source', source)
+    .eq('status', 'pending')
+    .limit(20);
+
+  if (error || !rawPosts || rawPosts.length === 0) {
+    return;
+  }
+
+  // 转换到 posts 表
+  const posts = rawPosts.map(raw => ({
+    raw_post_id: raw.id,
+    title: raw.title,
+    content: raw.content,
+    source: raw.source,
+    source_url: raw.source_url,
+    status: 'approved' as const, // 直接通过，后续可改进为 pending
+  }));
+
+  const { error: insertError } = await supabase
+    .from('posts')
+    .insert(posts);
+
+  if (insertError) {
+    logger.error(`发布 ${source} 数据失败:`, insertError);
+    return;
+  }
+
+  logger.info(`已将 ${rawPosts.length} 条 ${source} 数据发布到 posts 表`);
+}
