@@ -1,20 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
+import { Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const notoSansSC = Noto_Sans_SC({
+  variable: "--font-noto-sans-sc",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "大聪明 - 打工人的内容社区",
-  description: "分享打工人的故事，记录职场生活",
+  title: "DaCong - AI 模型排行榜",
+  description: "DaCong 汇聚全球顶尖 AI 模型，提供实时排行、社区讨论和最新资讯，让你在 AI 时代保持领先。",
   icons: {
     icon: '/favicon.ico',
   },
@@ -26,7 +29,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: "cover",
-  themeColor: "#0a0a0a",
+  themeColor: "#fafafa",
 };
 
 export default function RootLayout({
@@ -35,8 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} h-dvh overflow-hidden bg-black`}>
+    <html lang="zh-CN">
+      <body className={`${inter.variable} ${notoSansSC.variable} h-dvh overflow-hidden bg-[var(--background)]`}>
         {children}
       </body>
     </html>

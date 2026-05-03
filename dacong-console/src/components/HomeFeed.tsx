@@ -65,72 +65,80 @@ export default function HomeFeed() {
   const content = contents[currentIndex] || contents[0];
 
   return (
-    <div className="h-full bg-black relative">
-      {/* 顶部状态栏占位 */}
-      <div className="absolute top-0 left-0 right-0 z-10 h-11 bg-gradient-to-b from-black/60 to-transparent" />
-      
+    <div className="h-full bg-white relative">
+      {/* 顶部状态栏占位 - 新设计 */}
+      <div className="absolute top-0 left-0 right-0 z-10 h-16 bg-white/80 backdrop-blur-lg border-b border-[var(--border)] flex items-center px-5">
+        <h1 className="text-lg font-bold text-[var(--foreground)]">Da<span className="text-[var(--primary)]">Cong</span></h1>
+      </div>
+
       {/* 内容区 */}
-      <div 
+      <div
         className="content-scroll h-full hide-scrollbar"
         onScroll={handleScroll}
       >
         {contents.map((item, idx) => (
           <div key={item.id} className="h-[100dvh] w-full flex items-end relative">
-            {/* 背景占位 */}
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black flex items-center justify-center">
-              <span className="text-9xl opacity-10">{item.avatar}</span>
+            {/* 背景 */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary-light)] to-white flex items-center justify-center">
+              <span className="text-[120px] opacity-10">{item.avatar}</span>
             </div>
-            
+
             {/* 内容 */}
-            <div className="relative z-10 p-4 pb-20 w-full">
+            <div className="relative z-10 p-5 pb-20 w-full">
               {/* 作者信息 */}
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center text-2xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-white shadow-lg flex items-center justify-center text-3xl">
                   {item.avatar}
                 </div>
                 <div>
-                  <p className="font-semibold text-white">{item.author}</p>
-                  <p className="text-xs text-white/60">刚刚</p>
+                  <p className="font-bold text-[var(--foreground)] text-lg">{item.author}</p>
+                  <p className="text-xs text-[var(--text-muted)]">刚刚</p>
                 </div>
               </div>
-              
+
               {/* 文字内容 */}
-              <h2 className="text-lg font-bold text-white mb-2">{item.title}</h2>
-              <p className="text-sm text-white/80 mb-4">{item.content}</p>
-              
+              <h2 className="text-xl font-bold text-[var(--foreground)] mb-2 leading-snug">{item.title}</h2>
+              <p className="text-sm text-[var(--text-secondary)] mb-4 leading-relaxed">{item.content}</p>
+
               {/* 话题标签 */}
               <div className="flex gap-2 flex-wrap">
-                <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-white/80">#打工日常</span>
-                <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-white/80">#职场故事</span>
+                <span className="px-3 py-1.5 bg-[var(--primary-light)] text-[var(--primary)] rounded-full text-xs font-medium">#打工日常</span>
+                <span className="px-3 py-1.5 bg-[var(--primary-light)] text-[var(--primary)] rounded-full text-xs font-medium">#职场故事</span>
               </div>
             </div>
-            
-            {/* 右侧互动栏 */}
+
+            {/* 右侧互动栏 - 新设计 */}
             <div className="absolute right-4 bottom-32 flex flex-col items-center gap-6">
-              <button className="flex flex-col items-center">
-                <span className="text-3xl">❤️</span>
-                <span className="text-xs text-white/80 mt-1">{formatNumber(item.likes)}</span>
+              <button className="flex flex-col items-center transition-transform hover:scale-110">
+                <div className="w-12 h-12 rounded-full bg-[var(--primary-light)] flex items-center justify-center mb-1">
+                  <span className="text-2xl">❤️</span>
+                </div>
+                <span className="text-xs text-[var(--text-secondary)] font-medium">{formatNumber(item.likes)}</span>
               </button>
-              <button className="flex flex-col items-center">
-                <span className="text-3xl">💬</span>
-                <span className="text-xs text-white/80 mt-1">{formatNumber(item.comments)}</span>
+              <button className="flex flex-col items-center transition-transform hover:scale-110">
+                <div className="w-12 h-12 rounded-full bg-[var(--primary-light)] flex items-center justify-center mb-1">
+                  <span className="text-2xl">💬</span>
+                </div>
+                <span className="text-xs text-[var(--text-secondary)] font-medium">{formatNumber(item.comments)}</span>
               </button>
-              <button className="flex flex-col items-center">
-                <span className="text-3xl">↗️</span>
-                <span className="text-xs text-white/80 mt-1">{formatNumber(item.shares)}</span>
+              <button className="flex flex-col items-center transition-transform hover:scale-110">
+                <div className="w-12 h-12 rounded-full bg-[var(--primary-light)] flex items-center justify-center mb-1">
+                  <span className="text-2xl">↗️</span>
+                </div>
+                <span className="text-xs text-[var(--text-secondary)] font-medium">{formatNumber(item.shares)}</span>
               </button>
             </div>
           </div>
         ))}
       </div>
-      
-      {/* 底部指示器 */}
+
+      {/* 底部指示器 - 新设计 */}
       <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
         {contents.map((_, idx) => (
           <div
             key={idx}
-            className={`h-1 rounded-full transition-all ${
-              idx === currentIndex ? 'w-4 bg-[#ff6b35]' : 'w-1 bg-white/40'
+            className={`h-2 rounded-full transition-all ${
+              idx === currentIndex ? 'w-6 bg-[var(--primary)]' : 'w-2 bg-[var(--text-muted)]'
             }`}
           />
         ))}

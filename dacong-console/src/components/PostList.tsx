@@ -39,18 +39,18 @@ export function PostList() {
     return () => observer.disconnect();
   }, [handleObserver]);
 
-  // 下拉刷新
-  const handleRefresh = async () => {
-    await refresh();
-  };
-
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-zinc-500">
-        <p className="mb-4">{error}</p>
+      <div className="empty-state">
+        <div className="w-16 h-16 mb-4 rounded-full bg-[var(--primary-light)] flex items-center justify-center">
+          <svg className="w-8 h-8 text-[var(--primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <p className="text-[var(--text-secondary)] mb-4">{error}</p>
         <button
           onClick={refresh}
-          className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+          className="px-6 py-2.5 bg-[var(--primary)] text-white rounded-full font-medium btn-hover"
         >
           重试
         </button>
@@ -60,11 +60,15 @@ export function PostList() {
 
   if (posts.length === 0 && !isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-zinc-500">
-        <p className="mb-4">暂无内容</p>
+      <div className="empty-state">
+        <div className="w-20 h-20 mb-4 rounded-2xl bg-[var(--primary-light)] flex items-center justify-center">
+          <span className="text-4xl">📭</span>
+        </div>
+        <p className="text-[var(--text-secondary)] mb-2">暂无内容</p>
+        <p className="text-xs text-[var(--text-muted)] mb-4">稍后再来看看吧</p>
         <button
           onClick={refresh}
-          className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+          className="px-6 py-2.5 bg-[var(--primary)] text-white rounded-full font-medium btn-hover"
         >
           刷新
         </button>
@@ -73,29 +77,40 @@ export function PostList() {
   }
 
   return (
-    <div className="h-full overflow-y-auto">
-      {/* 下拉刷新提示 */}
-      <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-sm p-2 text-center text-xs text-zinc-500">
-        下拉刷新 • {posts.length} 条内容
+    <div className="h-full overflow-y-auto pb-20 hide-scrollbar">
+      {/* 刷新提示条 */}
+      <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur-sm px-5 py-3 border-b border-[var(--border)] flex items-center justify-between">
+        <span className="text-sm text-[var(--text-secondary)]">{posts.length} 条内容</span>
+        <span className="text-xs text-[var(--primary)] font-medium">下拉刷新</span>
       </div>
 
       {/* 帖子列表 */}
-      <div className="p-4">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+      <div className="p-5">
+        {posts.map((post, index) => (
+          <div
+            key={post.id}
+            className="animate-fade-in-up"
+            style={{ animationDelay: `${index * 50}ms` }}
+          >
+            <PostCard post={post} />
+          </div>
         ))}
       </div>
 
       {/* 加载更多 */}
-      <div ref={loaderRef} className="p-4 text-center">
+      <div ref={loaderRef} className="p-8 text-center">
         {isLoading && (
-          <div className="flex items-center justify-center gap-2 text-zinc-500">
-            <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
-            <span>加载中...</span>
+          <div className="flex items-center justify-center gap-3">
+            <div className="loading-spinner" />
+            <span className="text-sm text-[var(--text-secondary)]">加载中...</span>
           </div>
         )}
         {!hasMore && posts.length > 0 && (
-          <p className="text-zinc-600 text-sm">没有更多了</p>
+          <div className="flex items-center justify-center gap-2 text-[var(--text-muted)]">
+            <span className="w-8 h-px bg-[var(--border)]"></span>
+            <span className="text-xs">没有更多了</span>
+            <span className="w-8 h-px bg-[var(--border)]"></span>
+          </div>
         )}
       </div>
     </div>

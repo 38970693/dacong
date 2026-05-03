@@ -3,10 +3,10 @@
 import { useState } from 'react';
 
 const tabs = [
-  { id: 'home', label: '首页', icon: '🏠' },
-  { id: 'trending', label: '热榜', icon: '🔥' },
-  { id: 'messages', label: '消息', icon: '💬' },
-  { id: 'profile', label: '我的', icon: '👤' },
+  { id: 'home', label: '首页', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
+  { id: 'trending', label: '热榜', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
+  { id: 'messages', label: '消息', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z' },
+  { id: 'profile', label: '我的', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
 ];
 
 interface TabBarProps {
@@ -16,20 +16,41 @@ interface TabBarProps {
 
 export function TabBar({ activeTab, onTabChange }: TabBarProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-t border-white/10">
-      <div className="max-w-lg mx-auto flex justify-around items-center h-14">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={`flex flex-col items-center justify-center w-full py-1 transition-colors ${
-              activeTab === tab.id ? 'text-[#ff6b35]' : 'text-white/60'
-            }`}
-          >
-            <span className="text-xl">{tab.icon}</span>
-            <span className="text-[10px] mt-0.5 font-medium">{tab.label}</span>
-          </button>
-        ))}
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-[var(--border)] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <div className="max-w-lg mx-auto flex justify-around items-center h-16">
+        {tabs.map((tab, index) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => onTabChange(tab.id)}
+              className={`flex flex-col items-center justify-center w-full h-full transition-all duration-300 relative ${
+                isActive ? 'text-[var(--primary)]' : 'text-[var(--text-muted)]'
+              }`}
+            >
+              {/* 活跃指示器 */}
+              {isActive && (
+                <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-[var(--primary)] rounded-full animate-fade-in-up" />
+              )}
+
+              <svg
+                className={`w-6 h-6 transition-transform duration-300 ${isActive ? 'scale-110' : ''}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={isActive ? 2.5 : 1.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d={tab.icon} />
+              </svg>
+
+              <span className={`text-[11px] mt-1 font-medium transition-all duration-300 ${
+                isActive ? 'font-semibold' : ''
+              }`}>
+                {tab.label}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </nav>
   );
