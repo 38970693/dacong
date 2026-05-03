@@ -1,0 +1,81 @@
+{
+  "project": "DaCong (大聪明) 新闻聚合平台",
+  "description": "一个基于 Next.js + Supabase 的新闻聚合移动优先应用",
+  "repo": "https://github.com/38970693/dacong",
+  "status": "completed",
+  "deployed": {
+    "url": "https://dacong.netlify.app/",
+    "platform": "Netlify",
+    "ci": "GitHub Actions"
+  },
+  "techStack": {
+    "frontend": {
+      "framework": "Next.js 16.2.4",
+      "react": "19.2.4",
+      "router": "App Router",
+      "styling": "Tailwind CSS 4",
+      "state": "Zustand 5"
+    },
+    "backend": {
+      "baas": "Supabase",
+      "auth": "匿名登录 (signInAnonymously)",
+      "database": "PostgreSQL via Supabase"
+    },
+    "hosting": {
+      "platform": "Netlify",
+      "type": "静态站点 (output: 'export')",
+      "cdn": true
+    },
+    "ci": {
+      "platform": "GitHub Actions",
+      "workflow": ".github/workflows/deploy-console.yml",
+      "trigger": "dacong-console/** 目录变更"
+    }
+  },
+  "keyFiles": {
+    "nextConfig": "dacong-console/next.config.ts",
+    "supabaseClient": "dacong-console/src/utils/supabase/client.ts",
+    "mainPage": "dacong-console/src/app/page.tsx",
+    "workflow": ".github/workflows/deploy-console.yml"
+  },
+  "deploymentConfig": {
+    "baseDirectory": "dacong-console",
+    "buildCommand": "npm run build",
+    "publishDirectory": "out"
+  },
+  "resolvedIssues": [
+    {
+      "issue": "Vercel API 重定向返回 fingerprint/tracking HTML",
+      "solution": "改用 Supabase 直连，绕过 Vercel API"
+    },
+    {
+      "issue": "Cloudflare Workers 不支持 Node.js (@supabase/ssr 构建失败)",
+      "solution": "改用 @supabase/supabase-js 直连 + 静态导出"
+    },
+    {
+      "issue": "动态路由导致静态导出失败",
+      "solution": "移除 /api 目录，直接在前端组件内请求 Supabase"
+    },
+    {
+      "issue": "Netlify 找不到部署目录 (404)",
+      "solution": "设置 Base directory 为 dacong-console"
+    },
+    {
+      "issue": "GitHub Actions 网络连接问题",
+      "solution": "用户手动推送代码，Netlify GitHub 集成自动部署"
+    }
+  ],
+  "completedFeatures": [
+    "静态站点导出",
+    "Supabase 直连认证",
+    "GitHub Actions 自动化部署",
+    "Netlify CDN 托管"
+  ],
+  "pendingFeatures": [
+    "自定义域名绑定",
+    "用户收藏功能",
+    "评论功能",
+    "SEO 优化"
+  ],
+  "lastUpdated": "2026-05-03"
+}
