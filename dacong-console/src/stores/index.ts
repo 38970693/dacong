@@ -1,7 +1,14 @@
 import { create } from 'zustand';
-import type { Post } from '@/types/database';
+import { createClient } from '@supabase/supabase-js';
+import type { Post, PostsResponse } from '@/types/database';
 
-// 帖子列表状态
+// Supabase 客户端配置（前端直接访问）
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// 分页配置
+const DEFAULT_LIMIT = 20;
 interface PostsState {
   posts: Post[];
   isLoading: boolean;
@@ -36,13 +43,27 @@ export const usePostsStore = create<PostsStore>((set, get) => ({
   fetchPosts: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response = await fetch('/api/posts');
-      if (!response.ok) throw new Error('Failed to fetch posts');
-      const data = await response.json();
+      // 直连 Supabase，绕过 Vercel API
+      const { data: posts, error, count } = await supabase
+        .from('posts')
+        .select('id, raw_post_id, title, content, source, source_url, views, likes, comments_count, created_at, updated_at', { count: 'exact' })
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false })
+        .limit(DEFAULT_LIMIT);
+
+      if (error) throw error;
+
+      // 生成下一个 cursor
+      let nextCursor: string | null = null;
+      if (posts && posts.length === DEFAULT_LIMIT) {
+        const lastPost = posts[posts.length - 1];
+        nextCursor = `${lastPost.created_at}_${lastPost.id}`;
+      }
+
       set({
-        posts: data.posts || [],
-        nextCursor: data.next_cursor,
-        hasMore: !!data.next_cursor,
+        posts: posts || [],
+        nextCursor,
+        hasMore: !!nextCursor,
         isLoading: false
       });
     } catch (error) {
@@ -56,13 +77,30 @@ export const usePostsStore = create<PostsStore>((set, get) => ({
 
     set({ isLoading: true });
     try {
-      const response = await fetch(`/api/posts?cursor=${nextCursor}`);
-      if (!response.ok) throw new Error('Failed to load more');
-      const data = await response.json();
+      // cursor 格式：timestamp_id
+      const [timestamp, id] = nextCursor.split('_');
+      const { data: morePosts, error } = await supabase
+        .from('posts')
+        .select('id, raw_post_id, title, content, source, source_url, views, likes, comments_count, created_at, updated_at')
+        .eq('status', 'approved')
+        .lt('created_at', timestamp)
+        .lt('id', id)
+        .order('created_at', { ascending: false })
+        .limit(DEFAULT_LIMIT);
+
+      if (error) throw error;
+
+      // 生成下一个 cursor
+      let newCursor: string | null = null;
+      if (morePosts && morePosts.length === DEFAULT_LIMIT) {
+        const lastPost = morePosts[morePosts.length - 1];
+        newCursor = `${lastPost.created_at}_${lastPost.id}`;
+      }
+
       set({
-        posts: [...posts, ...(data.posts || [])],
-        nextCursor: data.next_cursor,
-        hasMore: !!data.next_cursor,
+        posts: [...posts, ...(morePosts || [])],
+        nextCursor: newCursor,
+        hasMore: !!newCursor,
         isLoading: false
       });
     } catch (error) {
@@ -87,7 +125,7 @@ interface TrendingStore extends TrendingState {
   refreshAll: () => Promise<void>;
 }
 
-export const useTrendingStore = create<TrendingStore>((set) => ({
+export const useTrendingStore = create<TrendingStore>((set, get) => ({
   hot: [],
   new: [],
   isLoading: false,
@@ -95,10 +133,16 @@ export const useTrendingStore = create<TrendingStore>((set) => ({
 
   fetchHot: async () => {
     try {
-      const response = await fetch('/api/trending?type=hot');
-      if (!response.ok) throw new Error('Failed to fetch hot');
-      const data = await response.json();
-      set({ hot: data.trending || [] });
+      // 直连 Supabase
+      const { data, error } = await supabase
+        .from('posts')
+        .select('id, raw_post_id, title, content, source, source_url, views, likes, comments_count, created_at, updated_at')
+        .eq('status', 'approved')
+        .order('views', { ascending: false })
+        .limit(20);
+
+      if (error) throw error;
+      set({ hot: data || [] });
     } catch (error) {
       set({ error: error instanceof Error ? error.message : 'Unknown error' });
     }
@@ -106,10 +150,16 @@ export const useTrendingStore = create<TrendingStore>((set) => ({
 
   fetchNew: async () => {
     try {
-      const response = await fetch('/api/trending?type=new');
-      if (!response.ok) throw new Error('Failed to fetch new');
-      const data = await response.json();
-      set({ new: data.trending || [] });
+      // 直连 Supabase
+      const { data, error } = await supabase
+        .from('posts')
+        .select('id, raw_post_id, title, content, source, source_url, views, likes, comments_count, created_at, updated_at')
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (error) throw error;
+      set({ new: data || [] });
     } catch (error) {
       set({ error: error instanceof Error ? error.message : 'Unknown error' });
     }

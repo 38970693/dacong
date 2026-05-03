@@ -3,49 +3,22 @@
 import { useEffect, useState } from 'react';
 import type { Post } from '@/types/database';
 import { PostCard } from './PostCard';
-
-interface TrendingItem extends Post {
-  rank: number;
-  score: number;
-}
+import { useTrendingStore } from '@/stores';
 
 export function TrendingList() {
-  const [hot, setHot] = useState<TrendingItem[]>([]);
-  const [newPosts, setNewPosts] = useState<Post[]>([]);
+  const { hot, new: newPosts, isLoading, error, refreshAll } = useTrendingStore();
   const [activeTab, setActiveTab] = useState<'hot' | 'new'>('hot');
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchTrending = async () => {
-    try {
-      const [hotRes, newRes] = await Promise.all([
-        fetch('/api/trending?type=hot'),
-        fetch('/api/trending?type=new')
-      ]);
-
-      const hotData = await hotRes.json();
-      const newData = await newRes.json();
-
-      if (hotData.success) setHot(hotData.trending || []);
-      if (newData.success) setNewPosts(newData.trending || []);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch trending');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   // 初始化加载
   useEffect(() => {
-    fetchTrending();
-  }, []);
+    refreshAll();
+  }, [refreshAll]);
 
   // 30秒轮询
   useEffect(() => {
-    const interval = setInterval(fetchTrending, 30000);
+    const interval = setInterval(refreshAll, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [refreshAll]);
 
   const currentList = activeTab === 'hot' ? hot : newPosts;
 
@@ -62,7 +35,7 @@ export function TrendingList() {
       <div className="flex flex-col items-center justify-center h-full text-zinc-500">
         <p className="mb-4">{error}</p>
         <button
-          onClick={fetchTrending}
+          onClick={refreshAll}
           className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
         >
           重试

@@ -14,7 +14,7 @@ interface TabBarProps {
   onTabChange: (tab: string) => void;
 }
 
-export default function TabBar({ activeTab, onTabChange }: TabBarProps) {
+export function TabBar({ activeTab, onTabChange }: TabBarProps) {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-t border-white/10">
       <div className="max-w-lg mx-auto flex justify-around items-center h-14">

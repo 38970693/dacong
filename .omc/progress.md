@@ -30,29 +30,38 @@
 
 ## 🔴 待解决问题 (2026-05-03)
 
-### Vercel 部署问题
-API `/api/posts` 返回 200 但数据为空，页面显示默认界面
+### Vercel API 重定向问题
+
+**问题**：API `/api/posts` 返回 HTML 而非 JSON，被 Vercel 代理重定向
+
+**症状**：
+```
+curl https://dacong-weld.vercelapp.com/api/posts
+→ 返回 vercelapp.com 指纹脚本 HTML
+```
+
+**根本原因**：Vercel 代理层将 API 请求重定向到广告/追踪页面，而不是转发到 Next.js 应用
+
+**已尝试修复**：
+1. ✅ 添加 `vercel.json` 禁用 cleanUrls
+2. ✅ 添加 `/api/.*` 到 middleware 排除
+3. ✅ Vercel 环境变量已配置
+4. ❌ 问题仍然存在
 
 **可能原因**：
-1. ❌ Vercel 环境变量未配置 `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-2. ❌ Middleware 仍拦截 API 请求（已修复待推送）
-3. ❌ Supabase 连接配置问题
+1. ❌ Vercel 免费版限制 API 路由带宽
+2. ❌ 项目被标记为"滥用"或"需要审核"
+3. ❌ Vercel 代理层面拦截
 
-**待操作**：
-1. 在 Vercel Dashboard 添加环境变量：
-   - `NEXT_PUBLIC_SUPABASE_URL` = `https://prszkdbdgffbdqclbgol.supabase.co`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByc3prZGJkZ2ZmYmRxY2xiZ29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NzUyMDksImV4cCI6MjA5MzI1MTIwOX0.m2eElXYUlB-XHXZ8w988APQs4u1s2rn5VlIOjn2m_t0`
-
-2. 推送 middleware 修改：
-   ```bash
-   git add dacong-console/middleware.ts
-   git commit -m "fix(console): exclude API routes from middleware"
-   git push origin main
-   ```
-
-3. 重新部署后测试：
-   - 访问 `https://dacong-weld.vercelapp.com/api/posts`
-   - 应返回 JSON 数据
+**建议方案**：
+1. **方案A**：联系 Vercel 支持 - 询问 API 路由问题
+2. **方案B**：使用其他平台部署：
+   - Railway (简单 Node.js 服务)
+   - Cloudflare Pages + Functions
+   - AWS Lambda + API Gateway
+3. **方案C**：降级 API 复杂度：
+   - 静态生成 + ISR
+   - CDN 缓存
 
 ---
 
@@ -82,10 +91,8 @@ dacong/
 
 ---
 
-## 🎯 明日计划
+## 🎯 后续计划
 
-1. ✅ 配置 Vercel 环境变量
-2. ✅ 推送 middleware 修改
-3. ✅ 验证 API 返回数据
-4. ✅ 验证前端显示内容
-5. (可选) 配置 FCM 推送
+1. (进行中) 解决 Vercel API 重定向问题
+2. (待定) 联系 Vercel 支持或迁移到其他平台
+3. (可选) 配置 FCM 推送

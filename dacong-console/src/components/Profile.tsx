@@ -6,7 +6,7 @@ interface ProfileProps {
   onLogin?: () => void;
 }
 
-export default function Profile({ onLogin }: ProfileProps) {
+export function Profile({ onLogin }: ProfileProps) {
   const { isAuthenticated, userId, role } = useUserStore();
 
   // 未登录状态

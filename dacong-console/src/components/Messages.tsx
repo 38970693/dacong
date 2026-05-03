@@ -34,7 +34,7 @@ const mockMessages = [
   },
 ];
 
-export default function Messages() {
+export function Messages() {
   return (
     <div className="h-full bg-black text-white overflow-y-auto hide-scrollbar pb-16">
       <header className="sticky top-0 z-10 bg-black/95 backdrop-blur-sm px-4 py-3 border-b border-white/10">
