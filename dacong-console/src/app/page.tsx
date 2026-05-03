@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import { createSupabaseClient } from '@/utils/supabase/client';
 import { TabBar } from '@/components/TabBar';
 import { PostList } from '@/components/PostList';
 import { TrendingList } from '@/components/TrendingList';
@@ -12,7 +12,7 @@ import { useUserStore } from '@/stores';
 export default function Home() {
   const [activeTab, setActiveTab] = useState('home');
   const { setUser } = useUserStore();
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
 
   const handleLogin = async () => {
     try {
