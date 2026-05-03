@@ -1,6 +1,6 @@
 # DaCong 项目进度记录
 
-## 最后更新：2026-05-02
+## 最后更新：2026-05-02 (晚间)
 
 ---
 
@@ -12,140 +12,80 @@
 - [x] API Routes (`/api/posts`, `/api/trending`, `/api/posts/[id]`)
 - [x] UI 组件 (PostCard, PostList, TrendingList, TabBar, Messages, Profile)
 - [x] 数据库类型定义
-- [x] Supabase 环境变量配置
 - [x] GitHub Actions CI/CD
 - [x] 移动端适配（深色主题，移动优先设计）
+- [x] Middleware 排除 API 路由
 
 ### 后端 Worker (dacong-worker)
-- [x] 爬虫（7个数据源）：
-  - 36kr (HTTP API)
-  - 虎嗅 (HTTP API)
-  - 新浪财经 (HTML 解析)
-  - 网易科技 (JSON API)
-  - 界面新闻 (HTML 解析)
-  - RSS 订阅源 (36kr, 虎嗅, 界面)
-- [x] AI 审核（本地关键词 + 阿里云预留）
-- [x] 榜单计算（热榜 + 时间衰减）
-- [x] 健康检查端点 (`/health`, `/health/live`, `/health/ready`)
-- [x] 定时调度（爬虫5分钟/审核30秒/榜单1分钟）
-- [x] GitHub Actions CI/CD
+- [x] 爬虫（7个数据源）
+- [x] AI 审核（本地关键词 + OpenAI 预留）
+- [x] 榜单计算（热榜 + 最新榜）
+- [x] GitHub Actions 定时任务（每5分钟）
 
 ### 数据库 (Supabase)
-- [x] Schema 设计 (`dacong-console/supabase/migrations/001_initial_schema.sql`)
-- [x] RLS 策略配置
-- [x] 触发器和索引
-
-### 项目架构
-- [x] Grill-Me 访谈（29个关键决策）
-- [x] 完整技术栈设计文档
-- [x] 并行开发计划（3大工程）
+- [x] Schema 迁移完成
+- [x] 示例数据添加（10条 posts + 40条 trending_cache）
 
 ---
 
-## 📋 环境变量
+## 🔴 待解决问题 (2026-05-03)
+
+### Vercel 部署问题
+API `/api/posts` 返回 200 但数据为空，页面显示默认界面
+
+**可能原因**：
+1. ❌ Vercel 环境变量未配置 `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+2. ❌ Middleware 仍拦截 API 请求（已修复待推送）
+3. ❌ Supabase 连接配置问题
+
+**待操作**：
+1. 在 Vercel Dashboard 添加环境变量：
+   - `NEXT_PUBLIC_SUPABASE_URL` = `https://prszkdbdgffbdqclbgol.supabase.co`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByc3prZGJkZ2ZmYmRxY2xiZ29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NzUyMDksImV4cCI6MjA5MzI1MTIwOX0.m2eElXYUlB-XHXZ8w988APQs4u1s2rn5VlIOjn2m_t0`
+
+2. 推送 middleware 修改：
+   ```bash
+   git add dacong-console/middleware.ts
+   git commit -m "fix(console): exclude API routes from middleware"
+   git push origin main
+   ```
+
+3. 重新部署后测试：
+   - 访问 `https://dacong-weld.vercelapp.com/api/posts`
+   - 应返回 JSON 数据
+
+---
+
+## 📋 完整环境变量
 
 ```
-# dacong-console/.env.local
+# dacong-console/.env.local (本地)
 NEXT_PUBLIC_SUPABASE_URL=https://prszkdbdgffbdqclbgol.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-# dacong-worker/.env
-SUPABASE_URL=https://prszkdbdgffbdqclbgol.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+# Vercel 环境变量 (需配置)
+NEXT_PUBLIC_SUPABASE_URL=https://prszkdbdgffbdqclbgol.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 ---
 
-## 🔜 待手动完成
-
-### 1. Supabase 数据库迁移
-- [x] 运行 `001_initial_schema.sql` 完成数据库迁移
-- [x] 运行 `sample-data.sql` 添加示例数据（10条 posts + 40条 trending_cache）
-
-### 3. GitHub 配置
-- [x] 创建 GitHub 仓库或更新远程地址
-- [x] 推送代码到 GitHub
-- [x] 添加 Secrets：
-  - `VERCEL_TOKEN`
-  - `VERCEL_ORG_ID` = team_V7Og2pSepqErwAMoE1G3psTu
-  - `VERCEL_PROJECT_ID` = prj_iCcurdVp4XJEQmRUwhuSTFGvp55
-  - [x] `SUPABASE_URL` = https://prszkdbdgffbdqclbgol.supabase.co
-  - [x] `SUPABASE_SERVICE_ROLE_KEY` = 已配置
-
-### 4. 部署
-- [x] 部署前端到 Vercel (https://dacong-weld.vercelapp.com)
-- [x] Worker 部署到 GitHub Actions (每5分钟定时任务)
-
-### 5. 可选功能（Phase 2+）
-- [ ] FCM 推送集成
-- [ ] Google/Apple 登录
-- [ ] 阿里云内容安全 API
-- [ ] 评论功能
-
----
-
-## 📁 项目结构（当前）
+## 📁 项目结构
 
 ```
 dacong/
-├── dacong-console/          # Next.js 前端
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── api/        # API Routes (posts, trending)
-│   │   │   ├── layout.tsx  # 根布局
-│   │   │   └── page.tsx     # 首页
-│   │   ├── components/      # UI 组件
-│   │   ├── stores/          # Zustand 状态管理
-│   │   ├── types/           # 类型定义
-│   │   └── utils/supabase/  # Supabase 客户端
-│   ├── supabase/migrations/ # 数据库迁移脚本
-│   └── .github/workflows/   # CI/CD
-│
-└── dacong-worker/           # Node.js Worker
-    ├── src/
-    │   ├── crawlers/        # 爬虫模块 (36kr, huxiu, sina, 163tech, jiemian, rss, health)
-    │   ├── moderator.ts     # AI 审核
-    │   ├── trending.ts      # 榜单计算
-    │   ├── supabase.ts      # Supabase 客户端
-    │   ├── logger.ts        # 日志
-    │   ├── config.ts        # 配置
-    │   └── types.ts         # 类型
-    └── .github/workflows/   # CI/CD
+├── dacong-console/          # Next.js 前端 (Vercel)
+├── dacong-worker/           # Node.js Worker (GitHub Actions)
+├── .github/workflows/       # CI/CD
+└── .omc/                    # 项目进度记录
 ```
 
 ---
 
-## 🎯 下一步行动
+## 🎯 明日计划
 
-### 立即执行（5分钟）
-1. 打开 [Supabase Dashboard](https://supabase.com/dashboard)
-2. 选择项目 → SQL Editor
-3. 粘贴并运行 `dacong-console/supabase/migrations/001_initial_schema.sql`
-
-### 验证迁移成功
-```sql
-SELECT * FROM posts LIMIT 1;
--- 应返回表结构而非错误
-```
-
----
-
-## 💡 快速启动命令
-
-```bash
-# 前端开发
-cd dacong-console && npm run dev
-
-# Worker 开发
-cd dacong-worker && npm run dev
-
-# 单独运行爬虫
-cd dacong-worker && npm run crawl
-
-# 单独运行审核
-cd dacong-worker && npm run moderate
-
-# 单独运行榜单计算
-cd dacong-worker && npm run trending
-```
+1. ✅ 配置 Vercel 环境变量
+2. ✅ 推送 middleware 修改
+3. ✅ 验证 API 返回数据
+4. ✅ 验证前端显示内容
+5. (可选) 配置 FCM 推送
