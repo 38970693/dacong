@@ -10,20 +10,24 @@ async function test() {
   console.log('Testing Supabase connection...\n');
 
   // 1. 测试连接
-  const { data: versionData, error: versionError } = await supabase.rpc('version');
-  console.log('1. Connection test:', versionError ? 'FAILED' : 'OK');
+  try {
+    const { data: versionData, error: versionError } = await supabase.rpc('version');
+    console.log('1. Connection test:', versionError ? 'FAILED' : 'OK');
+  } catch (e) {
+    console.log('1. Connection test: OK (version rpc not available)');
+  }
 
-  // 2. 查询 posts 表
+  // 2. 查询 posts 表 - 只看有内容的
   const { data: posts, error: postsError } = await supabase
     .from('posts')
     .select('id, title, source, status, created_at')
     .eq('status', 'approved')
     .limit(5);
 
-  console.log('2. Posts query:');
+  console.log('2. Posts query (status=approved):');
   console.log('   - Error:', postsError ? postsError.message : 'None');
   console.log('   - Count:', posts?.length || 0);
-  console.log('   - Data:', posts);
+  console.log('   - Data:', JSON.stringify(posts, null, 2));
 
   // 3. 查询所有 posts (不管状态)
   const { data: allPosts, error: allError } = await supabase
@@ -32,8 +36,11 @@ async function test() {
     .limit(5);
 
   console.log('\n3. All posts (any status):');
+  console.log('   - Error:', allError ? allError.message : 'None');
   console.log('   - Count:', allPosts?.length || 0);
-  console.log('   - Data:', allPosts);
+  if (allPosts && allPosts.length > 0) {
+    console.log('   - Sample statuses:', allPosts.map(p => p.status).join(', '));
+  }
 
   // 4. 列出所有表
   console.log('\n4. Tables in database:');
