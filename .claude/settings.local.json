@@ -32,7 +32,11 @@
       "Bash(chmod +x fix_freezed.sh)",
       "Bash(bash fix_freezed.sh)",
       "Bash(npx supabase *)",
-      "Bash(npx tsx *)"
+      "Bash(npx tsx *)",
+      "WebFetch(domain:lmarena.ai)",
+      "WebFetch(domain:artificialanalysis.ai)",
+      "WebFetch(domain:aiping.dev)",
+      "Bash(curl -s -L \"https://aiping.dev\" -H \"User-Agent: Mozilla/5.0\")"
     ]
   }
 }

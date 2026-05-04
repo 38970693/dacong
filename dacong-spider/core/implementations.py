@@ -288,6 +288,9 @@ class SpiderLogger(ILogger):
         else:
             self.logger.error(message)
 
+    def debug(self, message: str):
+        self.logger.debug(message)
+
     async def log_spider_result(self, result: SpiderResult):
         """记录爬虫执行结果"""
         status = "✅ 成功" if result.success else "❌ 失败"

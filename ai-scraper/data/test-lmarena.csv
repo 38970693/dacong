@@ -1,0 +1,101 @@
+rank,modelName,score,confidence,votes,developer,license,source,category,fetchedAt
+🥇 1,gemini-3-pro,1489,-,"26,385",Google,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,grok-4.1-thinking,1477,-,"26,505",xAI,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,gemini-3-flash,1471,-,"11,599",Google,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+4,claude-opus-4-5-20251101-thinking-32k,1468,-,"18,518",Anthropic,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+5,claude-opus-4-5-20251101,1467,-,"19,770",Anthropic,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+6,grok-4.1,1466,-,"30,490",xAI,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+7,gemini-3-flash (thinking-minimal),1464,-,"5,530",Google,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+8,gpt-5.1-high,1460,-,"23,068",OpenAI,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+9,claude-sonnet-4-5-20250929-thinking-32k,1452,-,"37,043",Anthropic,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+10,gemini-2.5-pro,1450,-,"86,296",Google,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,gemini-3-pro,1324,±13,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,gemini-2.5-pro,1249,±7,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,chatgpt-4o-latest-20250326,1237,±7,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+4,gpt-4.5-preview-2025-02-27,1226,±11,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+5,gemini-2.5-flash-preview-09-2025,1225,±11,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+6,gpt-5-chat,1222,±8,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+7,o3-2025-04-16,1219,±7,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+8,gpt-4.1-2025-04-14,1216,±7,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+9,gemini-2.5-flash,1214,±7,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+10,claude-opus-4-20250514-thinking-16k,1210,±15,Anthropic,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,gpt-image-1.5,1240,-,"36,258",OpenAI,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,gemini-3-pro-image-preview-2k,1233,-,"31,580",Google,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,gemini-3-pro-image-preview,1230,-,"70,176",Google,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+4,flux-2-max,1166,-,"32,734",Black Forest Labs,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+5,gemini-2.5-flash-image-preview,1156,-,"702,921",Google,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+6,flux-2-flex,1153,-,"55,182",Black Forest Labs,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+7,flux-2-pro,1152,-,"68,789",Black Forest Labs,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+8,hunyuan-image-3.0,1150,-,"138,145",Tencent,Community,lmarena,text,2026-05-04T08:40:04.383Z
+9,imagen-4.0-ultra-generate-preview,1143,-,"481,997",Google,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+10,seedream-4-2k,1143,-,"13,618",Bytedance,Proprietary,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,claude-opus-4-5-20251101-thinking-32k,1510,-,Anthropic,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,claude-opus-4-5-20251101,1480,-,Anthropic,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,gpt-5.2-high,1476,-,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+4,gemini-3-pro,1468,-,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+5,gemini-3-flash,1453,-,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+6,glm-4.7,1448,-,Zhipu AI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+7,minimax-m2.1-preview,1427,-,MiniMax,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+8,gpt-5.2,1401,-,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+9,gpt-5-medium,1397,-,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+10,gpt-5.1-medium,1392,-,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,gemini-3-pro,1324,±13,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,gemini-2.5-pro,1249,±7,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,chatgpt-4o-latest-20250326,1237,±7,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+4,gpt-4.5-preview-2025-02-27,1226,±11,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+5,gemini-2.5-flash-preview-09-2025,1225,±11,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+6,gpt-5-chat,1222,±8,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+7,o3-2025-04-16,1219,±7,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+8,gpt-4.1-2025-04-14,1216,±7,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+9,gemini-2.5-flash,1214,±7,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+10,claude-opus-4-20250514-thinking-16k,1210,±15,Anthropic,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,gemini-3-pro-grounding,1213,-,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,gpt-5.2-search,1210,-,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,gpt-5.1-search,1199,-,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+4,grok-4-1-fast-search,1178,-,xAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+5,grok-4-fast-search,1164,-,xAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+6,gemini-2.5-pro-grounding,1143,-,Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+7,o3-search,1138,-,OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+8,ppl-sonar-reasoning-pro-high,1137,-,Perplexity AI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+9,grok-4-search,1137,-,xAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+10,claude-opus-4-1-search,1128,-,Anthropic,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,veo-3.1-fast-audio,1370,"7,643",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,veo-3.1-audio,1361,"7,498",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,veo-3-fast-audio,1360,"23,809",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+4,veo-3-audio,1345,"17,452",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+5,sora-2-pro,1341,"6,134",OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+6,sora-2,1321,"6,896",OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+7,wan2.5-t2v-preview,1268,"3,898",Wanxiang AI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+8,veo-3,1258,"13,374",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+9,veo-3-fast,1249,"13,606",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+10,seedance-v1.5-pro,1248,817,ByteDance,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,veo-3.1-audio,1399,"16,565",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,veo-3.1-fast-audio,1389,"16,340",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,wan2.5-i2v-preview,1346,"9,280",Wanxiang AI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+4,veo-3-audio,1340,"32,397",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+5,veo-3-fast-audio,1330,"41,226",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+6,seedance-v1.5-pro,1324,"2,795",ByteDance,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+7,kling-2.6-pro,1300,"6,513",Kuaishou,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+8,seedance-v1-pro,1277,"36,008",ByteDance,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+9,kling-2.5-turbo-1080p,1276,"3,675",Kuaishou,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+10,veo-3-fast,1256,"25,545",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,chatgpt-image-latest,1422,"25,086",OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,gemini-3-pro-image-preview-2k,1407,"125,454",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,gemini-3-pro-image-preview,1403,"387,489",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+4,gpt-image-1.5,1392,"169,060",OpenAI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+5,seedream-4.5,1333,"110,261",ByteDance,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+6,gemini-2.5-flash-image-preview,1325,"10,233,345",Google,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+7,seedream-4-2k,1289,"218,705",ByteDance,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+8,flux-2-max,1278,"29,997",Black Forest Labs,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+9,flux-2-pro,1261,"28,455",Black Forest Labs,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+10,reve-v1.1,1261,"105,923",Reve AI,Proprietary,,lmarena,text,2026-05-04T08:40:04.383Z
+🥇 1,github-copilot++,1363,GitHub,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z
+🥈 2,claude-3.7-sonnet-copilot,1358,Anthropic,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z
+🥉 3,gemini-code-assist-1.5-pro,1352,Google,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z
+4,cursor-small-3.5,1345,Cursor,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z
+5,supermaven-pro,1341,Supermaven,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z
+6,continue-dev-beta,1338,Continue,Open Source,,,lmarena,text,2026-05-04T08:40:04.383Z
+7,codeium-ultra,1335,Codeium,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z
+8,tabnine-pro,1329,Tabnine,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z
+9,qodo-merge-pro,1322,Qodo,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z
+10,magic-dev-bench,1318,Magic,Proprietary,,,lmarena,text,2026-05-04T08:40:04.383Z

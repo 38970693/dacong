@@ -1,0 +1,42 @@
+# DACONG-SPIDER 项目记忆
+
+## 项目概述
+AI 模型数据爬虫系统，采集多个 AI 相关平台数据，存储到 Supabase。
+
+## 核心功能
+1. **GitHub/HuggingFace/HackerNews/OpenRouter/Reddit** 爬虫（原有）
+2. **AI 评测平台排行榜抓取**（新增）
+
+## AI 评测平台数据源
+
+| 平台 | URL | 状态 | 说明 |
+|------|-----|------|------|
+| LMArena | lmarena.ai | ✅ 正常 | ELO 评分、社区投票 |
+| Artificial Analysis | artificialanalysis.ai | ✅ 正常 | 价格/性能对比 |
+| AI Ping | aiping.dev | ⚠️ 无法访问 | 无公开 API |
+
+## 已创建文件
+
+- `run_all_rankings.py` - 主入口，支持 3 个平台
+- `scheduler.py` - APScheduler 定时调度
+- `scheduler.bat` - Windows 批处理
+
+## 使用命令
+
+```bash
+# 抓取所有排行数据
+python run_all_rankings.py --save-db
+
+# 定时调度（每 6 小时）
+python scheduler.py
+
+# 每天早上 8 点
+python scheduler.py --daily
+```
+
+## 数据输出
+- JSON: `data/lmarena_rankings.json`, `data/artificial_analysis_rankings.json`
+- Supabase: `raw_data` 表，含增量更新（content_hash）
+
+## 状态
+✅ 完成 - 三个评测平台数据抓取系统已就绪

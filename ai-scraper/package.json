@@ -1,0 +1,41 @@
+{
+  "name": "ai-model-leaderboard-scraper",
+  "version": "1.0.0",
+  "description": "Multi-source scraper for AI model ranking websites with JavaScript rendering support",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "scrape": "node src/index.js",
+    "scrape:lmarena": "node src/index.js lmarena",
+    "scrape:swebench": "node src/index.js swebench",
+    "scrape:all": "node src/index.js all",
+    "test": "node --test src/**/*.test.js",
+    "lint": "eslint src/"
+  },
+  "keywords": [
+    "scraper",
+    "ai",
+    "llm",
+    "leaderboard",
+    "lmarena",
+    "swebench",
+    "artificial-analysis"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.16.0",
+    "cheerio": "^1.2.0",
+    "commander": "^13.0.0",
+    "csv-writer": "^1.6.0",
+    "puppeteer": "^23.10.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

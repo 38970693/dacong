@@ -1,8 +1,8 @@
 {
   "project": "DaCong (大聪明) 新闻聚合平台",
-  "description": "一个基于 Next.js + Supabase 的新闻聚合移动优先应用",
+  "description": "AI 新闻聚合 + 排行榜数据抓取平台",
   "repo": "https://github.com/38970693/dacong",
-  "status": "completed",
+  "status": "active",
   "deployed": {
     "url": "https://dacong.netlify.app/",
     "platform": "Netlify",
@@ -21,27 +21,22 @@
       "auth": "匿名登录 (signInAnonymously)",
       "database": "PostgreSQL via Supabase"
     },
-    "hosting": {
-      "platform": "Netlify",
-      "type": "静态站点 (output: 'export')",
-      "cdn": true
-    },
-    "ci": {
-      "platform": "GitHub Actions",
-      "workflow": ".github/workflows/deploy-console.yml",
-      "trigger": "dacong-console/** 目录变更"
+    "spider": {
+      "language": "Python 3.13",
+      "framework": "asyncio + httpx",
+      "storage": "Supabase raw_data 表",
+      "location": "dacong-spider/"
     }
   },
   "keyFiles": {
     "nextConfig": "dacong-console/next.config.ts",
     "supabaseClient": "dacong-console/src/utils/supabase/client.ts",
     "mainPage": "dacong-console/src/app/page.tsx",
-    "workflow": ".github/workflows/deploy-console.yml"
-  },
-  "deploymentConfig": {
-    "baseDirectory": "dacong-console",
-    "buildCommand": "npm run build",
-    "publishDirectory": "out"
+    "workflow": ".github/workflows/deploy-console.yml",
+    "spiderMain": "dacong-spider/run_rankings.py",
+    "spiderBase": "dacong-spider/spiders/rankings_base.py",
+    "spiderHuggingFace": "dacong-spider/spiders/huggingface_leaderboard.py",
+    "spiderArtificialAnalysis": "dacong-spider/spiders/artificial_analysis.py"
   },
   "resolvedIssues": [
     {
@@ -63,19 +58,41 @@
     {
       "issue": "GitHub Actions 网络连接问题",
       "solution": "用户手动推送代码，Netlify GitHub 集成自动部署"
+    },
+    {
+      "issue": "BaseRankingsSpider.run() 接口不兼容 SpiderBase",
+      "solution": "添加可选参数 async def run(self, fetcher=None, writer=None)"
     }
   ],
   "completedFeatures": [
     "静态站点导出",
     "Supabase 直连认证",
     "GitHub Actions 自动化部署",
-    "Netlify CDN 托管"
+    "Netlify CDN 托管",
+    "LMArena 排行榜数据抓取",
+    "Artificial Analysis 排行榜数据抓取",
+    "排行榜数据同步到 Supabase"
   ],
+  "rankingsData": {
+    "lmarena": {
+      "total": 19925,
+      "lastSync": "2026-05-04",
+      "dataFile": "dacong-spider/data/lmarena_rankings.json"
+    },
+    "artificial_analysis": {
+      "total": 348,
+      "lastSync": "2026-05-04",
+      "dataFile": "dacong-spider/data/artificial_analysis_rankings.json"
+    }
+  },
   "pendingFeatures": [
     "自定义域名绑定",
     "用户收藏功能",
     "评论功能",
-    "SEO 优化"
+    "SEO 优化",
+    "SWE-bench 排行榜数据抓取（API 不可用）",
+    "AI Ping 排行榜数据抓取",
+    "排行榜前端展示"
   ],
-  "lastUpdated": "2026-05-03"
+  "lastUpdated": "2026-05-04"
 }

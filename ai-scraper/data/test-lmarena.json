@@ -1,0 +1,913 @@
+{
+  "source": "lmarena",
+  "fetchedAt": "2026-05-04T08:40:04.383Z",
+  "categories": [
+    {
+      "category": "text",
+      "categoryName": "Text Arena",
+      "models": [
+        {
+          "rank": "🥇 1",
+          "modelName": "gemini-3-pro",
+          "score": "1489",
+          "confidence": "-",
+          "votes": "26,385",
+          "developer": "Google",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "grok-4.1-thinking",
+          "score": "1477",
+          "confidence": "-",
+          "votes": "26,505",
+          "developer": "xAI",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "gemini-3-flash",
+          "score": "1471",
+          "confidence": "-",
+          "votes": "11,599",
+          "developer": "Google",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "4",
+          "modelName": "claude-opus-4-5-20251101-thinking-32k",
+          "score": "1468",
+          "confidence": "-",
+          "votes": "18,518",
+          "developer": "Anthropic",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "5",
+          "modelName": "claude-opus-4-5-20251101",
+          "score": "1467",
+          "confidence": "-",
+          "votes": "19,770",
+          "developer": "Anthropic",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "6",
+          "modelName": "grok-4.1",
+          "score": "1466",
+          "confidence": "-",
+          "votes": "30,490",
+          "developer": "xAI",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "7",
+          "modelName": "gemini-3-flash (thinking-minimal)",
+          "score": "1464",
+          "confidence": "-",
+          "votes": "5,530",
+          "developer": "Google",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "8",
+          "modelName": "gpt-5.1-high",
+          "score": "1460",
+          "confidence": "-",
+          "votes": "23,068",
+          "developer": "OpenAI",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "9",
+          "modelName": "claude-sonnet-4-5-20250929-thinking-32k",
+          "score": "1452",
+          "confidence": "-",
+          "votes": "37,043",
+          "developer": "Anthropic",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "10",
+          "modelName": "gemini-2.5-pro",
+          "score": "1450",
+          "confidence": "-",
+          "votes": "86,296",
+          "developer": "Google",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "gemini-3-pro",
+          "score": "1324",
+          "confidence": "±13",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "gemini-2.5-pro",
+          "score": "1249",
+          "confidence": "±7",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "chatgpt-4o-latest-20250326",
+          "score": "1237",
+          "confidence": "±7",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "4",
+          "modelName": "gpt-4.5-preview-2025-02-27",
+          "score": "1226",
+          "confidence": "±11",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "5",
+          "modelName": "gemini-2.5-flash-preview-09-2025",
+          "score": "1225",
+          "confidence": "±11",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "6",
+          "modelName": "gpt-5-chat",
+          "score": "1222",
+          "confidence": "±8",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "7",
+          "modelName": "o3-2025-04-16",
+          "score": "1219",
+          "confidence": "±7",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "8",
+          "modelName": "gpt-4.1-2025-04-14",
+          "score": "1216",
+          "confidence": "±7",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "9",
+          "modelName": "gemini-2.5-flash",
+          "score": "1214",
+          "confidence": "±7",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "10",
+          "modelName": "claude-opus-4-20250514-thinking-16k",
+          "score": "1210",
+          "confidence": "±15",
+          "votes": "Anthropic",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "gpt-image-1.5",
+          "score": "1240",
+          "confidence": "-",
+          "votes": "36,258",
+          "developer": "OpenAI",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "gemini-3-pro-image-preview-2k",
+          "score": "1233",
+          "confidence": "-",
+          "votes": "31,580",
+          "developer": "Google",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "gemini-3-pro-image-preview",
+          "score": "1230",
+          "confidence": "-",
+          "votes": "70,176",
+          "developer": "Google",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "4",
+          "modelName": "flux-2-max",
+          "score": "1166",
+          "confidence": "-",
+          "votes": "32,734",
+          "developer": "Black Forest Labs",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "5",
+          "modelName": "gemini-2.5-flash-image-preview",
+          "score": "1156",
+          "confidence": "-",
+          "votes": "702,921",
+          "developer": "Google",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "6",
+          "modelName": "flux-2-flex",
+          "score": "1153",
+          "confidence": "-",
+          "votes": "55,182",
+          "developer": "Black Forest Labs",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "7",
+          "modelName": "flux-2-pro",
+          "score": "1152",
+          "confidence": "-",
+          "votes": "68,789",
+          "developer": "Black Forest Labs",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "8",
+          "modelName": "hunyuan-image-3.0",
+          "score": "1150",
+          "confidence": "-",
+          "votes": "138,145",
+          "developer": "Tencent",
+          "license": "Community"
+        },
+        {
+          "rank": "9",
+          "modelName": "imagen-4.0-ultra-generate-preview",
+          "score": "1143",
+          "confidence": "-",
+          "votes": "481,997",
+          "developer": "Google",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "10",
+          "modelName": "seedream-4-2k",
+          "score": "1143",
+          "confidence": "-",
+          "votes": "13,618",
+          "developer": "Bytedance",
+          "license": "Proprietary"
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "claude-opus-4-5-20251101-thinking-32k",
+          "score": "1510",
+          "confidence": "-",
+          "votes": "Anthropic",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "claude-opus-4-5-20251101",
+          "score": "1480",
+          "confidence": "-",
+          "votes": "Anthropic",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "gpt-5.2-high",
+          "score": "1476",
+          "confidence": "-",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "4",
+          "modelName": "gemini-3-pro",
+          "score": "1468",
+          "confidence": "-",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "5",
+          "modelName": "gemini-3-flash",
+          "score": "1453",
+          "confidence": "-",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "6",
+          "modelName": "glm-4.7",
+          "score": "1448",
+          "confidence": "-",
+          "votes": "Zhipu AI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "7",
+          "modelName": "minimax-m2.1-preview",
+          "score": "1427",
+          "confidence": "-",
+          "votes": "MiniMax",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "8",
+          "modelName": "gpt-5.2",
+          "score": "1401",
+          "confidence": "-",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "9",
+          "modelName": "gpt-5-medium",
+          "score": "1397",
+          "confidence": "-",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "10",
+          "modelName": "gpt-5.1-medium",
+          "score": "1392",
+          "confidence": "-",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "gemini-3-pro",
+          "score": "1324",
+          "confidence": "±13",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "gemini-2.5-pro",
+          "score": "1249",
+          "confidence": "±7",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "chatgpt-4o-latest-20250326",
+          "score": "1237",
+          "confidence": "±7",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "4",
+          "modelName": "gpt-4.5-preview-2025-02-27",
+          "score": "1226",
+          "confidence": "±11",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "5",
+          "modelName": "gemini-2.5-flash-preview-09-2025",
+          "score": "1225",
+          "confidence": "±11",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "6",
+          "modelName": "gpt-5-chat",
+          "score": "1222",
+          "confidence": "±8",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "7",
+          "modelName": "o3-2025-04-16",
+          "score": "1219",
+          "confidence": "±7",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "8",
+          "modelName": "gpt-4.1-2025-04-14",
+          "score": "1216",
+          "confidence": "±7",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "9",
+          "modelName": "gemini-2.5-flash",
+          "score": "1214",
+          "confidence": "±7",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "10",
+          "modelName": "claude-opus-4-20250514-thinking-16k",
+          "score": "1210",
+          "confidence": "±15",
+          "votes": "Anthropic",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "gemini-3-pro-grounding",
+          "score": "1213",
+          "confidence": "-",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "gpt-5.2-search",
+          "score": "1210",
+          "confidence": "-",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "gpt-5.1-search",
+          "score": "1199",
+          "confidence": "-",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "4",
+          "modelName": "grok-4-1-fast-search",
+          "score": "1178",
+          "confidence": "-",
+          "votes": "xAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "5",
+          "modelName": "grok-4-fast-search",
+          "score": "1164",
+          "confidence": "-",
+          "votes": "xAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "6",
+          "modelName": "gemini-2.5-pro-grounding",
+          "score": "1143",
+          "confidence": "-",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "7",
+          "modelName": "o3-search",
+          "score": "1138",
+          "confidence": "-",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "8",
+          "modelName": "ppl-sonar-reasoning-pro-high",
+          "score": "1137",
+          "confidence": "-",
+          "votes": "Perplexity AI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "9",
+          "modelName": "grok-4-search",
+          "score": "1137",
+          "confidence": "-",
+          "votes": "xAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "10",
+          "modelName": "claude-opus-4-1-search",
+          "score": "1128",
+          "confidence": "-",
+          "votes": "Anthropic",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "veo-3.1-fast-audio",
+          "score": "1370",
+          "confidence": "7,643",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "veo-3.1-audio",
+          "score": "1361",
+          "confidence": "7,498",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "veo-3-fast-audio",
+          "score": "1360",
+          "confidence": "23,809",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "4",
+          "modelName": "veo-3-audio",
+          "score": "1345",
+          "confidence": "17,452",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "5",
+          "modelName": "sora-2-pro",
+          "score": "1341",
+          "confidence": "6,134",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "6",
+          "modelName": "sora-2",
+          "score": "1321",
+          "confidence": "6,896",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "7",
+          "modelName": "wan2.5-t2v-preview",
+          "score": "1268",
+          "confidence": "3,898",
+          "votes": "Wanxiang AI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "8",
+          "modelName": "veo-3",
+          "score": "1258",
+          "confidence": "13,374",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "9",
+          "modelName": "veo-3-fast",
+          "score": "1249",
+          "confidence": "13,606",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "10",
+          "modelName": "seedance-v1.5-pro",
+          "score": "1248",
+          "confidence": "817",
+          "votes": "ByteDance",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "veo-3.1-audio",
+          "score": "1399",
+          "confidence": "16,565",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "veo-3.1-fast-audio",
+          "score": "1389",
+          "confidence": "16,340",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "wan2.5-i2v-preview",
+          "score": "1346",
+          "confidence": "9,280",
+          "votes": "Wanxiang AI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "4",
+          "modelName": "veo-3-audio",
+          "score": "1340",
+          "confidence": "32,397",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "5",
+          "modelName": "veo-3-fast-audio",
+          "score": "1330",
+          "confidence": "41,226",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "6",
+          "modelName": "seedance-v1.5-pro",
+          "score": "1324",
+          "confidence": "2,795",
+          "votes": "ByteDance",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "7",
+          "modelName": "kling-2.6-pro",
+          "score": "1300",
+          "confidence": "6,513",
+          "votes": "Kuaishou",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "8",
+          "modelName": "seedance-v1-pro",
+          "score": "1277",
+          "confidence": "36,008",
+          "votes": "ByteDance",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "9",
+          "modelName": "kling-2.5-turbo-1080p",
+          "score": "1276",
+          "confidence": "3,675",
+          "votes": "Kuaishou",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "10",
+          "modelName": "veo-3-fast",
+          "score": "1256",
+          "confidence": "25,545",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "chatgpt-image-latest",
+          "score": "1422",
+          "confidence": "25,086",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "gemini-3-pro-image-preview-2k",
+          "score": "1407",
+          "confidence": "125,454",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "gemini-3-pro-image-preview",
+          "score": "1403",
+          "confidence": "387,489",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "4",
+          "modelName": "gpt-image-1.5",
+          "score": "1392",
+          "confidence": "169,060",
+          "votes": "OpenAI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "5",
+          "modelName": "seedream-4.5",
+          "score": "1333",
+          "confidence": "110,261",
+          "votes": "ByteDance",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "6",
+          "modelName": "gemini-2.5-flash-image-preview",
+          "score": "1325",
+          "confidence": "10,233,345",
+          "votes": "Google",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "7",
+          "modelName": "seedream-4-2k",
+          "score": "1289",
+          "confidence": "218,705",
+          "votes": "ByteDance",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "8",
+          "modelName": "flux-2-max",
+          "score": "1278",
+          "confidence": "29,997",
+          "votes": "Black Forest Labs",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "9",
+          "modelName": "flux-2-pro",
+          "score": "1261",
+          "confidence": "28,455",
+          "votes": "Black Forest Labs",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "10",
+          "modelName": "reve-v1.1",
+          "score": "1261",
+          "confidence": "105,923",
+          "votes": "Reve AI",
+          "developer": "Proprietary",
+          "license": ""
+        },
+        {
+          "rank": "🥇 1",
+          "modelName": "github-copilot++",
+          "score": "1363",
+          "confidence": "GitHub",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "🥈 2",
+          "modelName": "claude-3.7-sonnet-copilot",
+          "score": "1358",
+          "confidence": "Anthropic",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "🥉 3",
+          "modelName": "gemini-code-assist-1.5-pro",
+          "score": "1352",
+          "confidence": "Google",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "4",
+          "modelName": "cursor-small-3.5",
+          "score": "1345",
+          "confidence": "Cursor",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "5",
+          "modelName": "supermaven-pro",
+          "score": "1341",
+          "confidence": "Supermaven",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "6",
+          "modelName": "continue-dev-beta",
+          "score": "1338",
+          "confidence": "Continue",
+          "votes": "Open Source",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "7",
+          "modelName": "codeium-ultra",
+          "score": "1335",
+          "confidence": "Codeium",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "8",
+          "modelName": "tabnine-pro",
+          "score": "1329",
+          "confidence": "Tabnine",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "9",
+          "modelName": "qodo-merge-pro",
+          "score": "1322",
+          "confidence": "Qodo",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        },
+        {
+          "rank": "10",
+          "modelName": "magic-dev-bench",
+          "score": "1318",
+          "confidence": "Magic",
+          "votes": "Proprietary",
+          "developer": "",
+          "license": ""
+        }
+      ],
+      "scrapedAt": "2026-05-04T08:40:04.383Z"
+    }
+  ]
+}

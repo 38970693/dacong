@@ -47,7 +47,19 @@ from spiders.github_trending import GitHubTrendingSpider
 from spiders.huggingface import HuggingFaceSpider
 from spiders.hackernews import HackerNewsSpider
 
+# AI Rankings 爬虫
+from spiders.swebench import SWEBenchSpider
+from spiders.arena import ArenaSpider
+from spiders.artificial_analysis import ArtificialAnalysisSpider
+from spiders.aiping import AIPingSpider
+
 # 显式注册（装饰器已在类定义时执行）
 register_spider("github", GitHubTrendingSpider)
 register_spider("huggingface", HuggingFaceSpider)
 register_spider("hackernews", HackerNewsSpider)
+
+# AI Rankings 爬虫注册
+register_spider("swebench", SWEBenchSpider)
+register_spider("arena", ArenaSpider)
+register_spider("artificial_analysis", ArtificialAnalysisSpider)
+register_spider("aiping", AIPingSpider)

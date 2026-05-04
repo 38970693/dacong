@@ -160,3 +160,37 @@ class Writer:
         except Exception as e:
             logger.error(f"[Writer] upsert_model 失败: {e}")
             return None
+
+    def upsert_ranking(self, table: str, data: dict, unique_keys: list[str]) -> bool:
+        """
+        通用的 upsert 方法（用于排行榜表）
+        Args:
+            table: 表名 (swebench_rankings, arena_rankings 等)
+            data: 要写入的数据
+            unique_keys: 用于 ON CONFLICT 的唯一键列表
+        """
+        try:
+            unique_constraint = ", ".join(unique_keys)
+            # 使用 upsert
+            result, _ = self.client.table(table).upsert(
+                data,
+                on_conflict=unique_constraint
+            ).execute()
+            return True
+        except Exception as e:
+            logger.error(f"[Writer] upsert_ranking {table} 失败: {e}")
+            return False
+
+    def execute_raw(self, sql: str, params: list = None) -> bool:
+        """
+        执行原始 SQL（用于复杂的 upsert，如 ON CONFLICT DO UPDATE）
+        注意：需要 PostgreSQL RPC 函数支持
+        """
+        try:
+            # 使用 rpc 函数执行 raw SQL（如果配置了）
+            # 这里只是简单包装，实际使用需要后端支持
+            logger.warning("[Writer] execute_raw 需要后端 RPC 支持")
+            return False
+        except Exception as e:
+            logger.error(f"[Writer] execute_raw 失败: {e}")
+            return False

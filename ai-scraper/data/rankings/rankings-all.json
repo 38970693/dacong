@@ -1,0 +1,7580 @@
+{
+  "code": [
+    {
+      "rank": 1,
+      "idx": "12",
+      "model": "Anthropicclaude-opus-4-7-thinkingAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1571+14/-13",
+      "votes": "2,490",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 2,
+      "idx": "14",
+      "model": "Anthropicclaude-opus-4-7Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1561+13/-13",
+      "votes": "2,658",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 3,
+      "idx": "26",
+      "model": "Anthropicclaude-opus-4-6-thinkingAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1548+9/-9",
+      "votes": "5,750",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 4,
+      "idx": "27",
+      "model": "Anthropicclaude-opus-4-6Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1543+9/-9",
+      "votes": "6,679",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 5,
+      "idx": "38",
+      "model": "glm-5.1Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1534+11/-11",
+      "votes": "3,412",
+      "price": "$1.40 / $4.40",
+      "context": "202.8K"
+    },
+    {
+      "rank": 6,
+      "idx": "48",
+      "model": "Anthropicclaude-sonnet-4-6Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1527+8/-8",
+      "votes": "8,709",
+      "price": "$3 / $15",
+      "context": "1M"
+    },
+    {
+      "rank": 7,
+      "idx": "38",
+      "model": "kimi-k2.6Moonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1526+14/-14",
+      "votes": "2,130",
+      "price": "$0.95 / $4",
+      "context": "262.1K"
+    },
+    {
+      "rank": 8,
+      "idx": "510",
+      "model": "Metamuse-sparkMeta · Proprietary",
+      "company": "Meta",
+      "elo": "1509+16/-16Preliminary",
+      "votes": "1,635",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 9,
+      "idx": "812",
+      "model": "gpt-5.5-high (codex-harness)OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1492+14/-14",
+      "votes": "2,126",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 10,
+      "idx": "811",
+      "model": "Anthropicclaude-opus-4-5-20251101-thinking-32kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1491+7/-7",
+      "votes": "13,065",
+      "price": "$5 / $25",
+      "context": "200K"
+    },
+    {
+      "rank": 11,
+      "idx": "915",
+      "model": "mimo-v2.5-proXiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1475+12/-12",
+      "votes": "2,681",
+      "price": "$1 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 12,
+      "idx": "1018",
+      "model": "qwen3.6-plusAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1467+11/-11",
+      "votes": "3,716",
+      "price": "$0.33 / $1.95",
+      "context": "1M"
+    },
+    {
+      "rank": 13,
+      "idx": "1116",
+      "model": "Anthropicclaude-opus-4-5-20251101Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1467+6/-6",
+      "votes": "15,309",
+      "price": "$5 / $25",
+      "context": "200K"
+    },
+    {
+      "rank": 14,
+      "idx": "1123",
+      "model": "gpt-5.4-high (codex-harness)OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1457+17/-17",
+      "votes": "1,482",
+      "price": "$2.50 / $15",
+      "context": "1.1M"
+    },
+    {
+      "rank": 15,
+      "idx": "1124",
+      "model": "deepseek-v4-pro-thinkingDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1455+16/-16",
+      "votes": "1,469",
+      "price": "$0.43 / $0.87",
+      "context": "1M"
+    },
+    {
+      "rank": 16,
+      "idx": "1321",
+      "model": "gemini-3.1-pro-previewGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1453+8/-8",
+      "votes": "7,813",
+      "price": "$2 / $12",
+      "context": "1M"
+    },
+    {
+      "rank": 17,
+      "idx": "1225",
+      "model": "gpt-5.5 (codex-harness)OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1447+14/-14",
+      "votes": "1,879",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 18,
+      "idx": "1325",
+      "model": "mimo-v2.5Xiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1444+15/-15",
+      "votes": "1,570",
+      "price": "$0.40 / $2",
+      "context": "1M"
+    },
+    {
+      "rank": 19,
+      "idx": "1425",
+      "model": "glm-4.7Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1440+10/-10",
+      "votes": "4,883",
+      "price": "$0.38 / $1.74",
+      "context": "202.8K"
+    },
+    {
+      "rank": 20,
+      "idx": "1425",
+      "model": "gemini-3-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1438+7/-7",
+      "votes": "17,173",
+      "price": "$2 / $12",
+      "context": "1M"
+    },
+    {
+      "rank": 21,
+      "idx": "1525",
+      "model": "glm-5Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1437+8/-8",
+      "votes": "6,393",
+      "price": "$1 / $3.20",
+      "context": "202.8K"
+    },
+    {
+      "rank": 22,
+      "idx": "1428",
+      "model": "gpt-5.4-medium (codex-harness)OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1437+16/-16",
+      "votes": "1,448",
+      "price": "$2.50 / $15",
+      "context": "1.1M"
+    },
+    {
+      "rank": 23,
+      "idx": "1525",
+      "model": "gemini-3-flashGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1437+7/-7",
+      "votes": "13,282",
+      "price": "$0.50 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 24,
+      "idx": "1726",
+      "model": "kimi-k2.5-thinkingMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1430+7/-7",
+      "votes": "8,721",
+      "price": "$0.60 / $3",
+      "context": "N/A"
+    },
+    {
+      "rank": 25,
+      "idx": "1628",
+      "model": "mimo-v2-proXiaomi · Proprietary",
+      "company": "Xiaomi",
+      "elo": "1430+9/-9",
+      "votes": "4,869",
+      "price": "$1 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 26,
+      "idx": "2433",
+      "model": "minimax-m2.7MiniMax · Modified MIT",
+      "company": "Other",
+      "elo": "1411+10/-10",
+      "votes": "4,502",
+      "price": "$0.30 / $1.20",
+      "context": "196.6K"
+    },
+    {
+      "rank": 27,
+      "idx": "2341",
+      "model": "grok-4.3xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1408+19/-18",
+      "votes": "1,048",
+      "price": "$1.25 / $2.50",
+      "context": "1M"
+    },
+    {
+      "rank": 28,
+      "idx": "2635",
+      "model": "kimi-k2.5-instantMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1408+11/-11",
+      "votes": "3,609",
+      "price": "$0.44 / $2",
+      "context": "262.1K"
+    },
+    {
+      "rank": 29,
+      "idx": "2637",
+      "model": "gpt-5.3-codex (codex-harness)OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1407+12/-12",
+      "votes": "2,965",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    },
+    {
+      "rank": 30,
+      "idx": "2441",
+      "model": "gpt-5.2OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1404+17/-17",
+      "votes": "1,459",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    },
+    {
+      "rank": 31,
+      "idx": "2641",
+      "model": "gpt-5.4-mini-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1400+11/-11",
+      "votes": "3,410",
+      "price": "$0.75 / $4.50",
+      "context": "400K"
+    },
+    {
+      "rank": 32,
+      "idx": "2641",
+      "model": "grok-4.20-beta-0309-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1399+9/-9",
+      "votes": "5,083",
+      "price": "$2 / $6",
+      "context": "2M"
+    },
+    {
+      "rank": 33,
+      "idx": "2641",
+      "model": "gpt-5-mediumOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1393+13/-13",
+      "votes": "3,755",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 34,
+      "idx": "2741",
+      "model": "minimax-m2.1-previewMiniMax · MIT",
+      "company": "Other",
+      "elo": "1392+8/-8",
+      "votes": "9,279",
+      "price": "$0.29 / $0.95",
+      "context": "196.6K"
+    },
+    {
+      "rank": 35,
+      "idx": "2741",
+      "model": "gpt-5.1-mediumOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1391+9/-9",
+      "votes": "6,124",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 36,
+      "idx": "2841",
+      "model": "gemini-3-flash (thinking-minimal)Google · Proprietary",
+      "company": "Google",
+      "elo": "1389+6/-6",
+      "votes": "14,262",
+      "price": "$0.50 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 37,
+      "idx": "2941",
+      "model": "Anthropicclaude-sonnet-4-5-20250929-thinking-32kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1388+7/-7",
+      "votes": "15,741",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 38,
+      "idx": "2841",
+      "model": "qwen3.5-397b-a17bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1387+8/-8",
+      "votes": "7,601",
+      "price": "$0.39 / $2.34",
+      "context": "262.1K"
+    },
+    {
+      "rank": 39,
+      "idx": "2941",
+      "model": "Anthropicclaude-sonnet-4-5-20250929Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1386+6/-6",
+      "votes": "18,409",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 40,
+      "idx": "2941",
+      "model": "Anthropicclaude-opus-4-1-20250805Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1385+9/-9",
+      "votes": "8,572",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 41,
+      "idx": "2942",
+      "model": "minimax-m2.5MiniMax · Modified MIT",
+      "company": "Other",
+      "elo": "1383+8/-8",
+      "votes": "7,857",
+      "price": "$0.15 / $1.15",
+      "context": "196.6K"
+    },
+    {
+      "rank": 42,
+      "idx": "4144",
+      "model": "deepseek-v3.2-thinkingDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1368+8/-8",
+      "votes": "7,918",
+      "price": "$0.25 / $0.38",
+      "context": "131.1K"
+    },
+    {
+      "rank": 43,
+      "idx": "4245",
+      "model": "qwen3.5-122b-a10bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1363+8/-8",
+      "votes": "6,318",
+      "price": "$0.26 / $2.08",
+      "context": "262.1K"
+    },
+    {
+      "rank": 44,
+      "idx": "4246",
+      "model": "glm-4.6Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1355+9/-9",
+      "votes": "8,354",
+      "price": "$0.39 / $1.90",
+      "context": "204.8K"
+    },
+    {
+      "rank": 45,
+      "idx": "4348",
+      "model": "qwen3.5-27bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1350+9/-9",
+      "votes": "5,905",
+      "price": "$0.20 / $1.56",
+      "context": "262.1K"
+    },
+    {
+      "rank": 46,
+      "idx": "4451",
+      "model": "gpt-5.1OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1339+7/-7",
+      "votes": "12,871",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 47,
+      "idx": "4551",
+      "model": "mimo-v2-flash (non-thinking)Xiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1337+8/-8",
+      "votes": "6,734",
+      "price": "$0.09 / $0.29",
+      "context": "262.1K"
+    },
+    {
+      "rank": 48,
+      "idx": "4551",
+      "model": "gpt-5.2-codexOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1335+8/-8",
+      "votes": "7,761",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    },
+    {
+      "rank": 49,
+      "idx": "4651",
+      "model": "deepseek-v3.2DeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1332+7/-7",
+      "votes": "10,480",
+      "price": "$0.25 / $0.38",
+      "context": "131.1K"
+    },
+    {
+      "rank": 50,
+      "idx": "4651",
+      "model": "kimi-k2-thinking-turboMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1330+6/-6",
+      "votes": "15,371",
+      "price": "$1.15 / $8",
+      "context": "262.1K"
+    },
+    {
+      "rank": 51,
+      "idx": "4652",
+      "model": "gpt-5.1-codexOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1329+10/-10",
+      "votes": "6,229",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 52,
+      "idx": "5154",
+      "model": "Anthropicclaude-haiku-4-5-20251001Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1317+6/-6",
+      "votes": "18,685",
+      "price": "$1 / $5",
+      "context": "200K"
+    },
+    {
+      "rank": 53,
+      "idx": "5255",
+      "model": "minimax-m2MiniMax · Apache 2.0",
+      "company": "Other",
+      "elo": "1304+9/-9",
+      "votes": "8,403",
+      "price": "$0.26 / $1",
+      "context": "196.6K"
+    },
+    {
+      "rank": 54,
+      "idx": "5256",
+      "model": "mimo-v2-flash (thinking)Xiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1300+14/-14",
+      "votes": "2,096",
+      "price": "$0.09 / $0.29",
+      "context": "262.1K"
+    },
+    {
+      "rank": 55,
+      "idx": "5356",
+      "model": "deepseek-v3.2-expDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1286+11/-11",
+      "votes": "4,871",
+      "price": "$0.27 / $0.41",
+      "context": "163.8K"
+    },
+    {
+      "rank": 56,
+      "idx": "5456",
+      "model": "qwen3-coder-480b-a35b-instructAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1281+7/-7",
+      "votes": "15,218",
+      "price": "$0.40 / $1.60",
+      "context": "262.1K"
+    },
+    {
+      "rank": 57,
+      "idx": "5763",
+      "model": "KwaiKAT-Coder-Pro-V1KwaiKAT · Proprietary",
+      "company": "Other",
+      "elo": "1258+15/-15",
+      "votes": "1,883",
+      "price": "$0.21 / $0.83",
+      "context": "256K"
+    },
+    {
+      "rank": 58,
+      "idx": "5764",
+      "model": "qwen3.5-35b-a3bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1248+16/-16",
+      "votes": "1,815",
+      "price": "$0.15 / $1",
+      "context": "262.1K"
+    },
+    {
+      "rank": 59,
+      "idx": "5765",
+      "model": "trinity-large-thinkingArcee AI · Apache 2.0",
+      "company": "Other",
+      "elo": "1246+19/-19",
+      "votes": "1,315",
+      "price": "$0.22 / $0.85",
+      "context": "262.1K"
+    },
+    {
+      "rank": 60,
+      "idx": "5765",
+      "model": "gpt-5.1-codex-miniOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1239+17/-17",
+      "votes": "1,444",
+      "price": "$0.25 / $2",
+      "context": "400K"
+    },
+    {
+      "rank": 61,
+      "idx": "5764",
+      "model": "gemini-3.1-flash-lite-previewGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1238+9/-9",
+      "votes": "7,106",
+      "price": "$0.25 / $1.50",
+      "context": "1M"
+    },
+    {
+      "rank": 62,
+      "idx": "5765",
+      "model": "qwen3.5-flashAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1236+17/-17",
+      "votes": "1,562",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 63,
+      "idx": "5765",
+      "model": "grok-4-1-fast-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1234+9/-9",
+      "votes": "6,915",
+      "price": "$0.20 / $0.50",
+      "context": "2M"
+    },
+    {
+      "rank": 64,
+      "idx": "5867",
+      "model": "mistral-large-3Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1222+20/-20",
+      "votes": "1,032",
+      "price": "$0.50 / $1.50",
+      "context": "N/A"
+    },
+    {
+      "rank": 65,
+      "idx": "6068",
+      "model": "grok-4.1-thinkingxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1207+20/-20",
+      "votes": "1,210",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 66,
+      "idx": "6467",
+      "model": "gemini-2.5-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1203+13/-13",
+      "votes": "3,300",
+      "price": "$1.25 / $10",
+      "context": "1M"
+    },
+    {
+      "rank": 67,
+      "idx": "6468",
+      "model": "devstral-2Mistral · Modified MIT",
+      "company": "Other",
+      "elo": "1199+17/-17",
+      "votes": "1,583",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 68,
+      "idx": "6670",
+      "model": "mercury-2Inception AI · Proprietary",
+      "company": "Other",
+      "elo": "1165+23/-23",
+      "votes": "947",
+      "price": "$0.25 / $0.75",
+      "context": "128K"
+    },
+    {
+      "rank": 69,
+      "idx": "6870",
+      "model": "grok-4-fast-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1149+23/-23",
+      "votes": "936",
+      "price": "$0.20 / $0.50",
+      "context": "2M"
+    },
+    {
+      "rank": 70,
+      "idx": "6870",
+      "model": "grok-code-fast-1xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1139+22/-22",
+      "votes": "984",
+      "price": "$0.20 / $1.50",
+      "context": "256K"
+    },
+    {
+      "rank": 71,
+      "idx": "7171",
+      "model": "devstral-medium-2507Mistral · Proprietary",
+      "company": "Other",
+      "elo": "1091+23/-23",
+      "votes": "993",
+      "price": "$0.40 / $2",
+      "context": "128K"
+    }
+  ],
+  "text": [
+    {
+      "rank": 1,
+      "idx": "17",
+      "model": "Anthropicclaude-opus-4-7-thinkingAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1503±7",
+      "votes": "7,615",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 2,
+      "idx": "15",
+      "model": "Anthropicclaude-opus-4-6-thinkingAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1502±5",
+      "votes": "22,385",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 3,
+      "idx": "17",
+      "model": "Anthropicclaude-opus-4-6Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1497±5",
+      "votes": "23,846",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 4,
+      "idx": "28",
+      "model": "gemini-3.1-pro-previewGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1493±5",
+      "votes": "28,096",
+      "price": "$2 / $12",
+      "context": "1M"
+    },
+    {
+      "rank": 5,
+      "idx": "19",
+      "model": "Anthropicclaude-opus-4-7Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1491±7",
+      "votes": "8,346",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 6,
+      "idx": "19",
+      "model": "Metamuse-sparkMeta · Proprietary",
+      "company": "Meta",
+      "elo": "1491±6Preliminary",
+      "votes": "9,414",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 7,
+      "idx": "215",
+      "model": "gpt-5.5-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1488±8",
+      "votes": "5,121",
+      "price": "$5 / $30",
+      "context": "1.1M"
+    },
+    {
+      "rank": 8,
+      "idx": "413",
+      "model": "gemini-3-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1486±4",
+      "votes": "41,369",
+      "price": "$2 / $12",
+      "context": "1M"
+    },
+    {
+      "rank": 9,
+      "idx": "518",
+      "model": "grok-4.20-beta1xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1480±5",
+      "votes": "17,413",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 10,
+      "idx": "718",
+      "model": "grok-4.20-beta-0309-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1477±5",
+      "votes": "16,204",
+      "price": "$2 / $6",
+      "context": "2M"
+    },
+    {
+      "rank": 11,
+      "idx": "722",
+      "model": "gpt-5.4-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1477±5",
+      "votes": "15,853",
+      "price": "$2.50 / $15",
+      "context": "1.1M"
+    },
+    {
+      "rank": 12,
+      "idx": "820",
+      "model": "gpt-5.2-chat-latest-20260210OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1476±5",
+      "votes": "22,311",
+      "price": "$1.75 / $14",
+      "context": "128K"
+    },
+    {
+      "rank": 13,
+      "idx": "726",
+      "model": "gpt-5.5OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1475±8",
+      "votes": "5,302",
+      "price": "$5 / $30",
+      "context": "1.1M"
+    },
+    {
+      "rank": 14,
+      "idx": "824",
+      "model": "grok-4.20-multi-agent-beta-0309xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1475±5",
+      "votes": "16,458",
+      "price": "$2 / $6",
+      "context": "2M"
+    },
+    {
+      "rank": 15,
+      "idx": "729",
+      "model": "ernie-5.1-previewBaidu · Proprietary",
+      "company": "Baidu",
+      "elo": "1475±8Preliminary",
+      "votes": "4,738",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 16,
+      "idx": "924",
+      "model": "gemini-3-flashGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1474±4",
+      "votes": "30,790",
+      "price": "$0.50 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 17,
+      "idx": "924",
+      "model": "Anthropicclaude-opus-4-5-20251101-thinking-32kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1473±4",
+      "votes": "37,158",
+      "price": "$5 / $25",
+      "context": "200K"
+    },
+    {
+      "rank": 18,
+      "idx": "930",
+      "model": "glm-5.1Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1471±6",
+      "votes": "11,071",
+      "price": "$1.40 / $4.40",
+      "context": "202.8K"
+    },
+    {
+      "rank": 19,
+      "idx": "1130",
+      "model": "grok-4.1-thinkingxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1468±3",
+      "votes": "53,942",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 20,
+      "idx": "1230",
+      "model": "Anthropicclaude-opus-4-5-20251101Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1468±3",
+      "votes": "53,597",
+      "price": "$5 / $25",
+      "context": "200K"
+    },
+    {
+      "rank": 21,
+      "idx": "1334",
+      "model": "gpt-5.4OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1466±5",
+      "votes": "16,567",
+      "price": "$2.50 / $15",
+      "context": "1.1M"
+    },
+    {
+      "rank": 22,
+      "idx": "1239",
+      "model": "mimo-v2.5-proXiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1463±8",
+      "votes": "5,037",
+      "price": "$1 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 23,
+      "idx": "1636",
+      "model": "Anthropicclaude-sonnet-4-6Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1463±5",
+      "votes": "15,794",
+      "price": "$3 / $15",
+      "context": "1M"
+    },
+    {
+      "rank": 24,
+      "idx": "1141",
+      "model": "deepseek-v4-proDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1463±9",
+      "votes": "4,176",
+      "price": "$0.43 / $0.87",
+      "context": "1M"
+    },
+    {
+      "rank": 25,
+      "idx": "1636",
+      "model": "qwen3.5-max-previewAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1463±6",
+      "votes": "13,565",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 26,
+      "idx": "1734",
+      "model": "gemini-3-flash (thinking-minimal)Google · Proprietary",
+      "company": "Google",
+      "elo": "1463±4",
+      "votes": "40,022",
+      "price": "$0.50 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 27,
+      "idx": "1344",
+      "model": "deepseek-v4-pro-thinkingDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1462±9",
+      "votes": "3,820",
+      "price": "$0.43 / $0.87",
+      "context": "1M"
+    },
+    {
+      "rank": 28,
+      "idx": "1744",
+      "model": "kimi-k2.6Moonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1460±7",
+      "votes": "6,168",
+      "price": "$0.95 / $4",
+      "context": "262.1K"
+    },
+    {
+      "rank": 29,
+      "idx": "2137",
+      "model": "grok-4.1xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1460±3",
+      "votes": "57,888",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 30,
+      "idx": "2140",
+      "model": "Bytedancedola-seed-2.0-proBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1459±5",
+      "votes": "25,273",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 31,
+      "idx": "1851",
+      "model": "qwen3.6-max-previewAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1457±9",
+      "votes": "3,943",
+      "price": "$1.04 / $6.24",
+      "context": "262.1K"
+    },
+    {
+      "rank": 32,
+      "idx": "2146",
+      "model": "glm-5Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1456±5",
+      "votes": "19,980",
+      "price": "$1 / $3.20",
+      "context": "202.8K"
+    },
+    {
+      "rank": 33,
+      "idx": "2146",
+      "model": "gpt-5.4-mini-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1456±6",
+      "votes": "13,541",
+      "price": "$0.75 / $4.50",
+      "context": "400K"
+    },
+    {
+      "rank": 34,
+      "idx": "1753",
+      "model": "grok-4.3xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1456±11",
+      "votes": "2,505",
+      "price": "$1.25 / $2.50",
+      "context": "1M"
+    },
+    {
+      "rank": 35,
+      "idx": "2346",
+      "model": "gpt-5.1-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1455±4",
+      "votes": "40,879",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 36,
+      "idx": "2546",
+      "model": "Anthropicclaude-sonnet-4-5-20250929-thinking-32kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1454±3",
+      "votes": "65,936",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 37,
+      "idx": "2649",
+      "model": "Anthropicclaude-sonnet-4-5-20250929Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1453±3",
+      "votes": "63,899",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 38,
+      "idx": "2354",
+      "model": "gemma-4-31bGoogle · Apache 2.0",
+      "company": "Google",
+      "elo": "1451±8",
+      "votes": "5,810",
+      "price": "$0.14 / $0.40",
+      "context": "262.1K"
+    },
+    {
+      "rank": 39,
+      "idx": "2751",
+      "model": "ernie-5.0-0110Baidu · Proprietary",
+      "company": "Baidu",
+      "elo": "1451±4",
+      "votes": "27,672",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 40,
+      "idx": "2953",
+      "model": "kimi-k2.5-thinkingMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1450±4",
+      "votes": "26,123",
+      "price": "$0.60 / $3",
+      "context": "N/A"
+    },
+    {
+      "rank": 41,
+      "idx": "2655",
+      "model": "ernie-5.0-preview-1203Baidu · Proprietary",
+      "company": "Baidu",
+      "elo": "1449±7",
+      "votes": "9,770",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 42,
+      "idx": "2853",
+      "model": "mimo-v2-proXiaomi · Proprietary",
+      "company": "Xiaomi",
+      "elo": "1449±6",
+      "votes": "14,085",
+      "price": "$1 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 43,
+      "idx": "3153",
+      "model": "Anthropicclaude-opus-4-1-20250805-thinking-16kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1449±3",
+      "votes": "49,853",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 44,
+      "idx": "2954",
+      "model": "gpt-5.3-chat-latestOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1448±5",
+      "votes": "21,109",
+      "price": "$1.75 / $14",
+      "context": "128K"
+    },
+    {
+      "rank": 45,
+      "idx": "3553",
+      "model": "gemini-2.5-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1448±3",
+      "votes": "113,545",
+      "price": "$1.25 / $10",
+      "context": "1M"
+    },
+    {
+      "rank": 46,
+      "idx": "2958",
+      "model": "qwen3.6-plusAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1447±7",
+      "votes": "7,538",
+      "price": "$0.33 / $1.95",
+      "context": "1M"
+    },
+    {
+      "rank": 47,
+      "idx": "3156",
+      "model": "qwen3.5-397b-a17bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1447±5",
+      "votes": "21,382",
+      "price": "$0.39 / $2.34",
+      "context": "262.1K"
+    },
+    {
+      "rank": 48,
+      "idx": "3553",
+      "model": "Anthropicclaude-opus-4-1-20250805Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1447±3",
+      "votes": "77,437",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 49,
+      "idx": "3560",
+      "model": "gpt-4.5-preview-2025-02-27OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1444±6",
+      "votes": "14,547",
+      "price": "$75 / $150",
+      "context": "128K"
+    },
+    {
+      "rank": 50,
+      "idx": "3859",
+      "model": "chatgpt-4o-latest-20250326OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1443±3",
+      "votes": "82,545",
+      "price": "$5 / $15",
+      "context": "128K"
+    },
+    {
+      "rank": 51,
+      "idx": "3663",
+      "model": "glm-4.7Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1443±6",
+      "votes": "12,143",
+      "price": "$0.38 / $1.74",
+      "context": "202.8K"
+    },
+    {
+      "rank": 52,
+      "idx": "4663",
+      "model": "gpt-5.2-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1439±4",
+      "votes": "36,731",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    },
+    {
+      "rank": 53,
+      "idx": "4465",
+      "model": "gemini-3.1-flash-lite-previewGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1439±5",
+      "votes": "22,387",
+      "price": "$0.25 / $1.50",
+      "context": "1M"
+    },
+    {
+      "rank": 54,
+      "idx": "4763",
+      "model": "gpt-5.1OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1439±4",
+      "votes": "43,516",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 55,
+      "idx": "3671",
+      "model": "deepseek-v4-flash-thinkingDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1439±9",
+      "votes": "3,603",
+      "price": "$0.14 / $0.28",
+      "context": "1M"
+    },
+    {
+      "rank": 56,
+      "idx": "4865",
+      "model": "gpt-5.2OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1438±4",
+      "votes": "33,834",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    },
+    {
+      "rank": 57,
+      "idx": "3870",
+      "model": "gemma-4-26b-a4bGoogle · Apache 2.0",
+      "company": "Google",
+      "elo": "1438±8",
+      "votes": "5,777",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 58,
+      "idx": "5070",
+      "model": "qwen3-max-previewAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1435±5",
+      "votes": "27,754",
+      "price": "$0.78 / $3.90",
+      "context": "262.1K"
+    },
+    {
+      "rank": 59,
+      "idx": "4974",
+      "model": "longcat-flash-chat-2602-expMeituan · Proprietary",
+      "company": "Other",
+      "elo": "1434±6",
+      "votes": "12,004",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 60,
+      "idx": "5172",
+      "model": "gpt-5-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1434±5",
+      "votes": "31,971",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 61,
+      "idx": "4886",
+      "model": "deepseek-v4-flashDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1432±9",
+      "votes": "3,512",
+      "price": "$0.14 / $0.28",
+      "context": "1M"
+    },
+    {
+      "rank": 62,
+      "idx": "5181",
+      "model": "kimi-k2.5-instantMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1432±7",
+      "votes": "8,198",
+      "price": "$0.44 / $2",
+      "context": "262.1K"
+    },
+    {
+      "rank": 63,
+      "idx": "5375",
+      "model": "grok-4-1-fast-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1432±3",
+      "votes": "48,702",
+      "price": "$0.20 / $0.50",
+      "context": "2M"
+    },
+    {
+      "rank": 64,
+      "idx": "5478",
+      "model": "o3-2025-04-16OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1431±4",
+      "votes": "59,784",
+      "price": "$2 / $8",
+      "context": "200K"
+    },
+    {
+      "rank": 65,
+      "idx": "5679",
+      "model": "kimi-k2-thinking-turboMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1430±3",
+      "votes": "51,723",
+      "price": "$1.15 / $8",
+      "context": "262.1K"
+    },
+    {
+      "rank": 66,
+      "idx": "5190",
+      "model": "amazon-nova-experimental-chat-26-02-10Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1428±10",
+      "votes": "3,425",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 67,
+      "idx": "5687",
+      "model": "gpt-5-chatOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1426±4",
+      "votes": "31,619",
+      "price": "$1.25 / $10",
+      "context": "128K"
+    },
+    {
+      "rank": 68,
+      "idx": "5889",
+      "model": "glm-4.6Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1426±4",
+      "votes": "35,707",
+      "price": "$0.39 / $1.90",
+      "context": "204.8K"
+    },
+    {
+      "rank": 69,
+      "idx": "5690",
+      "model": "deepseek-v3.2-exp-thinkingDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1424±7",
+      "votes": "9,079",
+      "price": "$0.27 / $0.41",
+      "context": "163.8K"
+    },
+    {
+      "rank": 70,
+      "idx": "5691",
+      "model": "mimo-v2.5Xiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1424±8",
+      "votes": "5,131",
+      "price": "$0.40 / $2",
+      "context": "1M"
+    },
+    {
+      "rank": 71,
+      "idx": "6289",
+      "model": "deepseek-v3.2DeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1424±4",
+      "votes": "44,809",
+      "price": "$0.25 / $0.38",
+      "context": "131.1K"
+    },
+    {
+      "rank": 72,
+      "idx": "5690",
+      "model": "qwen3-max-2025-09-23Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1424±6",
+      "votes": "9,181",
+      "price": "$0.78 / $3.90",
+      "context": "262.1K"
+    },
+    {
+      "rank": 73,
+      "idx": "6189",
+      "model": "Anthropicclaude-opus-4-20250514-thinking-16kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1424±4",
+      "votes": "36,941",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 74,
+      "idx": "5991",
+      "model": "deepseek-v3.2-expDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1423±6",
+      "votes": "11,944",
+      "price": "$0.27 / $0.41",
+      "context": "163.8K"
+    },
+    {
+      "rank": 75,
+      "idx": "6589",
+      "model": "qwen3-235b-a22b-instruct-2507Alibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1422±3",
+      "votes": "87,368",
+      "price": "$0.26 / $1.06",
+      "context": "N/A"
+    },
+    {
+      "rank": 76,
+      "idx": "6489",
+      "model": "deepseek-v3.2-thinkingDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1422±4",
+      "votes": "39,077",
+      "price": "$0.25 / $0.38",
+      "context": "131.1K"
+    },
+    {
+      "rank": 77,
+      "idx": "6292",
+      "model": "deepseek-r1-0528DeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1422±6",
+      "votes": "18,469",
+      "price": "$0.50 / $2.15",
+      "context": "163.8K"
+    },
+    {
+      "rank": 78,
+      "idx": "6096",
+      "model": "grok-4-fast-chatxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1421±8",
+      "votes": "6,825",
+      "price": "$3 / $15",
+      "context": "256K"
+    },
+    {
+      "rank": 79,
+      "idx": "62100",
+      "model": "ernie-5.0-preview-1022Baidu · Proprietary",
+      "company": "Baidu",
+      "elo": "1419±9",
+      "votes": "4,727",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 80,
+      "idx": "60101",
+      "model": "Tencenthunyuan-hy3-previewTencent · tencent-hunyuan-community",
+      "company": "Other",
+      "elo": "1419±10",
+      "votes": "3,321",
+      "price": "$0.29 / $1.17",
+      "context": "262.1K"
+    },
+    {
+      "rank": 81,
+      "idx": "6696",
+      "model": "qwen3.5-122b-a10bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1418±5",
+      "votes": "18,236",
+      "price": "$0.26 / $2.08",
+      "context": "262.1K"
+    },
+    {
+      "rank": 82,
+      "idx": "6598",
+      "model": "kimi-k2-0905-previewMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1418±6",
+      "votes": "11,792",
+      "price": "$0.60 / $2.50",
+      "context": "262.1K"
+    },
+    {
+      "rank": 83,
+      "idx": "6598",
+      "model": "deepseek-v3.1DeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1418±6",
+      "votes": "14,989",
+      "price": "$1.23 / $4.94",
+      "context": "N/A"
+    },
+    {
+      "rank": 84,
+      "idx": "63106",
+      "model": "deepseek-v3.1-terminus-thinkingDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1417±10",
+      "votes": "3,468",
+      "price": "$0.27 / $0.95",
+      "context": "163.8K"
+    },
+    {
+      "rank": 85,
+      "idx": "6796",
+      "model": "kimi-k2-0711-previewMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1417±5",
+      "votes": "27,647",
+      "price": "$0.60 / $2.50",
+      "context": "131.1K"
+    },
+    {
+      "rank": 86,
+      "idx": "65101",
+      "model": "deepseek-v3.1-thinkingDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1417±7",
+      "votes": "11,762",
+      "price": "$1.23 / $4.94",
+      "context": "N/A"
+    },
+    {
+      "rank": 87,
+      "idx": "64107",
+      "model": "deepseek-v3.1-terminusDeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1416±10",
+      "votes": "3,712",
+      "price": "$0.27 / $0.95",
+      "context": "163.8K"
+    },
+    {
+      "rank": 88,
+      "idx": "67101",
+      "model": "qwen3-vl-235b-a22b-instructAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1415±6",
+      "votes": "11,530",
+      "price": "$0.20 / $0.88",
+      "context": "262.1K"
+    },
+    {
+      "rank": 89,
+      "idx": "65109",
+      "model": "amazon-nova-experimental-chat-26-01-10Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1415±10",
+      "votes": "3,411",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 90,
+      "idx": "7299",
+      "model": "mistral-large-3Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1414±4",
+      "votes": "41,333",
+      "price": "$0.50 / $1.50",
+      "context": "N/A"
+    },
+    {
+      "rank": 91,
+      "idx": "75101",
+      "model": "gpt-4.1-2025-04-14OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1413±4",
+      "votes": "51,048",
+      "price": "$2 / $8",
+      "context": "1M"
+    },
+    {
+      "rank": 92,
+      "idx": "77104",
+      "model": "Anthropicclaude-opus-4-20250514Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1412±4",
+      "votes": "44,257",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 93,
+      "idx": "78106",
+      "model": "grok-3-preview-02-24xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1412±4",
+      "votes": "32,915",
+      "price": "$3 / $15",
+      "context": "131.1K"
+    },
+    {
+      "rank": 94,
+      "idx": "78107",
+      "model": "glm-4.5Z.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1411±5",
+      "votes": "24,345",
+      "price": "$0.60 / $2.20",
+      "context": "131.1K"
+    },
+    {
+      "rank": 95,
+      "idx": "78104",
+      "model": "gemini-2.5-flashGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1411±3",
+      "votes": "113,223",
+      "price": "$0.30 / $2.50",
+      "context": "1M"
+    },
+    {
+      "rank": 96,
+      "idx": "78108",
+      "model": "grok-4-0709xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1410±4",
+      "votes": "41,423",
+      "price": "$3 / $15",
+      "context": "256K"
+    },
+    {
+      "rank": 97,
+      "idx": "81106",
+      "model": "mistral-medium-2508Mistral · Proprietary",
+      "company": "Other",
+      "elo": "1409±3",
+      "votes": "83,133",
+      "price": "$2.70 / $8.10",
+      "context": "32K"
+    },
+    {
+      "rank": 98,
+      "idx": "83109",
+      "model": "Anthropicclaude-haiku-4-5-20251001Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1408±3",
+      "votes": "65,644",
+      "price": "$1 / $5",
+      "context": "200K"
+    },
+    {
+      "rank": 99,
+      "idx": "81115",
+      "model": "gpt-5.4-nano-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1406±6",
+      "votes": "12,984",
+      "price": "$0.20 / $1.25",
+      "context": "400K"
+    },
+    {
+      "rank": 100,
+      "idx": "85115",
+      "model": "qwen3.5-27bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1405±5",
+      "votes": "17,723",
+      "price": "$0.20 / $1.56",
+      "context": "262.1K"
+    },
+    {
+      "rank": 101,
+      "idx": "84116",
+      "model": "minimax-m2.7MiniMax · Modified MIT",
+      "company": "Other",
+      "elo": "1405±6",
+      "votes": "12,349",
+      "price": "$0.30 / $1.20",
+      "context": "196.6K"
+    },
+    {
+      "rank": 102,
+      "idx": "89115",
+      "model": "gemini-2.5-flash-preview-09-2025Google · Proprietary",
+      "company": "Google",
+      "elo": "1405±4",
+      "votes": "32,949",
+      "price": "$0.30 / $2.50",
+      "context": "1M"
+    },
+    {
+      "rank": 103,
+      "idx": "89117",
+      "model": "grok-4-fast-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1404±5",
+      "votes": "18,735",
+      "price": "$0.20 / $0.50",
+      "context": "2M"
+    },
+    {
+      "rank": 104,
+      "idx": "91117",
+      "model": "qwen3-235b-a22b-no-thinkingAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1403±5",
+      "votes": "38,248",
+      "price": "$0.46 / $1.82",
+      "context": "131.1K"
+    },
+    {
+      "rank": 105,
+      "idx": "96118",
+      "model": "o1-2024-12-17OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1402±4",
+      "votes": "27,807",
+      "price": "$15 / $60",
+      "context": "200K"
+    },
+    {
+      "rank": 106,
+      "idx": "94118",
+      "model": "qwen3-next-80b-a3b-instructAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1402±5",
+      "votes": "22,885",
+      "price": "$0.09 / $1.10",
+      "context": "262.1K"
+    },
+    {
+      "rank": 107,
+      "idx": "91121",
+      "model": "longcat-flash-chatMeituan · MIT",
+      "company": "Other",
+      "elo": "1401±6",
+      "votes": "11,407",
+      "price": "$0.20 / $0.80",
+      "context": "131.1K"
+    },
+    {
+      "rank": 108,
+      "idx": "97126",
+      "model": "qwen3-235b-a22b-thinking-2507Alibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1399±7",
+      "votes": "9,007",
+      "price": "$0.15 / $1.50",
+      "context": "131.1K"
+    },
+    {
+      "rank": 109,
+      "idx": "99122",
+      "model": "Anthropicclaude-sonnet-4-20250514-thinking-32kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1399±4",
+      "votes": "35,139",
+      "price": "$3 / $15",
+      "context": "1M"
+    },
+    {
+      "rank": 110,
+      "idx": "99126",
+      "model": "qwen3.5-flashAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1398±5",
+      "votes": "18,443",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 111,
+      "idx": "99126",
+      "model": "deepseek-r1DeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1398±5",
+      "votes": "18,524",
+      "price": "$0.70 / $2.50",
+      "context": "64K"
+    },
+    {
+      "rank": 112,
+      "idx": "99125",
+      "model": "minimax-m2.5MiniMax · Modified MIT",
+      "company": "Other",
+      "elo": "1397±5",
+      "votes": "23,488",
+      "price": "$0.15 / $1.15",
+      "context": "196.6K"
+    },
+    {
+      "rank": 113,
+      "idx": "89135",
+      "model": "Tencenthunyuan-vision-1.5-thinkingTencent · Proprietary",
+      "company": "Other",
+      "elo": "1396±12",
+      "votes": "2,218",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 114,
+      "idx": "99130",
+      "model": "qwen3-vl-235b-a22b-thinkingAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1396±7",
+      "votes": "7,952",
+      "price": "$0.26 / $2.60",
+      "context": "131.1K"
+    },
+    {
+      "rank": 115,
+      "idx": "99135",
+      "model": "amazon-nova-experimental-chat-12-10Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1395±10",
+      "votes": "3,691",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 116,
+      "idx": "102130",
+      "model": "qwen3.5-35b-a3bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1395±5",
+      "votes": "18,465",
+      "price": "$0.15 / $1",
+      "context": "262.1K"
+    },
+    {
+      "rank": 117,
+      "idx": "103128",
+      "model": "deepseek-v3-0324DeepSeek · MIT",
+      "company": "DeepSeek",
+      "elo": "1395±4",
+      "votes": "45,541",
+      "price": "$3 / $4.50",
+      "context": "32.8K"
+    },
+    {
+      "rank": 118,
+      "idx": "107132",
+      "model": "mimo-v2-flash (non-thinking)Xiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1392±4",
+      "votes": "36,053",
+      "price": "$0.09 / $0.29",
+      "context": "262.1K"
+    },
+    {
+      "rank": 119,
+      "idx": "105134",
+      "model": "mai-1-previewMicrosoft AI · Proprietary",
+      "company": "Other",
+      "elo": "1392±5",
+      "votes": "17,900",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 120,
+      "idx": "107134",
+      "model": "Stepfunstep-3.5-flashStepFun · Apache 2.0",
+      "company": "Other",
+      "elo": "1392±4",
+      "votes": "23,969",
+      "price": "$0.10 / $0.30",
+      "context": "262.1K"
+    },
+    {
+      "rank": 121,
+      "idx": "108135",
+      "model": "gpt-5-mini-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1390±5",
+      "votes": "27,053",
+      "price": "$0.25 / $2",
+      "context": "400K"
+    },
+    {
+      "rank": 122,
+      "idx": "109135",
+      "model": "o4-mini-2025-04-16OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1390±4",
+      "votes": "45,468",
+      "price": "$1.10 / $4.40",
+      "context": "200K"
+    },
+    {
+      "rank": 123,
+      "idx": "109135",
+      "model": "Anthropicclaude-sonnet-4-20250514Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1389±4",
+      "votes": "40,347",
+      "price": "$3 / $15",
+      "context": "1M"
+    },
+    {
+      "rank": 124,
+      "idx": "110136",
+      "model": "o1-previewOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1388±5",
+      "votes": "31,122",
+      "price": "$15 / $60",
+      "context": "N/A"
+    },
+    {
+      "rank": 125,
+      "idx": "109136",
+      "model": "mimo-v2-flash (thinking)Xiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1387±6",
+      "votes": "10,987",
+      "price": "$0.09 / $0.29",
+      "context": "262.1K"
+    },
+    {
+      "rank": 126,
+      "idx": "113136",
+      "model": "qwen3-coder-480b-a35b-instructAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1387±5",
+      "votes": "25,760",
+      "price": "$0.40 / $1.60",
+      "context": "262.1K"
+    },
+    {
+      "rank": 127,
+      "idx": "107139",
+      "model": "Tencenthunyuan-t1-20250711Tencent · Proprietary",
+      "company": "Other",
+      "elo": "1387±9",
+      "votes": "4,712",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 128,
+      "idx": "114136",
+      "model": "Anthropicclaude-3-7-sonnet-20250219-thinking-32kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1387±4",
+      "votes": "38,834",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 129,
+      "idx": "113136",
+      "model": "mistral-medium-2505Mistral · Proprietary",
+      "company": "Other",
+      "elo": "1386±5",
+      "votes": "33,248",
+      "price": "$0.40 / $2",
+      "context": "131.1K"
+    },
+    {
+      "rank": 130,
+      "idx": "114136",
+      "model": "minimax-m2.1-previewMiniMax · MIT",
+      "company": "Other",
+      "elo": "1385±5",
+      "votes": "17,157",
+      "price": "$0.29 / $0.95",
+      "context": "196.6K"
+    },
+    {
+      "rank": 131,
+      "idx": "117139",
+      "model": "qwen3-30b-a3b-instruct-2507Alibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1383±5",
+      "votes": "23,760",
+      "price": "$0.09 / $0.30",
+      "context": "262.1K"
+    },
+    {
+      "rank": 132,
+      "idx": "116141",
+      "model": "Tencenthunyuan-turbos-20250416Tencent · Proprietary",
+      "company": "Other",
+      "elo": "1382±6",
+      "votes": "10,720",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 133,
+      "idx": "117141",
+      "model": "trinity-large-thinkingArcee AI · Apache 2.0",
+      "company": "Other",
+      "elo": "1382±6",
+      "votes": "10,875",
+      "price": "$0.22 / $0.85",
+      "context": "262.1K"
+    },
+    {
+      "rank": 134,
+      "idx": "119140",
+      "model": "gpt-4.1-mini-2025-04-14OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1382±4",
+      "votes": "39,360",
+      "price": "$0.40 / $1.60",
+      "context": "1M"
+    },
+    {
+      "rank": 135,
+      "idx": "124141",
+      "model": "gemini-2.5-flash-lite-preview-09-2025-no-thinkingGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1380±3",
+      "votes": "47,285",
+      "price": "$0.10 / $0.40",
+      "context": "1M"
+    },
+    {
+      "rank": 136,
+      "idx": "116151",
+      "model": "glm-4.6vZ.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1378±11",
+      "votes": "2,807",
+      "price": "$0.30 / $0.90",
+      "context": "131.1K"
+    },
+    {
+      "rank": 137,
+      "idx": "130146",
+      "model": "trinity-large-previewArcee AI · Apache 2.0",
+      "company": "Other",
+      "elo": "1375±5",
+      "votes": "19,586",
+      "price": "$0.15 / $0.45",
+      "context": "131K"
+    },
+    {
+      "rank": 138,
+      "idx": "130146",
+      "model": "qwen3-235b-a22bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1374±5",
+      "votes": "26,280",
+      "price": "$0.46 / $1.82",
+      "context": "131.1K"
+    },
+    {
+      "rank": 139,
+      "idx": "130146",
+      "model": "gemini-2.5-flash-lite-preview-06-17-thinkingGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1374±5",
+      "votes": "32,944",
+      "price": "$0.10 / $0.40",
+      "context": "1M"
+    },
+    {
+      "rank": 140,
+      "idx": "132146",
+      "model": "qwen2.5-maxAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1374±4",
+      "votes": "32,623",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 141,
+      "idx": "133147",
+      "model": "glm-4.5-airZ.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1373±4",
+      "votes": "31,126",
+      "price": "$0.13 / $0.85",
+      "context": "131.1K"
+    },
+    {
+      "rank": 142,
+      "idx": "136147",
+      "model": "Anthropicclaude-3-5-sonnet-20241022Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1372±3",
+      "votes": "88,358",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 143,
+      "idx": "136151",
+      "model": "Anthropicclaude-3-7-sonnet-20250219Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1371±4",
+      "votes": "43,203",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 144,
+      "idx": "136153",
+      "model": "qwen3-next-80b-a3b-thinkingAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1369±6",
+      "votes": "13,708",
+      "price": "$0.10 / $0.78",
+      "context": "131.1K"
+    },
+    {
+      "rank": 145,
+      "idx": "136156",
+      "model": "glm-4.7-flashZ.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1368±6",
+      "votes": "11,765",
+      "price": "$0.06 / $0.40",
+      "context": "202.8K"
+    },
+    {
+      "rank": 146,
+      "idx": "136154",
+      "model": "amazon-nova-experimental-chat-11-10Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1367±4",
+      "votes": "25,431",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 147,
+      "idx": "140155",
+      "model": "gemma-3-27b-itGoogle · Gemma",
+      "company": "Google",
+      "elo": "1366±4",
+      "votes": "47,564",
+      "price": "$0.08 / $0.16",
+      "context": "131.1K"
+    },
+    {
+      "rank": 148,
+      "idx": "142158",
+      "model": "minimax-m1MiniMax · Apache 2.0",
+      "company": "Other",
+      "elo": "1363±4",
+      "votes": "35,235",
+      "price": "$0.40 / $2.20",
+      "context": "1M"
+    },
+    {
+      "rank": 149,
+      "idx": "142160",
+      "model": "o3-mini-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1363±5",
+      "votes": "18,589",
+      "price": "$1.10 / $4.40",
+      "context": "200K"
+    },
+    {
+      "rank": 150,
+      "idx": "142164",
+      "model": "grok-3-mini-highxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1362±5",
+      "votes": "16,979",
+      "price": "$0.30 / $0.50",
+      "context": "131.1K"
+    },
+    {
+      "rank": 151,
+      "idx": "142170",
+      "model": "nvidia-nemotron-3-super-120b-a12bNvidia · NVIDIA Open Model",
+      "company": "Other",
+      "elo": "1361±7",
+      "votes": "7,409",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 152,
+      "idx": "144165",
+      "model": "gemini-2.0-flash-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1360±4",
+      "votes": "43,765",
+      "price": "$0.10 / $0.40",
+      "context": "1M"
+    },
+    {
+      "rank": 153,
+      "idx": "145170",
+      "model": "deepseek-v3DeepSeek · DeepSeek",
+      "company": "DeepSeek",
+      "elo": "1358±5",
+      "votes": "21,770",
+      "price": "$1.14 / $4.56",
+      "context": "N/A"
+    },
+    {
+      "rank": 154,
+      "idx": "146172",
+      "model": "mistral-small-2506Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1357±5",
+      "votes": "17,720",
+      "price": "$0.10 / $0.30",
+      "context": "32K"
+    },
+    {
+      "rank": 155,
+      "idx": "146172",
+      "model": "grok-3-mini-betaxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1357±5",
+      "votes": "22,723",
+      "price": "$0.30 / $0.50",
+      "context": "131.1K"
+    },
+    {
+      "rank": 156,
+      "idx": "144178",
+      "model": "intellect-3Prime Intellect · MIT",
+      "company": "Other",
+      "elo": "1356±8",
+      "votes": "5,334",
+      "price": "$0.20 / $1.10",
+      "context": "131.1K"
+    },
+    {
+      "rank": 157,
+      "idx": "150177",
+      "model": "Coherecommand-a-03-2025Cohere · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1354±3",
+      "votes": "56,319",
+      "price": "$2.50 / $10",
+      "context": "256K"
+    },
+    {
+      "rank": 158,
+      "idx": "148179",
+      "model": "glm-4.5vZ.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1353±8",
+      "votes": "4,969",
+      "price": "$0.60 / $1.80",
+      "context": "65.5K"
+    },
+    {
+      "rank": 159,
+      "idx": "150177",
+      "model": "gemini-2.0-flash-lite-preview-02-05Google · Proprietary",
+      "company": "Google",
+      "elo": "1353±4",
+      "votes": "24,955",
+      "price": "$0.07 / $0.30",
+      "context": "1M"
+    },
+    {
+      "rank": 160,
+      "idx": "150178",
+      "model": "gpt-oss-120bOpenAI · Apache 2.0",
+      "company": "OpenAI",
+      "elo": "1353±4",
+      "votes": "30,670",
+      "price": "$0.04 / $0.18",
+      "context": "131.1K"
+    },
+    {
+      "rank": 161,
+      "idx": "152178",
+      "model": "gemini-1.5-pro-002Google · Proprietary",
+      "company": "Google",
+      "elo": "1351±3",
+      "votes": "55,606",
+      "price": "$3.50 / $10.50",
+      "context": "2.1M"
+    },
+    {
+      "rank": 162,
+      "idx": "152180",
+      "model": "amazon-nova-experimental-chat-10-20Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1350±6",
+      "votes": "11,477",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 163,
+      "idx": "148189",
+      "model": "Tencenthunyuan-turbos-20250226Tencent · Proprietary",
+      "company": "Other",
+      "elo": "1348±12",
+      "votes": "2,220",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 164,
+      "idx": "152182",
+      "model": "Stepfunstep-3StepFun · Apache 2.0",
+      "company": "Other",
+      "elo": "1348±7",
+      "votes": "6,557",
+      "price": "$0.57 / $1.42",
+      "context": "65.5K"
+    },
+    {
+      "rank": 165,
+      "idx": "156180",
+      "model": "o3-miniOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1347±4",
+      "votes": "57,363",
+      "price": "$1.10 / $4.40",
+      "context": "200K"
+    },
+    {
+      "rank": 166,
+      "idx": "149190",
+      "model": "amazon-nova-experimental-chat-10-09Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1347±11",
+      "votes": "2,840",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 167,
+      "idx": "150190",
+      "model": "mercury-2Inception AI · Proprietary",
+      "company": "Other",
+      "elo": "1347±11",
+      "votes": "3,123",
+      "price": "$0.25 / $0.75",
+      "context": "128K"
+    },
+    {
+      "rank": 168,
+      "idx": "151189",
+      "model": "qwen3-32bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1347±9",
+      "votes": "3,926",
+      "price": "$0.08 / $0.24",
+      "context": "41K"
+    },
+    {
+      "rank": 169,
+      "idx": "149192",
+      "model": "llama-3.1-nemotron-ultra-253b-v1Nvidia · Nvidia Open Model",
+      "company": "Other",
+      "elo": "1347±12",
+      "votes": "2,549",
+      "price": "$0.60 / $1.80",
+      "context": "131.1K"
+    },
+    {
+      "rank": 170,
+      "idx": "152188",
+      "model": "minimax-m2MiniMax · Apache 2.0",
+      "company": "Other",
+      "elo": "1346±8",
+      "votes": "6,873",
+      "price": "$0.26 / $1",
+      "context": "196.6K"
+    },
+    {
+      "rank": 171,
+      "idx": "152189",
+      "model": "qwen-plus-0125Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1346±8",
+      "votes": "5,819",
+      "price": "$0.40 / $1.20",
+      "context": "131.1K"
+    },
+    {
+      "rank": 172,
+      "idx": "154188",
+      "model": "ling-flash-2.0Ant Group · MIT",
+      "company": "Other",
+      "elo": "1346±7",
+      "votes": "7,012",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 173,
+      "idx": "158182",
+      "model": "gpt-4o-2024-05-13OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1345±3",
+      "votes": "112,881",
+      "price": "$5 / $15",
+      "context": "128K"
+    },
+    {
+      "rank": 174,
+      "idx": "154193",
+      "model": "nvidia-llama-3.3-nemotron-super-49b-v1.5Nvidia · Nvidia Open",
+      "company": "Other",
+      "elo": "1343±10",
+      "votes": "3,345",
+      "price": "$0.10 / $0.40",
+      "context": "131.1K"
+    },
+    {
+      "rank": 175,
+      "idx": "156192",
+      "model": "glm-4-plus-0111Zhipu · Proprietary",
+      "company": "Other",
+      "elo": "1343±8",
+      "votes": "5,760",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 176,
+      "idx": "161188",
+      "model": "Anthropicclaude-3-5-sonnet-20240620Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1342±3",
+      "votes": "82,419",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 177,
+      "idx": "156193",
+      "model": "gemma-3-12b-itGoogle · Gemma",
+      "company": "Google",
+      "elo": "1342±10",
+      "votes": "3,829",
+      "price": "$0.04 / $0.13",
+      "context": "131.1K"
+    },
+    {
+      "rank": 178,
+      "idx": "156197",
+      "model": "Tencenthunyuan-turbo-0110Tencent · Proprietary",
+      "company": "Other",
+      "elo": "1340±12",
+      "votes": "2,290",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 179,
+      "idx": "164196",
+      "model": "nova-2-liteAmazon · Proprietary",
+      "company": "Other",
+      "elo": "1337±6",
+      "votes": "12,257",
+      "price": "$0.30 / $2.50",
+      "context": "1M"
+    },
+    {
+      "rank": 180,
+      "idx": "162196",
+      "model": "gpt-5-nano-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1337±7",
+      "votes": "8,278",
+      "price": "$0.05 / $0.40",
+      "context": "400K"
+    },
+    {
+      "rank": 181,
+      "idx": "166192",
+      "model": "o1-miniOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1337±4",
+      "votes": "51,981",
+      "price": "$1.10 / $4.40",
+      "context": "N/A"
+    },
+    {
+      "rank": 182,
+      "idx": "166194",
+      "model": "qwq-32bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1336±4",
+      "votes": "25,403",
+      "price": "$0.50 / $1",
+      "context": "16.4K"
+    },
+    {
+      "rank": 183,
+      "idx": "166194",
+      "model": "grok-2-2024-08-13xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1335±4",
+      "votes": "63,498",
+      "price": "$2 / $10",
+      "context": "131.1K"
+    },
+    {
+      "rank": 184,
+      "idx": "166196",
+      "model": "gemini-advanced-0514Google · Proprietary",
+      "company": "Google",
+      "elo": "1335±5",
+      "votes": "50,148",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 185,
+      "idx": "166196",
+      "model": "gpt-4o-2024-08-06OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1335±4",
+      "votes": "45,499",
+      "price": "$2.50 / $10",
+      "context": "128K"
+    },
+    {
+      "rank": 186,
+      "idx": "169196",
+      "model": "Metallama-3.1-405b-instruct-bf16Meta · Llama 3.1 Community",
+      "company": "Meta",
+      "elo": "1334±4",
+      "votes": "41,375",
+      "price": "$4 / $4",
+      "context": "32.8K"
+    },
+    {
+      "rank": 187,
+      "idx": "164203",
+      "model": "Stepfunstep-2-16k-exp-202412StepFun · Proprietary",
+      "company": "Other",
+      "elo": "1334±9",
+      "votes": "4,833",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 188,
+      "idx": "174197",
+      "model": "Metallama-3.1-405b-instruct-fp8Meta · Llama 3.1 Community",
+      "company": "Meta",
+      "elo": "1333±4",
+      "votes": "59,656",
+      "price": "$4 / $4",
+      "context": "32.8K"
+    },
+    {
+      "rank": 189,
+      "idx": "172203",
+      "model": "olmo-3.1-32b-instructAi2 · Apache 2.0",
+      "company": "Other",
+      "elo": "1331±6",
+      "votes": "12,240",
+      "price": "$0.20 / $0.60",
+      "context": "65.5K"
+    },
+    {
+      "rank": 190,
+      "idx": "156227",
+      "model": "molmo-2-8bAi2 · Apache 2.0",
+      "company": "Other",
+      "elo": "1329±21",
+      "votes": "802",
+      "price": "$0.20 / $0.20",
+      "context": "36.9K"
+    },
+    {
+      "rank": 191,
+      "idx": "176207",
+      "model": "01.AIyi-lightning01 AI · Proprietary",
+      "company": "Other",
+      "elo": "1328±5",
+      "votes": "27,332",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 192,
+      "idx": "166218",
+      "model": "llama-3.3-nemotron-49b-super-v1Nvidia · Nvidia",
+      "company": "Other",
+      "elo": "1327±12",
+      "votes": "2,218",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 193,
+      "idx": "179208",
+      "model": "qwen3-30b-a3bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1327±5",
+      "votes": "26,499",
+      "price": "$0.09 / $0.45",
+      "context": "41K"
+    },
+    {
+      "rank": 194,
+      "idx": "181208",
+      "model": "Metallama-4-maverick-17b-128e-instructMeta · Llama 4",
+      "company": "Meta",
+      "elo": "1327±4",
+      "votes": "39,997",
+      "price": "$0.63 / $1.80",
+      "context": "131.1K"
+    },
+    {
+      "rank": 195,
+      "idx": "174218",
+      "model": "Tencenthunyuan-large-2025-02-10Tencent · Proprietary",
+      "company": "Other",
+      "elo": "1326±10",
+      "votes": "3,738",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 196,
+      "idx": "188214",
+      "model": "gpt-4-turbo-2024-04-09OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1324±4",
+      "votes": "98,114",
+      "price": "$10 / $30",
+      "context": "128K"
+    },
+    {
+      "rank": 197,
+      "idx": "181218",
+      "model": "deepseek-v2.5-1210DeepSeek · DeepSeek",
+      "company": "DeepSeek",
+      "elo": "1323±8",
+      "votes": "6,795",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 198,
+      "idx": "188214",
+      "model": "gemini-1.5-pro-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1323±4",
+      "votes": "79,138",
+      "price": "$3.50 / $10.50",
+      "context": "2.1M"
+    },
+    {
+      "rank": 199,
+      "idx": "188214",
+      "model": "Anthropicclaude-3-5-haiku-20241022Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1323±3",
+      "votes": "70,014",
+      "price": "$0.80 / $4",
+      "context": "200K"
+    },
+    {
+      "rank": 200,
+      "idx": "188215",
+      "model": "Metallama-4-scout-17b-16e-instructMeta · Llama",
+      "company": "Meta",
+      "elo": "1322±5",
+      "votes": "30,314",
+      "price": "$0.40 / $0.70",
+      "context": "8.2K"
+    },
+    {
+      "rank": 201,
+      "idx": "186218",
+      "model": "gpt-4.1-nano-2025-04-14OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1322±8",
+      "votes": "6,103",
+      "price": "$0.10 / $0.40",
+      "context": "1M"
+    },
+    {
+      "rank": 202,
+      "idx": "190215",
+      "model": "Anthropicclaude-3-opus-20240229Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1321±3",
+      "votes": "194,909",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 203,
+      "idx": "188220",
+      "model": "ring-flash-2.0Ant Group · MIT",
+      "company": "Other",
+      "elo": "1320±7",
+      "votes": "7,154",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 204,
+      "idx": "188219",
+      "model": "Stepfunstep-1o-turbo-202506StepFun · Proprietary",
+      "company": "Other",
+      "elo": "1320±7",
+      "votes": "9,039",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 205,
+      "idx": "190218",
+      "model": "glm-4-plusZhipu AI · Proprietary",
+      "company": "Other",
+      "elo": "1319±5",
+      "votes": "26,126",
+      "price": "$0.44 / $1.76",
+      "context": "204.8K"
+    },
+    {
+      "rank": 206,
+      "idx": "193218",
+      "model": "Metallama-3.3-70b-instructMeta · Llama-3.3",
+      "company": "Meta",
+      "elo": "1318±3",
+      "votes": "54,752",
+      "price": "$0.10 / $0.32",
+      "context": "131.1K"
+    },
+    {
+      "rank": 207,
+      "idx": "191220",
+      "model": "gemma-3n-e4b-itGoogle · Gemma",
+      "company": "Google",
+      "elo": "1318±5",
+      "votes": "22,609",
+      "price": "$0.06 / $0.12",
+      "context": "32.8K"
+    },
+    {
+      "rank": 208,
+      "idx": "190221",
+      "model": "qwen-max-0919Alibaba · Qwen",
+      "company": "Alibaba",
+      "elo": "1318±6",
+      "votes": "16,478",
+      "price": "$1.60 / $6.40",
+      "context": "32.8K"
+    },
+    {
+      "rank": 209,
+      "idx": "193218",
+      "model": "gpt-4o-mini-2024-07-18OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1317±4",
+      "votes": "68,710",
+      "price": "$0.15 / $0.60",
+      "context": "128K"
+    },
+    {
+      "rank": 210,
+      "idx": "190224",
+      "model": "gpt-oss-20bOpenAI · Apache 2.0",
+      "company": "OpenAI",
+      "elo": "1317±6",
+      "votes": "10,632",
+      "price": "$0.03 / $0.14",
+      "context": "131.1K"
+    },
+    {
+      "rank": 211,
+      "idx": "193224",
+      "model": "nvidia-nemotron-3-nano-30b-a3b-bf16Nvidia · NVIDIA Open Model",
+      "company": "Other",
+      "elo": "1317±6",
+      "votes": "15,530",
+      "price": "$0.06 / $0.24",
+      "context": "262.1K"
+    },
+    {
+      "rank": 212,
+      "idx": "193226",
+      "model": "qwen2.5-plus-1127Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1315±6",
+      "votes": "10,187",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 213,
+      "idx": "196225",
+      "model": "athene-v2-chatNexusFlow · NexusFlow",
+      "company": "Other",
+      "elo": "1314±5",
+      "votes": "24,739",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 214,
+      "idx": "198225",
+      "model": "mistral-large-2407Mistral · Mistral Research",
+      "company": "Other",
+      "elo": "1314±4",
+      "votes": "45,459",
+      "price": "$2 / $6",
+      "context": "131.1K"
+    },
+    {
+      "rank": 215,
+      "idx": "198226",
+      "model": "gpt-4-0125-previewOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1312±4",
+      "votes": "93,439",
+      "price": "$10 / $30",
+      "context": "128K"
+    },
+    {
+      "rank": 216,
+      "idx": "198226",
+      "model": "gpt-4-1106-previewOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1312±4",
+      "votes": "100,105",
+      "price": "$10 / $30",
+      "context": "128K"
+    },
+    {
+      "rank": 217,
+      "idx": "193230",
+      "model": "Tencenthunyuan-standard-2025-02-10Tencent · Proprietary",
+      "company": "Other",
+      "elo": "1311±10",
+      "votes": "3,904",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 218,
+      "idx": "205229",
+      "model": "gemini-1.5-flash-002Google · Proprietary",
+      "company": "Google",
+      "elo": "1309±4",
+      "votes": "34,902",
+      "price": "$0.07 / $0.30",
+      "context": "1M"
+    },
+    {
+      "rank": 219,
+      "idx": "209229",
+      "model": "grok-2-mini-2024-08-13xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1308±4",
+      "votes": "52,567",
+      "price": "$2 / $10",
+      "context": "131.1K"
+    },
+    {
+      "rank": 220,
+      "idx": "209230",
+      "model": "deepseek-v2.5DeepSeek · DeepSeek",
+      "company": "DeepSeek",
+      "elo": "1307±5",
+      "votes": "24,572",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 221,
+      "idx": "193237",
+      "model": "mercuryInception AI · Proprietary",
+      "company": "Other",
+      "elo": "1306±14",
+      "votes": "1,960",
+      "price": "$0.25 / $0.75",
+      "context": "128K"
+    },
+    {
+      "rank": 222,
+      "idx": "209230",
+      "model": "athene-70b-0725NexusFlow · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1306±6",
+      "votes": "19,621",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 223,
+      "idx": "206230",
+      "model": "olmo-3-32b-thinkAi2 · Apache 2.0",
+      "company": "Other",
+      "elo": "1305±8",
+      "votes": "5,963",
+      "price": "$0.15 / $0.50",
+      "context": "65.5K"
+    },
+    {
+      "rank": 224,
+      "idx": "213230",
+      "model": "mistral-large-2411Mistral · MRL",
+      "company": "Other",
+      "elo": "1305±4",
+      "votes": "28,073",
+      "price": "$2 / $6",
+      "context": "131.1K"
+    },
+    {
+      "rank": 225,
+      "idx": "211230",
+      "model": "magistral-medium-2506Mistral · Proprietary",
+      "company": "Other",
+      "elo": "1303±6",
+      "votes": "11,641",
+      "price": "$2 / $5",
+      "context": "40K"
+    },
+    {
+      "rank": 226,
+      "idx": "208237",
+      "model": "gemma-3-4b-itGoogle · Gemma",
+      "company": "Google",
+      "elo": "1303±9",
+      "votes": "4,171",
+      "price": "$0.04 / $0.08",
+      "context": "131.1K"
+    },
+    {
+      "rank": 227,
+      "idx": "216230",
+      "model": "mistral-small-3.1-24b-instruct-2503Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1303±5",
+      "votes": "33,226",
+      "price": "$0.10 / $0.30",
+      "context": "32K"
+    },
+    {
+      "rank": 228,
+      "idx": "217230",
+      "model": "qwen2.5-72b-instructAlibaba · Qwen",
+      "company": "Alibaba",
+      "elo": "1302±4",
+      "votes": "39,406",
+      "price": "$1.20 / $1.20",
+      "context": "N/A"
+    },
+    {
+      "rank": 229,
+      "idx": "217240",
+      "model": "llama-3.1-nemotron-70b-instructNvidia · Llama 3.1",
+      "company": "Other",
+      "elo": "1299±8",
+      "votes": "7,140",
+      "price": "$1.20 / $1.20",
+      "context": "131.1K"
+    },
+    {
+      "rank": 230,
+      "idx": "219242",
+      "model": "Tencenthunyuan-large-visionTencent · Proprietary",
+      "company": "Other",
+      "elo": "1294±9",
+      "votes": "5,371",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 231,
+      "idx": "227241",
+      "model": "Metallama-3.1-70b-instructMeta · Llama 3.1 Community",
+      "company": "Meta",
+      "elo": "1293±4",
+      "votes": "55,240",
+      "price": "$0.40 / $0.40",
+      "context": "131.1K"
+    },
+    {
+      "rank": 232,
+      "idx": "227242",
+      "model": "amazon-nova-pro-v1.0Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1290±5",
+      "votes": "24,745",
+      "price": "$0.80 / $3.20",
+      "context": "300K"
+    },
+    {
+      "rank": 233,
+      "idx": "227245",
+      "model": "jamba-1.5-largeAI21 Labs · Jamba Open",
+      "company": "Other",
+      "elo": "1288±7",
+      "votes": "8,662",
+      "price": "$2 / $8",
+      "context": "256K"
+    },
+    {
+      "rank": 234,
+      "idx": "229242",
+      "model": "gemma-2-27b-itGoogle · Gemma license",
+      "company": "Google",
+      "elo": "1288±3",
+      "votes": "75,754",
+      "price": "$0.65 / $0.65",
+      "context": "8.2K"
+    },
+    {
+      "rank": 235,
+      "idx": "227245",
+      "model": "reka-core-20240904Reka AI · Proprietary",
+      "company": "Other",
+      "elo": "1287±7",
+      "votes": "7,312",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 236,
+      "idx": "227250",
+      "model": "ibm-granite-h-smallIBM · Apache 2.0",
+      "company": "Other",
+      "elo": "1287±8",
+      "votes": "5,687",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 237,
+      "idx": "229245",
+      "model": "gpt-4-0314OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1286±5",
+      "votes": "54,173",
+      "price": "$30 / $60",
+      "context": "8.2K"
+    },
+    {
+      "rank": 238,
+      "idx": "227251",
+      "model": "llama-3.1-tulu-3-70bAi2 · Llama 3.1",
+      "company": "Other",
+      "elo": "1286±10",
+      "votes": "2,846",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 239,
+      "idx": "227251",
+      "model": "llama-3.1-nemotron-51b-instructNvidia · Llama 3.1",
+      "company": "Other",
+      "elo": "1286±10",
+      "votes": "3,749",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 240,
+      "idx": "230245",
+      "model": "gemini-1.5-flash-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1285±4",
+      "votes": "62,833",
+      "price": "$0.07 / $0.30",
+      "context": "1M"
+    },
+    {
+      "rank": 241,
+      "idx": "229251",
+      "model": "olmo-3.1-32b-thinkAi2 · Apache 2.0",
+      "company": "Other",
+      "elo": "1285±7",
+      "votes": "8,509",
+      "price": "$0.15 / $0.50",
+      "context": "65.5K"
+    },
+    {
+      "rank": 242,
+      "idx": "234251",
+      "model": "Anthropicclaude-3-sonnet-20240229Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1280±4",
+      "votes": "109,284",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 243,
+      "idx": "231251",
+      "model": "gemma-2-9b-it-simpoPrinceton · MIT",
+      "company": "Other",
+      "elo": "1279±7",
+      "votes": "10,072",
+      "price": "$0.03 / $0.09",
+      "context": "8.2K"
+    },
+    {
+      "rank": 244,
+      "idx": "234252",
+      "model": "nemotron-4-340b-instructNvidia · NVIDIA Open Model",
+      "company": "Other",
+      "elo": "1276±5",
+      "votes": "19,659",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 245,
+      "idx": "234254",
+      "model": "Coherecommand-r-plus-08-2024Cohere · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1276±7",
+      "votes": "9,866",
+      "price": "$2.50 / $10",
+      "context": "128K"
+    },
+    {
+      "rank": 246,
+      "idx": "238251",
+      "model": "Metallama-3-70b-instructMeta · Llama 3 Community",
+      "company": "Meta",
+      "elo": "1275±4",
+      "votes": "156,876",
+      "price": "$0.51 / $0.74",
+      "context": "8.2K"
+    },
+    {
+      "rank": 247,
+      "idx": "238252",
+      "model": "gpt-4-0613OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1274±4",
+      "votes": "88,723",
+      "price": "$30 / $60",
+      "context": "8.2K"
+    },
+    {
+      "rank": 248,
+      "idx": "238254",
+      "model": "mistral-small-24b-instruct-2501Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1274±6",
+      "votes": "14,681",
+      "price": "$0.05 / $0.08",
+      "context": "32.8K"
+    },
+    {
+      "rank": 249,
+      "idx": "238255",
+      "model": "glm-4-0520Zhipu AI · Proprietary",
+      "company": "Other",
+      "elo": "1273±7",
+      "votes": "9,788",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 250,
+      "idx": "238257",
+      "model": "reka-flash-20240904Reka AI · Proprietary",
+      "company": "Other",
+      "elo": "1271±7",
+      "votes": "7,536",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 251,
+      "idx": "239260",
+      "model": "qwen2.5-coder-32b-instructAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1270±8",
+      "votes": "5,432",
+      "price": "$0.87 / $0.87",
+      "context": "32K"
+    },
+    {
+      "rank": 252,
+      "idx": "245260",
+      "model": "Coherec4ai-aya-expanse-32bCohere · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1266±5",
+      "votes": "27,124",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 253,
+      "idx": "247260",
+      "model": "gemma-2-9b-itGoogle · Gemma license",
+      "company": "Google",
+      "elo": "1265±4",
+      "votes": "54,611",
+      "price": "$0.03 / $0.09",
+      "context": "8.2K"
+    },
+    {
+      "rank": 254,
+      "idx": "247261",
+      "model": "deepseek-coder-v2DeepSeek · DeepSeek License",
+      "company": "DeepSeek",
+      "elo": "1264±6",
+      "votes": "15,147",
+      "price": "$0.14 / $0.28",
+      "context": "128K"
+    },
+    {
+      "rank": 255,
+      "idx": "250261",
+      "model": "Coherecommand-r-plusCohere · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1261±4",
+      "votes": "77,554",
+      "price": "$2.50 / $10",
+      "context": "128K"
+    },
+    {
+      "rank": 256,
+      "idx": "249261",
+      "model": "qwen2-72b-instructAlibaba · Qianwen LICENSE",
+      "company": "Alibaba",
+      "elo": "1261±5",
+      "votes": "37,325",
+      "price": "$0.90 / $0.90",
+      "context": "32.8K"
+    },
+    {
+      "rank": 257,
+      "idx": "251261",
+      "model": "Anthropicclaude-3-haiku-20240307Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1260±4",
+      "votes": "117,701",
+      "price": "$0.25 / $1.25",
+      "context": "200K"
+    },
+    {
+      "rank": 258,
+      "idx": "250262",
+      "model": "amazon-nova-lite-v1.0Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1260±5",
+      "votes": "19,372",
+      "price": "$0.06 / $0.24",
+      "context": "300K"
+    },
+    {
+      "rank": 259,
+      "idx": "251262",
+      "model": "gemini-1.5-flash-8b-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1258±4",
+      "votes": "35,558",
+      "price": "$0.07 / $0.30",
+      "context": "1M"
+    },
+    {
+      "rank": 260,
+      "idx": "254262",
+      "model": "phi-4Microsoft · MIT",
+      "company": "Other",
+      "elo": "1256±5",
+      "votes": "24,126",
+      "price": "$0.07 / $0.14",
+      "context": "16.4K"
+    },
+    {
+      "rank": 261,
+      "idx": "251268",
+      "model": "olmo-2-0325-32b-instructAi2 · Apache-2.0",
+      "company": "Other",
+      "elo": "1251±11",
+      "votes": "3,334",
+      "price": "$0.05 / $0.20",
+      "context": "128K"
+    },
+    {
+      "rank": 262,
+      "idx": "258267",
+      "model": "Coherecommand-r-08-2024Cohere · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1249±7",
+      "votes": "10,140",
+      "price": "$0.15 / $0.60",
+      "context": "128K"
+    },
+    {
+      "rank": 263,
+      "idx": "261271",
+      "model": "mistral-large-2402Mistral · Proprietary",
+      "company": "Other",
+      "elo": "1241±5",
+      "votes": "62,436",
+      "price": "$4 / $12",
+      "context": "32K"
+    },
+    {
+      "rank": 264,
+      "idx": "261271",
+      "model": "amazon-nova-micro-v1.0Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1240±5",
+      "votes": "19,364",
+      "price": "$0.04 / $0.14",
+      "context": "128K"
+    },
+    {
+      "rank": 265,
+      "idx": "261274",
+      "model": "jamba-1.5-miniAI21 Labs · Jamba Open",
+      "company": "Other",
+      "elo": "1239±7",
+      "votes": "8,858",
+      "price": "$0.20 / $0.40",
+      "context": "256K"
+    },
+    {
+      "rank": 266,
+      "idx": "261278",
+      "model": "ministral-8b-2410Mistral · MRL",
+      "company": "Other",
+      "elo": "1237±9",
+      "votes": "4,781",
+      "price": "$0.10 / $0.10",
+      "context": "131.1K"
+    },
+    {
+      "rank": 267,
+      "idx": "262279",
+      "model": "gemini-pro-dev-apiGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1235±7",
+      "votes": "18,354",
+      "price": "$0.35 / $1.05",
+      "context": "32.8K"
+    },
+    {
+      "rank": 268,
+      "idx": "263278",
+      "model": "qwen1.5-110b-chatAlibaba · Qianwen LICENSE",
+      "company": "Alibaba",
+      "elo": "1233±6",
+      "votes": "26,195",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 269,
+      "idx": "261281",
+      "model": "Tencenthunyuan-standard-256kTencent · Proprietary",
+      "company": "Other",
+      "elo": "1233±12",
+      "votes": "2,728",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 270,
+      "idx": "263280",
+      "model": "reka-flash-21b-20240226-onlineReka AI · Proprietary",
+      "company": "Other",
+      "elo": "1232±7",
+      "votes": "15,450",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 271,
+      "idx": "263279",
+      "model": "qwen1.5-72b-chatAlibaba · Qianwen LICENSE",
+      "company": "Alibaba",
+      "elo": "1232±5",
+      "votes": "39,302",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 272,
+      "idx": "265280",
+      "model": "mixtral-8x22b-instruct-v0.1Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1228±5",
+      "votes": "51,416",
+      "price": "$0.90 / $0.90",
+      "context": "65.5K"
+    },
+    {
+      "rank": 273,
+      "idx": "266281",
+      "model": "Coherecommand-rCohere · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1226±5",
+      "votes": "54,036",
+      "price": "$0.15 / $0.60",
+      "context": "128K"
+    },
+    {
+      "rank": 274,
+      "idx": "265281",
+      "model": "reka-flash-21b-20240226Reka AI · Proprietary",
+      "company": "Other",
+      "elo": "1226±6",
+      "votes": "24,806",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 275,
+      "idx": "266282",
+      "model": "gpt-3.5-turbo-0125OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1223±5",
+      "votes": "66,207",
+      "price": "$0.50 / $1.50",
+      "context": "16.4K"
+    },
+    {
+      "rank": 276,
+      "idx": "270281",
+      "model": "Metallama-3-8b-instructMeta · Llama 3 Community",
+      "company": "Meta",
+      "elo": "1223±4",
+      "votes": "104,642",
+      "price": "$0.03 / $0.04",
+      "context": "8.2K"
+    },
+    {
+      "rank": 277,
+      "idx": "266283",
+      "model": "Coherec4ai-aya-expanse-8bCohere · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1222±7",
+      "votes": "9,818",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 278,
+      "idx": "268283",
+      "model": "mistral-mediumMistral · Proprietary",
+      "company": "Other",
+      "elo": "1222±6",
+      "votes": "34,550",
+      "price": "$2.70 / $8.10",
+      "context": "32K"
+    },
+    {
+      "rank": 279,
+      "idx": "265285",
+      "model": "gemini-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1221±12",
+      "votes": "6,390",
+      "price": "$0.35 / $1.05",
+      "context": "32.8K"
+    },
+    {
+      "rank": 280,
+      "idx": "266285",
+      "model": "llama-3.1-tulu-3-8bAi2 · Llama 3.1",
+      "company": "Other",
+      "elo": "1220±11",
+      "votes": "2,896",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 281,
+      "idx": "277286",
+      "model": "01.AIyi-1.5-34b-chat01 AI · Apache-2.0",
+      "company": "Other",
+      "elo": "1212±5",
+      "votes": "24,146",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 282,
+      "idx": "272288",
+      "model": "zephyr-orpo-141b-A35b-v0.1HuggingFace · Apache 2.0",
+      "company": "Other",
+      "elo": "1212±11",
+      "votes": "4,652",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 283,
+      "idx": "279286",
+      "model": "Metallama-3.1-8b-instructMeta · Llama 3.1 Community",
+      "company": "Meta",
+      "elo": "1211±4",
+      "votes": "49,605",
+      "price": "$0.02 / $0.05",
+      "context": "16.4K"
+    },
+    {
+      "rank": 284,
+      "idx": "276292",
+      "model": "granite-3.1-8b-instructIBM · Apache 2.0",
+      "company": "Other",
+      "elo": "1208±11",
+      "votes": "3,090",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 285,
+      "idx": "281292",
+      "model": "qwen1.5-32b-chatAlibaba · Qianwen LICENSE",
+      "company": "Alibaba",
+      "elo": "1203±6",
+      "votes": "21,741",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 286,
+      "idx": "279294",
+      "model": "gpt-3.5-turbo-1106OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1202±9",
+      "votes": "16,619",
+      "price": "$1 / $2",
+      "context": "16.4K"
+    },
+    {
+      "rank": 287,
+      "idx": "283293",
+      "model": "gemma-2-2b-itGoogle · Gemma license",
+      "company": "Google",
+      "elo": "1199±4",
+      "votes": "46,616",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 288,
+      "idx": "283294",
+      "model": "phi-3-medium-4k-instructMicrosoft · MIT",
+      "company": "Other",
+      "elo": "1197±5",
+      "votes": "25,055",
+      "price": "$0.17 / $0.68",
+      "context": "N/A"
+    },
+    {
+      "rank": 289,
+      "idx": "284294",
+      "model": "mixtral-8x7b-instruct-v0.1Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1196±4",
+      "votes": "73,503",
+      "price": "$0.63 / $0.63",
+      "context": "32K"
+    },
+    {
+      "rank": 290,
+      "idx": "284299",
+      "model": "dbrx-instruct-previewDatabricks · DBRX LICENSE",
+      "company": "Other",
+      "elo": "1194±6",
+      "votes": "32,191",
+      "price": "$0.60 / $0.60",
+      "context": "32.8K"
+    },
+    {
+      "rank": 291,
+      "idx": "284303",
+      "model": "internlm2_5-20b-chatInternLM · Other",
+      "company": "Other",
+      "elo": "1191±7",
+      "votes": "9,901",
+      "price": "$0 / $0",
+      "context": "32.8K"
+    },
+    {
+      "rank": 292,
+      "idx": "284303",
+      "model": "qwen1.5-14b-chatAlibaba · Qianwen LICENSE",
+      "company": "Alibaba",
+      "elo": "1190±7",
+      "votes": "17,839",
+      "price": "$0.30 / $0.30",
+      "context": "N/A"
+    },
+    {
+      "rank": 293,
+      "idx": "287309",
+      "model": "wizardlm-70bMicrosoft · Llama 2 Community",
+      "company": "Other",
+      "elo": "1184±9",
+      "votes": "8,214",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 294,
+      "idx": "286310",
+      "model": "deepseek-llm-67b-chatDeepSeek · DeepSeek License",
+      "company": "DeepSeek",
+      "elo": "1183±12",
+      "votes": "4,932",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 295,
+      "idx": "290305",
+      "model": "01.AIyi-34b-chat01 AI · Yi License",
+      "company": "Other",
+      "elo": "1183±7",
+      "votes": "15,483",
+      "price": "$0.90 / $0.90",
+      "context": "4.1K"
+    },
+    {
+      "rank": 296,
+      "idx": "290310",
+      "model": "openchat-3.5-0106OpenChat · Apache-2.0",
+      "company": "Other",
+      "elo": "1181±8",
+      "votes": "12,637",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 297,
+      "idx": "290310",
+      "model": "openchat-3.5OpenChat · Apache-2.0",
+      "company": "Other",
+      "elo": "1181±10",
+      "votes": "7,968",
+      "price": "$0.20 / $0.20",
+      "context": "N/A"
+    },
+    {
+      "rank": 298,
+      "idx": "290310",
+      "model": "granite-3.0-8b-instructIBM · Apache 2.0",
+      "company": "Other",
+      "elo": "1181±9",
+      "votes": "6,638",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 299,
+      "idx": "291309",
+      "model": "gemma-1.1-7b-itGoogle · Gemma license",
+      "company": "Google",
+      "elo": "1180±6",
+      "votes": "23,893",
+      "price": "$0.03 / $0.09",
+      "context": "8.2K"
+    },
+    {
+      "rank": 300,
+      "idx": "291310",
+      "model": "snowflake-arctic-instructSnowflake · Apache 2.0",
+      "company": "Other",
+      "elo": "1179±6",
+      "votes": "32,832",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 301,
+      "idx": "290311",
+      "model": "granite-3.1-2b-instructIBM · Apache 2.0",
+      "company": "Other",
+      "elo": "1178±11",
+      "votes": "3,188",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 302,
+      "idx": "291311",
+      "model": "tulu-2-dpo-70bAllenAI/UW · AI2 ImpACT Low-risk",
+      "company": "Other",
+      "elo": "1177±10",
+      "votes": "6,535",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 303,
+      "idx": "291314",
+      "model": "openhermes-2.5-mistral-7bNousResearch · Apache-2.0",
+      "company": "Other",
+      "elo": "1174±10",
+      "votes": "5,006",
+      "price": "$0.17 / $0.17",
+      "context": "N/A"
+    },
+    {
+      "rank": 304,
+      "idx": "293313",
+      "model": "vicuna-33bLMSYS · Non-commercial",
+      "company": "Other",
+      "elo": "1172±6",
+      "votes": "22,479",
+      "price": "$0 / $0",
+      "context": "2K"
+    },
+    {
+      "rank": 305,
+      "idx": "293316",
+      "model": "starling-lm-7b-betaNexusflow · Apache-2.0",
+      "company": "Other",
+      "elo": "1171±7",
+      "votes": "16,056",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 306,
+      "idx": "294314",
+      "model": "phi-3-small-8k-instructMicrosoft · MIT",
+      "company": "Other",
+      "elo": "1170±6",
+      "votes": "17,766",
+      "price": "$0.15 / $0.60",
+      "context": "N/A"
+    },
+    {
+      "rank": 307,
+      "idx": "294314",
+      "model": "Metallama-2-70b-chatMeta · Llama 2 Community",
+      "company": "Meta",
+      "elo": "1170±6",
+      "votes": "38,492",
+      "price": "$0.70 / $2.80",
+      "context": "4.1K"
+    },
+    {
+      "rank": 308,
+      "idx": "294317",
+      "model": "starling-lm-7b-alphaUC Berkeley · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1166±8",
+      "votes": "10,224",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 309,
+      "idx": "296317",
+      "model": "Metallama-3.2-3b-instructMeta · Llama 3.2",
+      "company": "Meta",
+      "elo": "1166±8",
+      "votes": "7,936",
+      "price": "$0.05 / $0.34",
+      "context": "80K"
+    },
+    {
+      "rank": 310,
+      "idx": "294320",
+      "model": "nous-hermes-2-mixtral-8x7b-dpoNousResearch · Apache-2.0",
+      "company": "Other",
+      "elo": "1164±12",
+      "votes": "3,777",
+      "price": "$0.90 / $0.90",
+      "context": "N/A"
+    },
+    {
+      "rank": 311,
+      "idx": "301327",
+      "model": "qwq-32b-previewAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1156±12",
+      "votes": "3,231",
+      "price": "$0.50 / $1",
+      "context": "16.4K"
+    },
+    {
+      "rank": 312,
+      "idx": "307323",
+      "model": "granite-3.0-2b-instructIBM · Apache 2.0",
+      "company": "Other",
+      "elo": "1155±8",
+      "votes": "6,837",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 313,
+      "idx": "303327",
+      "model": "llama2-70b-steerlm-chatNvidia · Llama 2 Community",
+      "company": "Other",
+      "elo": "1154±13",
+      "votes": "3,585",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 314,
+      "idx": "304330",
+      "model": "solar-10.7b-instruct-v1.0Upstage AI · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1151±13",
+      "votes": "4,155",
+      "price": "$0.30 / $0.30",
+      "context": "N/A"
+    },
+    {
+      "rank": 315,
+      "idx": "303332",
+      "model": "dolphin-2.2.1-mistral-7bCognitive Computations · Apache-2.0",
+      "company": "Other",
+      "elo": "1151±15",
+      "votes": "1,679",
+      "price": "$0.50 / $0.50",
+      "context": "16.4K"
+    },
+    {
+      "rank": 316,
+      "idx": "308330",
+      "model": "mpt-30b-chatMosaicML · CC-BY-NC-SA-4.0",
+      "company": "Other",
+      "elo": "1149±12",
+      "votes": "2,572",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 317,
+      "idx": "310327",
+      "model": "mistral-7b-instruct-v0.2Mistral · Apache-2.0",
+      "company": "Other",
+      "elo": "1149±7",
+      "votes": "19,402",
+      "price": "$0.20 / $0.20",
+      "context": "32.8K"
+    },
+    {
+      "rank": 318,
+      "idx": "310328",
+      "model": "wizardlm-13bMicrosoft · Llama 2 Community",
+      "company": "Other",
+      "elo": "1148±9",
+      "votes": "7,044",
+      "price": "$0.30 / $0.30",
+      "context": "N/A"
+    },
+    {
+      "rank": 319,
+      "idx": "307334",
+      "model": "falcon-180b-chatTII · Falcon-180B TII License",
+      "company": "Other",
+      "elo": "1146±17",
+      "votes": "1,295",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 320,
+      "idx": "310333",
+      "model": "qwen1.5-7b-chatAlibaba · Qianwen LICENSE",
+      "company": "Alibaba",
+      "elo": "1143±10",
+      "votes": "4,737",
+      "price": "$0.20 / $0.20",
+      "context": "N/A"
+    },
+    {
+      "rank": 321,
+      "idx": "311332",
+      "model": "phi-3-mini-4k-instruct-june-2024Microsoft · MIT",
+      "company": "Other",
+      "elo": "1142±6",
+      "votes": "12,297",
+      "price": "$0.13 / $0.52",
+      "context": "4.1K"
+    },
+    {
+      "rank": 322,
+      "idx": "311332",
+      "model": "Metallama-2-13b-chatMeta · Llama 2 Community",
+      "company": "Meta",
+      "elo": "1141±7",
+      "votes": "19,174",
+      "price": "$0.25 / $0.25",
+      "context": "4.1K"
+    },
+    {
+      "rank": 323,
+      "idx": "312333",
+      "model": "vicuna-13bLMSYS · Llama 2 Community",
+      "company": "Other",
+      "elo": "1140±7",
+      "votes": "19,367",
+      "price": "$0.30 / $0.30",
+      "context": "N/A"
+    },
+    {
+      "rank": 324,
+      "idx": "311335",
+      "model": "qwen-14b-chatAlibaba · Qianwen LICENSE",
+      "company": "Alibaba",
+      "elo": "1138±11",
+      "votes": "4,964",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 325,
+      "idx": "312335",
+      "model": "palm-2Google · Proprietary",
+      "company": "Google",
+      "elo": "1137±9",
+      "votes": "8,554",
+      "price": "$0.50 / $0.50",
+      "context": "25.8K"
+    },
+    {
+      "rank": 326,
+      "idx": "312335",
+      "model": "gemma-7b-itGoogle · Gemma license",
+      "company": "Google",
+      "elo": "1136±10",
+      "votes": "8,925",
+      "price": "$0.05 / $0.08",
+      "context": "8.2K"
+    },
+    {
+      "rank": 327,
+      "idx": "312335",
+      "model": "Metacodellama-34b-instructMeta · Llama 2 Community",
+      "company": "Meta",
+      "elo": "1136±9",
+      "votes": "7,366",
+      "price": "$0.35 / $1.40",
+      "context": "16.4K"
+    },
+    {
+      "rank": 328,
+      "idx": "316337",
+      "model": "zephyr-7b-betaHuggingFace · MIT",
+      "company": "Other",
+      "elo": "1130±9",
+      "votes": "11,118",
+      "price": "$0.15 / $0.15",
+      "context": "16.4K"
+    },
+    {
+      "rank": 329,
+      "idx": "318337",
+      "model": "phi-3-mini-128k-instructMicrosoft · MIT",
+      "company": "Other",
+      "elo": "1128±7",
+      "votes": "20,685",
+      "price": "$0.13 / $0.52",
+      "context": "N/A"
+    },
+    {
+      "rank": 330,
+      "idx": "321337",
+      "model": "phi-3-mini-4k-instructMicrosoft · MIT",
+      "company": "Other",
+      "elo": "1127±6",
+      "votes": "20,118",
+      "price": "$0.13 / $0.52",
+      "context": "N/A"
+    },
+    {
+      "rank": 331,
+      "idx": "316340",
+      "model": "guanaco-33bUW · Non-commercial",
+      "company": "Other",
+      "elo": "1126±12",
+      "votes": "2,921",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 332,
+      "idx": "314340",
+      "model": "zephyr-7b-alphaHuggingFace · MIT",
+      "company": "Other",
+      "elo": "1126±16",
+      "votes": "1,785",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 333,
+      "idx": "323340",
+      "model": "stripedhyena-nous-7bTogether AI · Apache 2.0",
+      "company": "Other",
+      "elo": "1120±11",
+      "votes": "5,182",
+      "price": "$0.20 / $0.20",
+      "context": "N/A"
+    },
+    {
+      "rank": 334,
+      "idx": "318341",
+      "model": "Metacodellama-70b-instructMeta · Llama 2 Community",
+      "company": "Meta",
+      "elo": "1118±18",
+      "votes": "1,143",
+      "price": "$0.70 / $2.80",
+      "context": "16.4K"
+    },
+    {
+      "rank": 335,
+      "idx": "328340",
+      "model": "gemma-1.1-2b-itGoogle · Gemma license",
+      "company": "Google",
+      "elo": "1114±8",
+      "votes": "10,854",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 336,
+      "idx": "328340",
+      "model": "vicuna-7bLMSYS · Llama 2 Community",
+      "company": "Other",
+      "elo": "1114±9",
+      "votes": "6,923",
+      "price": "$0.20 / $0.20",
+      "context": "N/A"
+    },
+    {
+      "rank": 337,
+      "idx": "324341",
+      "model": "smollm2-1.7b-instructHuggingFace · Apache 2.0",
+      "company": "Other",
+      "elo": "1113±14",
+      "votes": "2,199",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 338,
+      "idx": "331341",
+      "model": "Metallama-3.2-1b-instructMeta · Llama 3.2",
+      "company": "Meta",
+      "elo": "1110±8",
+      "votes": "8,045",
+      "price": "$0.03 / $0.20",
+      "context": "60K"
+    },
+    {
+      "rank": 339,
+      "idx": "331341",
+      "model": "mistral-7b-instructMistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1109±9",
+      "votes": "8,977",
+      "price": "$0.07 / $0.28",
+      "context": "4.1K"
+    },
+    {
+      "rank": 340,
+      "idx": "331341",
+      "model": "Metallama-2-7b-chatMeta · Llama 2 Community",
+      "company": "Meta",
+      "elo": "1107±7",
+      "votes": "14,148",
+      "price": "$0.15 / $0.15",
+      "context": "4.1K"
+    },
+    {
+      "rank": 341,
+      "idx": "336344",
+      "model": "gemma-2b-itGoogle · Gemma license",
+      "company": "Google",
+      "elo": "1091±12",
+      "votes": "4,780",
+      "price": "$0.10 / $0.10",
+      "context": "N/A"
+    },
+    {
+      "rank": 342,
+      "idx": "341344",
+      "model": "qwen1.5-4b-chatAlibaba · Qianwen LICENSE",
+      "company": "Alibaba",
+      "elo": "1089±9",
+      "votes": "7,597",
+      "price": "$0.10 / $0.10",
+      "context": "N/A"
+    },
+    {
+      "rank": 343,
+      "idx": "341348",
+      "model": "olmo-7b-instructAi2 · Apache-2.0",
+      "company": "Other",
+      "elo": "1073±11",
+      "votes": "6,328",
+      "price": "$0.20 / $0.20",
+      "context": "N/A"
+    },
+    {
+      "rank": 344,
+      "idx": "343348",
+      "model": "koala-13bUC Berkeley · Non-commercial",
+      "company": "Other",
+      "elo": "1069±10",
+      "votes": "6,965",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 345,
+      "idx": "343348",
+      "model": "alpaca-13bStanford · Non-commercial",
+      "company": "Other",
+      "elo": "1067±12",
+      "votes": "5,745",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 346,
+      "idx": "341349",
+      "model": "gpt4all-13b-snoozyNomic AI · Non-commercial",
+      "company": "Other",
+      "elo": "1065±15",
+      "votes": "1,743",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 347,
+      "idx": "343349",
+      "model": "mpt-7b-chatMosaicML · CC-BY-NC-SA-4.0",
+      "company": "Other",
+      "elo": "1061±12",
+      "votes": "3,924",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 348,
+      "idx": "343349",
+      "model": "chatglm3-6bTsinghua · Apache-2.0",
+      "company": "Other",
+      "elo": "1055±12",
+      "votes": "4,658",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 349,
+      "idx": "346351",
+      "model": "RWKV-4-Raven-14BRWKV · Apache 2.0",
+      "company": "Other",
+      "elo": "1040±11",
+      "votes": "4,845",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 350,
+      "idx": "349351",
+      "model": "chatglm2-6bTsinghua · Apache-2.0",
+      "company": "Other",
+      "elo": "1023±14",
+      "votes": "2,658",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 351,
+      "idx": "349351",
+      "model": "oasst-pythia-12bOpenAssistant · Apache 2.0",
+      "company": "Other",
+      "elo": "1021±11",
+      "votes": "6,310",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 352,
+      "idx": "352355",
+      "model": "chatglm-6bTsinghua · Non-commercial",
+      "company": "Other",
+      "elo": "995±13",
+      "votes": "4,914",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 353,
+      "idx": "352355",
+      "model": "fastchat-t5-3bLMSYS · Apache 2.0",
+      "company": "Other",
+      "elo": "990±12",
+      "votes": "4,203",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 354,
+      "idx": "352355",
+      "model": "dolly-v2-12bDatabricks · MIT",
+      "company": "Other",
+      "elo": "979±14",
+      "votes": "3,412",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 355,
+      "idx": "352356",
+      "model": "Metallama-13bMeta · Non-commercial",
+      "company": "Meta",
+      "elo": "972±16",
+      "votes": "2,391",
+      "price": "$0.23 / $0.23",
+      "context": "N/A"
+    },
+    {
+      "rank": 356,
+      "idx": "355356",
+      "model": "Stabilitystablelm-tuned-alpha-7bStability AI · CC-BY-NC-SA-4.0",
+      "company": "Other",
+      "elo": "952±13",
+      "votes": "3,287",
+      "price": "N/A",
+      "context": "N/A"
+    }
+  ],
+  "vision": [
+    {
+      "rank": 1,
+      "idx": "17",
+      "model": "Anthropicclaude-opus-4-6-thinkingAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1303±10",
+      "votes": "4,731",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 2,
+      "idx": "17",
+      "model": "Anthropicclaude-opus-4-7-thinkingAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1302±10",
+      "votes": "3,962",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 3,
+      "idx": "17",
+      "model": "Anthropicclaude-opus-4-7Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1299±10",
+      "votes": "4,139",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 4,
+      "idx": "110",
+      "model": "Metamuse-sparkMeta · Proprietary",
+      "company": "Meta",
+      "elo": "1294±11Preliminary",
+      "votes": "3,733",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 5,
+      "idx": "111",
+      "model": "gpt-5.5OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1293±14",
+      "votes": "2,100",
+      "price": "$5 / $30",
+      "context": "1.1M"
+    },
+    {
+      "rank": 6,
+      "idx": "110",
+      "model": "Anthropicclaude-opus-4-6Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1293±10",
+      "votes": "5,440",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 7,
+      "idx": "111",
+      "model": "gemini-3-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1288±8",
+      "votes": "13,303",
+      "price": "$2 / $12",
+      "context": "1M"
+    },
+    {
+      "rank": 8,
+      "idx": "412",
+      "model": "gpt-5.2-chat-latest-20260210OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1280±8",
+      "votes": "9,739",
+      "price": "$1.75 / $14",
+      "context": "128K"
+    },
+    {
+      "rank": 9,
+      "idx": "413",
+      "model": "gemini-3.1-pro-previewGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1277±7",
+      "votes": "13,343",
+      "price": "$2 / $12",
+      "context": "1M"
+    },
+    {
+      "rank": 10,
+      "idx": "418",
+      "model": "gpt-5.5-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1274±14",
+      "votes": "1,756",
+      "price": "$5 / $30",
+      "context": "1.1M"
+    },
+    {
+      "rank": 11,
+      "idx": "617",
+      "model": "Anthropicclaude-sonnet-4-6Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1272±9",
+      "votes": "5,717",
+      "price": "$3 / $15",
+      "context": "1M"
+    },
+    {
+      "rank": 12,
+      "idx": "817",
+      "model": "gemini-3-flashGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1270±7",
+      "votes": "18,695",
+      "price": "$0.50 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 13,
+      "idx": "924",
+      "model": "kimi-k2.6Moonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1261±11",
+      "votes": "3,420",
+      "price": "$0.95 / $4",
+      "context": "262.1K"
+    },
+    {
+      "rank": 14,
+      "idx": "1022",
+      "model": "gemini-3-flash (thinking-minimal)Google · Proprietary",
+      "company": "Google",
+      "elo": "1259±7",
+      "votes": "16,730",
+      "price": "$0.50 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 15,
+      "idx": "1023",
+      "model": "Bytedancedola-seed-2.0-proBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1259±8",
+      "votes": "8,641",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 16,
+      "idx": "1025",
+      "model": "gpt-5.4-mini-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1257±9",
+      "votes": "5,895",
+      "price": "$0.75 / $4.50",
+      "context": "400K"
+    },
+    {
+      "rank": 17,
+      "idx": "1228",
+      "model": "grok-4.20-beta-0309-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1251±9",
+      "votes": "6,840",
+      "price": "$2 / $6",
+      "context": "2M"
+    },
+    {
+      "rank": 18,
+      "idx": "1328",
+      "model": "gpt-5.1-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1250±8",
+      "votes": "9,300",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 19,
+      "idx": "1034",
+      "model": "grok-4.3xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1249±18",
+      "votes": "1,040",
+      "price": "$1.25 / $2.50",
+      "context": "1M"
+    },
+    {
+      "rank": 20,
+      "idx": "1328",
+      "model": "kimi-k2.5-thinkingMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1247±7",
+      "votes": "12,127",
+      "price": "$0.60 / $3",
+      "context": "N/A"
+    },
+    {
+      "rank": 21,
+      "idx": "1428",
+      "model": "gemini-2.5-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1246±5",
+      "votes": "85,644",
+      "price": "$1.25 / $10",
+      "context": "1M"
+    },
+    {
+      "rank": 22,
+      "idx": "1328",
+      "model": "gpt-5.2-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1246±7",
+      "votes": "12,556",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    },
+    {
+      "rank": 23,
+      "idx": "1333",
+      "model": "grok-4.20-multi-agent-beta-0309xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1244±9",
+      "votes": "6,416",
+      "price": "$2 / $6",
+      "context": "2M"
+    },
+    {
+      "rank": 24,
+      "idx": "1633",
+      "model": "qwen3.5-397b-a17bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1242±8",
+      "votes": "9,629",
+      "price": "$0.39 / $2.34",
+      "context": "262.1K"
+    },
+    {
+      "rank": 25,
+      "idx": "1733",
+      "model": "chatgpt-4o-latest-20250326OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1240±6",
+      "votes": "23,597",
+      "price": "$5 / $15",
+      "context": "128K"
+    },
+    {
+      "rank": 26,
+      "idx": "1734",
+      "model": "gemini-3.1-flash-lite-previewGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1239±8",
+      "votes": "11,456",
+      "price": "$0.25 / $1.50",
+      "context": "1M"
+    },
+    {
+      "rank": 27,
+      "idx": "1537",
+      "model": "kimi-k2.5-instantMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1239±11",
+      "votes": "3,913",
+      "price": "$0.44 / $2",
+      "context": "262.1K"
+    },
+    {
+      "rank": 28,
+      "idx": "1736",
+      "model": "gpt-5.1OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1237±8",
+      "votes": "10,180",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 29,
+      "idx": "2241",
+      "model": "gpt-5.2OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1230±7",
+      "votes": "13,349",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    },
+    {
+      "rank": 30,
+      "idx": "2245",
+      "model": "glm-5v-turboZ.ai · Proprietary",
+      "company": "Z.ai",
+      "elo": "1227±10",
+      "votes": "4,228",
+      "price": "$1.20 / $4",
+      "context": "202.8K"
+    },
+    {
+      "rank": 31,
+      "idx": "2245",
+      "model": "qwen3.5-27bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1226±9",
+      "votes": "7,217",
+      "price": "$0.20 / $1.56",
+      "context": "262.1K"
+    },
+    {
+      "rank": 32,
+      "idx": "2245",
+      "model": "gemini-2.5-flash-preview-09-2025Google · Proprietary",
+      "company": "Google",
+      "elo": "1226±10",
+      "votes": "4,771",
+      "price": "$0.30 / $2.50",
+      "context": "1M"
+    },
+    {
+      "rank": 33,
+      "idx": "2245",
+      "model": "gpt-4.5-preview-2025-02-27OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1226±12",
+      "votes": "2,925",
+      "price": "$75 / $150",
+      "context": "128K"
+    },
+    {
+      "rank": 34,
+      "idx": "2544",
+      "model": "gpt-5-chatOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1225±7",
+      "votes": "41,284",
+      "price": "$1.25 / $10",
+      "context": "128K"
+    },
+    {
+      "rank": 35,
+      "idx": "2745",
+      "model": "qwen3.5-122b-a10bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1222±8",
+      "votes": "7,792",
+      "price": "$0.26 / $2.08",
+      "context": "262.1K"
+    },
+    {
+      "rank": 36,
+      "idx": "2848",
+      "model": "mimo-v2.5Xiaomi · MIT",
+      "company": "Xiaomi",
+      "elo": "1218±10",
+      "votes": "4,305",
+      "price": "$0.40 / $2",
+      "context": "1M"
+    },
+    {
+      "rank": 37,
+      "idx": "2749",
+      "model": "ernie-5.0-preview-1220Baidu · Proprietary",
+      "company": "Baidu",
+      "elo": "1218±12",
+      "votes": "3,210",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 38,
+      "idx": "2946",
+      "model": "o3-2025-04-16OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1217±7",
+      "votes": "47,178",
+      "price": "$2 / $8",
+      "context": "200K"
+    },
+    {
+      "rank": 39,
+      "idx": "2948",
+      "model": "qwen3-vl-235b-a22b-instructAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1215±7",
+      "votes": "12,306",
+      "price": "$0.20 / $0.88",
+      "context": "262.1K"
+    },
+    {
+      "rank": 40,
+      "idx": "3048",
+      "model": "gpt-4.1-2025-04-14OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1214±7",
+      "votes": "42,568",
+      "price": "$2 / $8",
+      "context": "1M"
+    },
+    {
+      "rank": 41,
+      "idx": "3148",
+      "model": "gemini-2.5-flashGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1213±5",
+      "votes": "55,564",
+      "price": "$0.30 / $2.50",
+      "context": "1M"
+    },
+    {
+      "rank": 42,
+      "idx": "3049",
+      "model": "gpt-5-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1211±7",
+      "votes": "35,510",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 43,
+      "idx": "3053",
+      "model": "mimo-v2-omniXiaomi · Proprietary",
+      "company": "Xiaomi",
+      "elo": "1208±10",
+      "votes": "5,064",
+      "price": "$0.40 / $2",
+      "context": "262.1K"
+    },
+    {
+      "rank": 44,
+      "idx": "2956",
+      "model": "Anthropicclaude-sonnet-4-20250514-thinking-32kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1207±17",
+      "votes": "1,182",
+      "price": "$3 / $15",
+      "context": "1M"
+    },
+    {
+      "rank": 45,
+      "idx": "2956",
+      "model": "Anthropicclaude-opus-4-20250514-thinking-16kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1207±16",
+      "votes": "1,329",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 46,
+      "idx": "3755",
+      "model": "gpt-4.1-mini-2025-04-14OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1203±8",
+      "votes": "41,820",
+      "price": "$0.40 / $1.60",
+      "context": "1M"
+    },
+    {
+      "rank": 47,
+      "idx": "3756",
+      "model": "o4-mini-2025-04-16OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1201±7",
+      "votes": "42,895",
+      "price": "$1.10 / $4.40",
+      "context": "200K"
+    },
+    {
+      "rank": 48,
+      "idx": "4158",
+      "model": "gpt-5.4-nano-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1198±10",
+      "votes": "5,819",
+      "price": "$0.20 / $1.25",
+      "context": "400K"
+    },
+    {
+      "rank": 49,
+      "idx": "3661",
+      "model": "Anthropicclaude-3-7-sonnet-20250219-thinking-32kAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1195±15",
+      "votes": "1,481",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 50,
+      "idx": "4361",
+      "model": "o1-2024-12-17OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1193±11",
+      "votes": "3,694",
+      "price": "$15 / $60",
+      "context": "200K"
+    },
+    {
+      "rank": 51,
+      "idx": "4363",
+      "model": "qwen3-vl-235b-a22b-thinkingAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1189±12",
+      "votes": "2,385",
+      "price": "$0.26 / $2.60",
+      "context": "131.1K"
+    },
+    {
+      "rank": 52,
+      "idx": "4461",
+      "model": "gemini-2.5-flash-lite-preview-06-17-thinkingGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1188±8",
+      "votes": "37,286",
+      "price": "$0.10 / $0.40",
+      "context": "1M"
+    },
+    {
+      "rank": 53,
+      "idx": "4363",
+      "model": "Anthropicclaude-sonnet-4-20250514Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1188±14",
+      "votes": "1,865",
+      "price": "$3 / $15",
+      "context": "1M"
+    },
+    {
+      "rank": 54,
+      "idx": "4363",
+      "model": "Anthropicclaude-opus-4-20250514Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1187±13",
+      "votes": "2,239",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 55,
+      "idx": "4463",
+      "model": "qwen-vl-max-2025-08-13Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1186±12",
+      "votes": "3,271",
+      "price": "$0.52 / $2.08",
+      "context": "131.1K"
+    },
+    {
+      "rank": 56,
+      "idx": "4563",
+      "model": "grok-4-1-fast-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1186±8",
+      "votes": "8,323",
+      "price": "$0.20 / $0.50",
+      "context": "2M"
+    },
+    {
+      "rank": 57,
+      "idx": "4863",
+      "model": "grok-4-0709xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1182±7",
+      "votes": "33,114",
+      "price": "$3 / $15",
+      "context": "256K"
+    },
+    {
+      "rank": 58,
+      "idx": "4864",
+      "model": "gpt-5-mini-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1182±8",
+      "votes": "29,973",
+      "price": "$0.25 / $2",
+      "context": "400K"
+    },
+    {
+      "rank": 59,
+      "idx": "4966",
+      "model": "gemini-1.5-pro-002Google · Proprietary",
+      "company": "Google",
+      "elo": "1179±9",
+      "votes": "8,902",
+      "price": "$3.50 / $10.50",
+      "context": "2.1M"
+    },
+    {
+      "rank": 60,
+      "idx": "4969",
+      "model": "Anthropicclaude-3-7-sonnet-20250219Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1176±9",
+      "votes": "4,567",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 61,
+      "idx": "4972",
+      "model": "gemini-2.5-flash-lite-preview-09-2025-no-thinkingGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1174±10",
+      "votes": "4,824",
+      "price": "$0.10 / $0.40",
+      "context": "1M"
+    },
+    {
+      "rank": 62,
+      "idx": "5272",
+      "model": "gemini-2.0-flash-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1171±7",
+      "votes": "10,294",
+      "price": "$0.10 / $0.40",
+      "context": "1M"
+    },
+    {
+      "rank": 63,
+      "idx": "5278",
+      "model": "glm-4.6vZ.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1164±14",
+      "votes": "2,345",
+      "price": "$0.30 / $0.90",
+      "context": "131.1K"
+    },
+    {
+      "rank": 64,
+      "idx": "5976",
+      "model": "gpt-4o-2024-05-13OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1162±8",
+      "votes": "23,273",
+      "price": "$5 / $15",
+      "context": "128K"
+    },
+    {
+      "rank": 65,
+      "idx": "5878",
+      "model": "Tencenthunyuan-vision-1.5-thinkingTencent · Proprietary",
+      "company": "Other",
+      "elo": "1161±12",
+      "votes": "2,441",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 66,
+      "idx": "6076",
+      "model": "Anthropicclaude-3-5-sonnet-20241022Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1161±8",
+      "votes": "10,420",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 67,
+      "idx": "6176",
+      "model": "mistral-medium-2508Mistral · Proprietary",
+      "company": "Other",
+      "elo": "1159±7",
+      "votes": "42,601",
+      "price": "$2.70 / $8.10",
+      "context": "32K"
+    },
+    {
+      "rank": 68,
+      "idx": "6076",
+      "model": "gemma-3-27b-itGoogle · Gemma",
+      "company": "Google",
+      "elo": "1158±8",
+      "votes": "17,609",
+      "price": "$0.08 / $0.16",
+      "context": "131.1K"
+    },
+    {
+      "rank": 69,
+      "idx": "5979",
+      "model": "Stepfunstep-1o-turbo-202506StepFun · Proprietary",
+      "company": "Other",
+      "elo": "1158±14",
+      "votes": "1,951",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 70,
+      "idx": "6178",
+      "model": "mistral-medium-2505Mistral · Proprietary",
+      "company": "Other",
+      "elo": "1156±8",
+      "votes": "11,070",
+      "price": "$0.40 / $2",
+      "context": "131.1K"
+    },
+    {
+      "rank": 71,
+      "idx": "6079",
+      "model": "glm-4.5vZ.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1156±12",
+      "votes": "3,358",
+      "price": "$0.60 / $1.80",
+      "context": "65.5K"
+    },
+    {
+      "rank": 72,
+      "idx": "6185",
+      "model": "Tencenthunyuan-large-visionTencent · Proprietary",
+      "company": "Other",
+      "elo": "1148±16",
+      "votes": "1,312",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 73,
+      "idx": "6380",
+      "model": "Metallama-4-maverick-17b-128e-instructMeta · Llama 4",
+      "company": "Meta",
+      "elo": "1147±9",
+      "votes": "7,103",
+      "price": "$0.63 / $1.80",
+      "context": "131.1K"
+    },
+    {
+      "rank": 74,
+      "idx": "6384",
+      "model": "gpt-5-nano-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1147±11",
+      "votes": "4,066",
+      "price": "$0.05 / $0.40",
+      "context": "400K"
+    },
+    {
+      "rank": 75,
+      "idx": "6384",
+      "model": "Stepfunstep-3StepFun · Apache 2.0",
+      "company": "Other",
+      "elo": "1146±12",
+      "votes": "3,333",
+      "price": "$0.57 / $1.42",
+      "context": "65.5K"
+    },
+    {
+      "rank": 76,
+      "idx": "6384",
+      "model": "Anthropicclaude-3-5-sonnet-20240620Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1146±10",
+      "votes": "21,624",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 77,
+      "idx": "6785",
+      "model": "mistral-small-2506Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1141±9",
+      "votes": "11,254",
+      "price": "$0.10 / $0.30",
+      "context": "32K"
+    },
+    {
+      "rank": 78,
+      "idx": "6785",
+      "model": "gemini-1.5-flash-002Google · Proprietary",
+      "company": "Google",
+      "elo": "1140±10",
+      "votes": "7,241",
+      "price": "$0.07 / $0.30",
+      "context": "1M"
+    },
+    {
+      "rank": 79,
+      "idx": "7088",
+      "model": "gemini-2.0-flash-lite-preview-02-05Google · Proprietary",
+      "company": "Google",
+      "elo": "1135±10",
+      "votes": "3,991",
+      "price": "$0.07 / $0.30",
+      "context": "1M"
+    },
+    {
+      "rank": 80,
+      "idx": "7389",
+      "model": "mistral-small-3.1-24b-instruct-2503Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1128±9",
+      "votes": "29,673",
+      "price": "$0.10 / $0.30",
+      "context": "32K"
+    },
+    {
+      "rank": 81,
+      "idx": "7389",
+      "model": "Metallama-4-scout-17b-16e-instructMeta · Llama",
+      "company": "Meta",
+      "elo": "1128±10",
+      "votes": "6,591",
+      "price": "$0.40 / $0.70",
+      "context": "8.2K"
+    },
+    {
+      "rank": 82,
+      "idx": "7289",
+      "model": "Anthropicclaude-3-5-haiku-20241022Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1127±16",
+      "votes": "1,437",
+      "price": "$0.80 / $4",
+      "context": "200K"
+    },
+    {
+      "rank": 83,
+      "idx": "7389",
+      "model": "Stepfunstep-1o-vision-32k-highresStepFun · Proprietary",
+      "company": "Other",
+      "elo": "1126±12",
+      "votes": "2,833",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 84,
+      "idx": "7689",
+      "model": "qwen2.5-vl-72b-instructAlibaba · Qwen",
+      "company": "Alibaba",
+      "elo": "1122±11",
+      "votes": "3,768",
+      "price": "$0.25 / $0.75",
+      "context": "32K"
+    },
+    {
+      "rank": 85,
+      "idx": "7391",
+      "model": "qwen2.5-vl-32b-instructAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1121±15",
+      "votes": "1,490",
+      "price": "$0.20 / $0.60",
+      "context": "128K"
+    },
+    {
+      "rank": 86,
+      "idx": "7989",
+      "model": "gemini-1.5-pro-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1119±11",
+      "votes": "16,734",
+      "price": "$3.50 / $10.50",
+      "context": "2.1M"
+    },
+    {
+      "rank": 87,
+      "idx": "7990",
+      "model": "gpt-4o-2024-08-06OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1119±12",
+      "votes": "3,376",
+      "price": "$2.50 / $10",
+      "context": "128K"
+    },
+    {
+      "rank": 88,
+      "idx": "8093",
+      "model": "gpt-4-turbo-2024-04-09OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1113±11",
+      "votes": "13,391",
+      "price": "$10 / $30",
+      "context": "128K"
+    },
+    {
+      "rank": 89,
+      "idx": "7994",
+      "model": "molmo-2-8bAi2 · Apache 2.0",
+      "company": "Other",
+      "elo": "1107±20",
+      "votes": "1,177",
+      "price": "$0.20 / $0.20",
+      "context": "36.9K"
+    },
+    {
+      "rank": 90,
+      "idx": "8794",
+      "model": "gpt-4o-mini-2024-07-18OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1098±8",
+      "votes": "17,343",
+      "price": "$0.15 / $0.60",
+      "context": "128K"
+    },
+    {
+      "rank": 91,
+      "idx": "8894",
+      "model": "pixtral-large-2411Mistral · MRL",
+      "company": "Other",
+      "elo": "1095±9",
+      "votes": "5,423",
+      "price": "$2 / $6",
+      "context": "131.1K"
+    },
+    {
+      "rank": 92,
+      "idx": "8698",
+      "model": "gpt-4.1-nano-2025-04-14OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1089±18",
+      "votes": "1,211",
+      "price": "$0.10 / $0.40",
+      "context": "1M"
+    },
+    {
+      "rank": 93,
+      "idx": "8898",
+      "model": "qwen-vl-max-1119Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1085±16",
+      "votes": "1,422",
+      "price": "$0.80 / $3.20",
+      "context": "131.1K"
+    },
+    {
+      "rank": 94,
+      "idx": "8996",
+      "model": "qwen2-vl-72bAlibaba · Qwen",
+      "company": "Alibaba",
+      "elo": "1085±10",
+      "votes": "5,937",
+      "price": "$0.90 / $0.90",
+      "context": "32.8K"
+    },
+    {
+      "rank": 95,
+      "idx": "9299",
+      "model": "gemini-1.5-flash-8b-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1071±10",
+      "votes": "6,243",
+      "price": "$0.07 / $0.30",
+      "context": "1M"
+    },
+    {
+      "rank": 96,
+      "idx": "92100",
+      "model": "Stepfunstep-1v-32kStepFun · Proprietary",
+      "company": "Other",
+      "elo": "1064±17",
+      "votes": "1,534",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 97,
+      "idx": "93100",
+      "model": "Anthropicclaude-3-opus-20240229Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1063±10",
+      "votes": "15,565",
+      "price": "$15 / $75",
+      "context": "200K"
+    },
+    {
+      "rank": 98,
+      "idx": "93100",
+      "model": "gemini-1.5-flash-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1060±12",
+      "votes": "13,260",
+      "price": "$0.07 / $0.30",
+      "context": "1M"
+    },
+    {
+      "rank": 99,
+      "idx": "96106",
+      "model": "molmo-72b-0924Ai2 · Apache 2.0",
+      "company": "Other",
+      "elo": "1046±13",
+      "votes": "3,048",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 100,
+      "idx": "95108",
+      "model": "Tencenthunyuan-standard-vision-2024-12-31Tencent · Proprietary",
+      "company": "Other",
+      "elo": "1043±21",
+      "votes": "809",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 101,
+      "idx": "99107",
+      "model": "Metallama-3.2-vision-90b-instructMeta · Llama 3.2",
+      "company": "Meta",
+      "elo": "1032±9",
+      "votes": "8,682",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 102,
+      "idx": "99108",
+      "model": "qwen2-vl-7b-instructAliaba · Apache 2.0",
+      "company": "Other",
+      "elo": "1031±10",
+      "votes": "5,766",
+      "price": "$0.20 / $0.20",
+      "context": "32.8K"
+    },
+    {
+      "rank": 103,
+      "idx": "99109",
+      "model": "pixtral-12b-2409Mistral · Apache 2.0",
+      "company": "Other",
+      "elo": "1026±9",
+      "votes": "7,511",
+      "price": "$0.15 / $0.15",
+      "context": "128K"
+    },
+    {
+      "rank": 104,
+      "idx": "99110",
+      "model": "internvl2-26bOpenGVLab · MIT",
+      "company": "Other",
+      "elo": "1025±13",
+      "votes": "5,148",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 105,
+      "idx": "99112",
+      "model": "amazon-nova-lite-v1.0Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1020±15",
+      "votes": "1,854",
+      "price": "$0.06 / $0.24",
+      "context": "300K"
+    },
+    {
+      "rank": 106,
+      "idx": "99112",
+      "model": "amazon-nova-pro-v1.0Amazon · Proprietary",
+      "company": "Other",
+      "elo": "1019±14",
+      "votes": "2,335",
+      "price": "$0.80 / $3.20",
+      "context": "300K"
+    },
+    {
+      "rank": 107,
+      "idx": "100112",
+      "model": "Anthropicclaude-3-sonnet-20240229Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1018±11",
+      "votes": "12,314",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 108,
+      "idx": "103114",
+      "model": "01.AIyi-vision01 AI · Proprietary",
+      "company": "Other",
+      "elo": "1003±18",
+      "votes": "1,219",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 109,
+      "idx": "104114",
+      "model": "Anthropicclaude-3-haiku-20240307Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1001±12",
+      "votes": "13,380",
+      "price": "$0.25 / $1.25",
+      "context": "200K"
+    },
+    {
+      "rank": 110,
+      "idx": "101116",
+      "model": "Coherec4ai-aya-vision-32bCohere · CC-BY-NC-4.0",
+      "company": "Other",
+      "elo": "1000±22",
+      "votes": "847",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 111,
+      "idx": "105114",
+      "model": "molmo-7b-d-0924Ai2 · Apache 2.0",
+      "company": "Other",
+      "elo": "995±14",
+      "votes": "2,815",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 112,
+      "idx": "108114",
+      "model": "Metallama-3.2-vision-11b-instructMeta · Llama 3.2",
+      "company": "Meta",
+      "elo": "992±11",
+      "votes": "4,817",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 113,
+      "idx": "105118",
+      "model": "nvila-internal-15b-v1Nvidia · -",
+      "company": "Other",
+      "elo": "986±20",
+      "votes": "1,077",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 114,
+      "idx": "108118",
+      "model": "llava-onevision-qwen2-72b-ovLLaVA · Apache 2.0",
+      "company": "Other",
+      "elo": "979±18",
+      "votes": "1,321",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 115,
+      "idx": "113118",
+      "model": "llava-v1.6-34bLLaVA · Apache 2.0",
+      "company": "Other",
+      "elo": "965±12",
+      "votes": "4,531",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 116,
+      "idx": "112118",
+      "model": "cogvlm2-llama3-chat-19bZhipu AI · CogVLM2",
+      "company": "Other",
+      "elo": "964±15",
+      "votes": "1,991",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 117,
+      "idx": "112118",
+      "model": "minicpm-v-2_6OpenBMB · Apache 2.0",
+      "company": "Other",
+      "elo": "964±16",
+      "votes": "1,987",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 118,
+      "idx": "113118",
+      "model": "internvl2-4bOpenGVLab · MIT",
+      "company": "Other",
+      "elo": "958±12",
+      "votes": "3,703",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 119,
+      "idx": "119119",
+      "model": "phi-3.5-vision-instructMicrosoft · MIT",
+      "company": "Other",
+      "elo": "921±16",
+      "votes": "2,592",
+      "price": "$0.13 / $0.52",
+      "context": "128K"
+    },
+    {
+      "rank": 120,
+      "idx": "120120",
+      "model": "phi-3-vision-128k-instructMicrosoft · MIT",
+      "company": "Other",
+      "elo": "882±19",
+      "votes": "1,401",
+      "price": "$0.20 / $0.20",
+      "context": "32.1K"
+    }
+  ],
+  "document": [
+    {
+      "rank": 1,
+      "idx": "14",
+      "model": "Anthropicclaude-opus-4-6-thinkingAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1526±9",
+      "votes": "8,848",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 2,
+      "idx": "14",
+      "model": "Anthropicclaude-opus-4-6Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1520±8",
+      "votes": "15,731",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 3,
+      "idx": "16",
+      "model": "Anthropicclaude-opus-4-7Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1515±11",
+      "votes": "3,310",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 4,
+      "idx": "17",
+      "model": "Anthropicclaude-opus-4-7-thinkingAnthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1511±11",
+      "votes": "3,179",
+      "price": "$5 / $25",
+      "context": "1M"
+    },
+    {
+      "rank": 5,
+      "idx": "37",
+      "model": "Anthropicclaude-sonnet-4-6Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1500±8",
+      "votes": "23,066",
+      "price": "$3 / $15",
+      "context": "1M"
+    },
+    {
+      "rank": 6,
+      "idx": "310",
+      "model": "gpt-5.5OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1490±16",
+      "votes": "1,145",
+      "price": "$5 / $30",
+      "context": "1.1M"
+    },
+    {
+      "rank": 7,
+      "idx": "411",
+      "model": "gpt-5.5-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1487±16",
+      "votes": "1,205",
+      "price": "$5 / $30",
+      "context": "1.1M"
+    },
+    {
+      "rank": 8,
+      "idx": "611",
+      "model": "gpt-5.4OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1480±9",
+      "votes": "10,655",
+      "price": "$2.50 / $15",
+      "context": "1.1M"
+    },
+    {
+      "rank": 9,
+      "idx": "611",
+      "model": "Anthropicclaude-opus-4-5-20251101Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1470±10",
+      "votes": "8,020",
+      "price": "$5 / $25",
+      "context": "200K"
+    },
+    {
+      "rank": 10,
+      "idx": "716",
+      "model": "kimi-k2.6Moonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1457±15",
+      "votes": "1,524",
+      "price": "$0.95 / $4",
+      "context": "262.1K"
+    },
+    {
+      "rank": 11,
+      "idx": "616",
+      "model": "Metamuse-sparkMeta · Proprietary",
+      "company": "Meta",
+      "elo": "1457±19Preliminary",
+      "votes": "842",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 12,
+      "idx": "1016",
+      "model": "Anthropicclaude-sonnet-4-5-20250929Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1450±8",
+      "votes": "13,688",
+      "price": "$3 / $15",
+      "context": "200K"
+    },
+    {
+      "rank": 13,
+      "idx": "1016",
+      "model": "gemini-3.1-pro-previewGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1449±7",
+      "votes": "19,099",
+      "price": "$2 / $12",
+      "context": "1M"
+    },
+    {
+      "rank": 14,
+      "idx": "1018",
+      "model": "kimi-k2.5-thinkingMoonshot · Modified MIT",
+      "company": "Moonshot",
+      "elo": "1444±9",
+      "votes": "7,811",
+      "price": "$0.60 / $3",
+      "context": "N/A"
+    },
+    {
+      "rank": 15,
+      "idx": "1018",
+      "model": "gemini-3-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1442±9",
+      "votes": "10,776",
+      "price": "$2 / $12",
+      "context": "1M"
+    },
+    {
+      "rank": 16,
+      "idx": "1021",
+      "model": "gemma-4-31bGoogle · Apache 2.0",
+      "company": "Google",
+      "elo": "1432±12",
+      "votes": "2,835",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 17,
+      "idx": "1421",
+      "model": "gemini-2.5-proGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1429±7",
+      "votes": "16,533",
+      "price": "$1.25 / $10",
+      "context": "1M"
+    },
+    {
+      "rank": 18,
+      "idx": "1422",
+      "model": "grok-4.20-beta-0309-reasoningxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1426±11",
+      "votes": "3,820",
+      "price": "$2 / $6",
+      "context": "2M"
+    },
+    {
+      "rank": 19,
+      "idx": "1622",
+      "model": "Anthropicclaude-haiku-4-5-20251001Anthropic · Proprietary",
+      "company": "Anthropic",
+      "elo": "1424±8",
+      "votes": "14,707",
+      "price": "$1 / $5",
+      "context": "200K"
+    },
+    {
+      "rank": 20,
+      "idx": "1623",
+      "model": "gemini-3-flashGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1421±9",
+      "votes": "7,205",
+      "price": "$0.50 / $3",
+      "context": "1M"
+    },
+    {
+      "rank": 21,
+      "idx": "1623",
+      "model": "gpt-5.2-highOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1414±9",
+      "votes": "7,110",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    },
+    {
+      "rank": 22,
+      "idx": "1823",
+      "model": "gpt-5.1OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1410±9",
+      "votes": "8,275",
+      "price": "$1.25 / $10",
+      "context": "400K"
+    },
+    {
+      "rank": 23,
+      "idx": "2023",
+      "model": "gpt-5.2OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1406±7",
+      "votes": "18,730",
+      "price": "$1.75 / $14",
+      "context": "400K"
+    }
+  ],
+  "image-edit": [
+    {
+      "rank": 1,
+      "idx": "11",
+      "model": "gpt-image-2 (medium)OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1510±7Preliminary",
+      "votes": "10,746",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 2,
+      "idx": "25",
+      "model": "chatgpt-image-latest-high-fidelity (20251216)OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1393±4",
+      "votes": "338,216",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 3,
+      "idx": "25",
+      "model": "gemini-3-pro-image-preview-2k (nano-banana-pro)Google · Proprietary",
+      "company": "Google",
+      "elo": "1389±4",
+      "votes": "323,125",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 4,
+      "idx": "25",
+      "model": "gemini-3-pro-image-preview (nano-banana-pro)Google · Proprietary",
+      "company": "Google",
+      "elo": "1387±3",
+      "votes": "518,650",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 5,
+      "idx": "25",
+      "model": "gemini-3.1-flash-image-preview (nano-banana-2) [web-search]Google · Proprietary",
+      "company": "Google",
+      "elo": "1387±4",
+      "votes": "136,554",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 6,
+      "idx": "66",
+      "model": "gpt-image-1.5-high-fidelityOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1376±4",
+      "votes": "357,576",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 7,
+      "idx": "77",
+      "model": "grok-imagine-imagexAI · Proprietary",
+      "company": "xAI",
+      "elo": "1334±4",
+      "votes": "174,494",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 8,
+      "idx": "89",
+      "model": "grok-imagine-image-pro (20260207)xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1316±4",
+      "votes": "211,473",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 9,
+      "idx": "810",
+      "model": "grok-imagine-image (20260207)xAI · Proprietary",
+      "company": "xAI",
+      "elo": "1312±4",
+      "votes": "146,225",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 10,
+      "idx": "1014",
+      "model": "Bytedanceseedream-4.5Bytedance · Proprietary",
+      "company": "Other",
+      "elo": "1304±3",
+      "votes": "639,753",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 11,
+      "idx": "914",
+      "model": "wan2.7-image-proAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1304±4",
+      "votes": "39,339",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 12,
+      "idx": "1014",
+      "model": "wan2.7-imageAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1303±4",
+      "votes": "40,080",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 13,
+      "idx": "1014",
+      "model": "gemini-2.5-flash-image-preview (nano-banana)Google · Proprietary",
+      "company": "Google",
+      "elo": "1300±3",
+      "votes": "10,741,535",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 14,
+      "idx": "1015",
+      "model": "Tencenthunyuan-image-3.0-instructTencent · tencent-hunyuan-community",
+      "company": "Other",
+      "elo": "1299±4",
+      "votes": "173,781",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 15,
+      "idx": "1415",
+      "model": "Bytedanceseedream-5.0-liteBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1292±4",
+      "votes": "133,732",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 16,
+      "idx": "1617",
+      "model": "Bytedanceseedream-4-2kBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1274±7",
+      "votes": "212,964",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 17,
+      "idx": "1618",
+      "model": "qwen-image-2.0-pro-2026-04-22Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1272±7",
+      "votes": "6,860",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 18,
+      "idx": "1721",
+      "model": "Fluxflux-2-maxBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1263±3",
+      "votes": "279,469",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 19,
+      "idx": "1821",
+      "model": "reve-v1.1Reve · Proprietary",
+      "company": "Other",
+      "elo": "1261±3",
+      "votes": "516,439",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 20,
+      "idx": "1821",
+      "model": "qwen-image-2.0-2026-03-03Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1257±4",
+      "votes": "64,597",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 21,
+      "idx": "1821",
+      "model": "kling-image-o1KlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1256±4",
+      "votes": "61,814",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 22,
+      "idx": "2225",
+      "model": "Fluxflux-2-proBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1241±3",
+      "votes": "292,516",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 23,
+      "idx": "2225",
+      "model": "qwen-image-editAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1239±3",
+      "votes": "1,904,155",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 24,
+      "idx": "2226",
+      "model": "reve-v1Reve · Proprietary",
+      "company": "Other",
+      "elo": "1237±5",
+      "votes": "380,903",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 25,
+      "idx": "2226",
+      "model": "qwen-image-edit-2511Alibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1234±3",
+      "votes": "266,021",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 26,
+      "idx": "2429",
+      "model": "wan2.6-imageAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1230±4",
+      "votes": "329,053",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 27,
+      "idx": "2630",
+      "model": "Fluxflux-2-flexBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1226±3",
+      "votes": "339,120",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 28,
+      "idx": "2630",
+      "model": "Fluxflux-2-devBlack Forest Labs · flux-non-commercial-license",
+      "company": "Other",
+      "elo": "1226±5",
+      "votes": "155,397",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 29,
+      "idx": "2630",
+      "model": "Fluxflux-2-klein-9bBlack Forest Labs · flux-non-commercial-license",
+      "company": "Other",
+      "elo": "1225±3",
+      "votes": "386,472",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 30,
+      "idx": "2730",
+      "model": "Bytedanceseedream-4-high-res-falBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1224±3",
+      "votes": "1,106,643",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 31,
+      "idx": "3133",
+      "model": "Bytedanceseedream-4-falBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1213±6",
+      "votes": "153,896",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 32,
+      "idx": "3133",
+      "model": "p-image-editPruna · Proprietary",
+      "company": "Other",
+      "elo": "1210±3",
+      "votes": "255,157",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 33,
+      "idx": "3133",
+      "model": "reve-v1.1-fastReve · Proprietary",
+      "company": "Other",
+      "elo": "1209±3",
+      "votes": "422,455",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 34,
+      "idx": "3434",
+      "model": "reve-edit-fastReve · Proprietary",
+      "company": "Other",
+      "elo": "1200±4",
+      "votes": "221,357",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 35,
+      "idx": "3536",
+      "model": "Fluxflux-2-klein-4bBlack Forest Labs · Apache 2.0",
+      "company": "Other",
+      "elo": "1190±3",
+      "votes": "386,426",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 36,
+      "idx": "3538",
+      "model": "wan2.5-i2i-previewAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1184±4",
+      "votes": "276,214",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 37,
+      "idx": "3638",
+      "model": "Fluxflux-1-kontext-maxBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1183±3",
+      "votes": "391,726",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 38,
+      "idx": "3638",
+      "model": "Fluxflux-1-kontext-proBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1178±3",
+      "votes": "6,423,847",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 39,
+      "idx": "3939",
+      "model": "Fluxflux-1-kontext-devBlack Forest Labs · flux-1-dev-non-commercial-license",
+      "company": "Other",
+      "elo": "1152±3",
+      "votes": "3,651,875",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 40,
+      "idx": "4041",
+      "model": "Bytedanceseededit-3.0Bytedance · Proprietary",
+      "company": "Other",
+      "elo": "1141±3",
+      "votes": "4,949,848",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 41,
+      "idx": "4041",
+      "model": "gpt-image-1OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1140±3",
+      "votes": "2,861,375",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 42,
+      "idx": "4242",
+      "model": "gpt-image-1-miniOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1125±3",
+      "votes": "587,387",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 43,
+      "idx": "4343",
+      "model": "gemini-2.0-flash-preview-image-generationGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1083±2",
+      "votes": "4,965,477",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 44,
+      "idx": "4444",
+      "model": "BytedancebagelBytedance · Apache 2.0",
+      "company": "Other",
+      "elo": "1028±6",
+      "votes": "13,560",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 45,
+      "idx": "4545",
+      "model": "Stepfunstep1x-editStepFun · Apache 2.0",
+      "company": "Other",
+      "elo": "1000±4",
+      "votes": "155,731",
+      "price": "N/A",
+      "context": "N/A"
+    }
+  ],
+  "text-to-image": [
+    {
+      "rank": 1,
+      "idx": "11",
+      "model": "gpt-image-2 (medium)OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1507±9Preliminary",
+      "votes": "15,391",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 2,
+      "idx": "22",
+      "model": "gemini-3.1-flash-image-preview (nano-banana-2) [web-search]Google · Proprietary",
+      "company": "Google",
+      "elo": "1271±5",
+      "votes": "55,988",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 3,
+      "idx": "34",
+      "model": "gemini-3-pro-image-preview-2k (nano-banana-pro)Google · Proprietary",
+      "company": "Google",
+      "elo": "1244±4",
+      "votes": "94,356",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 4,
+      "idx": "34",
+      "model": "gpt-image-1.5-high-fidelityOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1242±4",
+      "votes": "99,255",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 5,
+      "idx": "55",
+      "model": "gemini-3-pro-image-preview (nano-banana-pro)Google · Proprietary",
+      "company": "Google",
+      "elo": "1232±5",
+      "votes": "82,657",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 6,
+      "idx": "67",
+      "model": "mai-image-2Microsoft AI · Proprietary",
+      "company": "Other",
+      "elo": "1183±5",
+      "votes": "33,666",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 7,
+      "idx": "69",
+      "model": "reve-v1.5Reve · Proprietary",
+      "company": "Other",
+      "elo": "1177±6",
+      "votes": "7,807",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 8,
+      "idx": "710",
+      "model": "grok-imagine-imagexAI · Proprietary",
+      "company": "xAI",
+      "elo": "1170±4",
+      "votes": "133,627",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 9,
+      "idx": "712",
+      "model": "qwen-image-2.0-pro-2026-04-22Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1168±8",
+      "votes": "5,122",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 10,
+      "idx": "811",
+      "model": "Fluxflux-2-maxBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1166±4",
+      "votes": "97,415",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 11,
+      "idx": "915",
+      "model": "grok-imagine-image-proxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1158±4",
+      "votes": "81,749",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 12,
+      "idx": "1015",
+      "model": "Fluxflux-2-proBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1157±3",
+      "votes": "132,390",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 13,
+      "idx": "1116",
+      "model": "Fluxflux-2-flexBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1156±4",
+      "votes": "128,862",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 14,
+      "idx": "1117",
+      "model": "gemini-2.5-flash-image-preview (nano-banana)Google · Proprietary",
+      "company": "Google",
+      "elo": "1152±3",
+      "votes": "757,256",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 15,
+      "idx": "1117",
+      "model": "Tencenthunyuan-image-3.0Tencent · tencent-hunyuan-community",
+      "company": "Other",
+      "elo": "1151±3",
+      "votes": "172,985",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 16,
+      "idx": "1319",
+      "model": "Fluxflux-2-devBlack Forest Labs · flux-non-commercial-license",
+      "company": "Other",
+      "elo": "1149±5",
+      "votes": "54,558",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 17,
+      "idx": "1419",
+      "model": "imagen-ultra-4.0-generate-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1148±4",
+      "votes": "389,661",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 18,
+      "idx": "1619",
+      "model": "Bytedanceseedream-4.5Bytedance · Proprietary",
+      "company": "Other",
+      "elo": "1142±3",
+      "votes": "165,241",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 19,
+      "idx": "1621",
+      "model": "Bytedanceseedream-4-2kBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1140±7",
+      "votes": "12,627",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 20,
+      "idx": "1922",
+      "model": "qwen-image-2512Alibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1133±4",
+      "votes": "61,000",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 21,
+      "idx": "1922",
+      "model": "wan2.6-t2iAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1132±4",
+      "votes": "118,991",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 22,
+      "idx": "2022",
+      "model": "imagen-4.0-generate-001Google · Proprietary",
+      "company": "Google",
+      "elo": "1130±3",
+      "votes": "501,132",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 23,
+      "idx": "2329",
+      "model": "wan2.5-t2i-previewAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1117±3",
+      "votes": "176,094",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 24,
+      "idx": "2329",
+      "model": "Bytedanceseedream-5.0-liteBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1117±4",
+      "votes": "54,186",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 25,
+      "idx": "2329",
+      "model": "qwen-image-2.0-2026-03-03Alibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1117±5",
+      "votes": "38,447",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 26,
+      "idx": "2329",
+      "model": "Bytedanceseedream-4-falBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1116±6",
+      "votes": "11,863",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 27,
+      "idx": "2329",
+      "model": "gpt-image-1OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1115±3",
+      "votes": "265,541",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 28,
+      "idx": "2330",
+      "model": "Bytedanceseedream-4-high-res-falBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1112±3",
+      "votes": "154,144",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 29,
+      "idx": "2332",
+      "model": "Recraftrecraft-v4Recraft · Proprietary",
+      "company": "Other",
+      "elo": "1109±5",
+      "votes": "53,540",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 30,
+      "idx": "2932",
+      "model": "gpt-image-1-miniOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1105±3",
+      "votes": "142,957",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 31,
+      "idx": "2832",
+      "model": "wan2.7-image-proAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1104±5",
+      "votes": "28,141",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 32,
+      "idx": "2933",
+      "model": "wan2.7-imageAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1099±5",
+      "votes": "28,446",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 33,
+      "idx": "3233",
+      "model": "mai-image-1Microsoft AI · Proprietary",
+      "company": "Other",
+      "elo": "1093±4",
+      "votes": "94,494",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 34,
+      "idx": "3435",
+      "model": "z-image-turboAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1083±6",
+      "votes": "15,874",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 35,
+      "idx": "3436",
+      "model": "Bytedanceseedream-3Bytedance · Proprietary",
+      "company": "Other",
+      "elo": "1082±5",
+      "votes": "36,925",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 36,
+      "idx": "3537",
+      "model": "Fluxflux-1-kontext-maxBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1074±3",
+      "votes": "65,951",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 37,
+      "idx": "3637",
+      "model": "Fluxflux-2-klein-9bBlack Forest Labs · flux-non-commercial-license",
+      "company": "Other",
+      "elo": "1069±3",
+      "votes": "111,598",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 38,
+      "idx": "3841",
+      "model": "qwen-image-prompt-extendAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1060±3",
+      "votes": "674,166",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 39,
+      "idx": "3841",
+      "model": "Fluxflux-1-kontext-proBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1059±3",
+      "votes": "332,198",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 40,
+      "idx": "3841",
+      "model": "imagen-3.0-generate-002Google · Proprietary",
+      "company": "Google",
+      "elo": "1058±3",
+      "votes": "361,420",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 41,
+      "idx": "3841",
+      "model": "qwen-imageAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1057±2",
+      "votes": "85,107",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 42,
+      "idx": "4242",
+      "model": "Ideogramideogram-v3-qualityIdeogram · Proprietary",
+      "company": "Other",
+      "elo": "1049±4",
+      "votes": "115,295",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 43,
+      "idx": "4344",
+      "model": "p-imagePruna · Proprietary",
+      "company": "Other",
+      "elo": "1036±4",
+      "votes": "80,989",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 44,
+      "idx": "4344",
+      "model": "LumaphotonLuma AI · Proprietary",
+      "company": "Other",
+      "elo": "1035±4",
+      "votes": "127,564",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 45,
+      "idx": "4547",
+      "model": "Fluxflux-2-klein-4bBlack Forest Labs · Apache 2.0",
+      "company": "Other",
+      "elo": "1027±3",
+      "votes": "113,383",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 46,
+      "idx": "4547",
+      "model": "runway-gen4Runway · Proprietary",
+      "company": "Other",
+      "elo": "1026±5",
+      "votes": "33,299",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 47,
+      "idx": "4549",
+      "model": "Recraftrecraft-v3Recraft · Proprietary",
+      "company": "Other",
+      "elo": "1021±4",
+      "votes": "192,009",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 48,
+      "idx": "4751",
+      "model": "Fluxflux-1.1-proBlack Forest Labs · Proprietary",
+      "company": "Other",
+      "elo": "1016±3",
+      "votes": "70,460",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 49,
+      "idx": "4851",
+      "model": "Ideogramideogram-v2Ideogram · Proprietary",
+      "company": "Other",
+      "elo": "1013±3",
+      "votes": "72,090",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 50,
+      "idx": "4851",
+      "model": "lucid-originLeonardo AI · Proprietary",
+      "company": "Other",
+      "elo": "1013±3",
+      "votes": "286,562",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 51,
+      "idx": "4751",
+      "model": "glm-imageZ.ai · MIT",
+      "company": "Z.ai",
+      "elo": "1011±9",
+      "votes": "4,612",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 52,
+      "idx": "5253",
+      "model": "gemini-2.0-flash-preview-image-generationGoogle · Proprietary",
+      "company": "Google",
+      "elo": "975±3",
+      "votes": "258,209",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 53,
+      "idx": "5254",
+      "model": "Fluxflux-1-dev-fp8Black Forest Labs · Open",
+      "company": "Other",
+      "elo": "969±4",
+      "votes": "49,221",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 54,
+      "idx": "5354",
+      "model": "dall-e-3OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "968±4",
+      "votes": "240,111",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 55,
+      "idx": "5556",
+      "model": "Fluxflux-1-kontext-devBlack Forest Labs · flux-1-dev-non-commercial-license",
+      "company": "Other",
+      "elo": "940±4",
+      "votes": "216,321",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 56,
+      "idx": "5556",
+      "model": "Stabilitystable-diffusion-v35-largeStability AI · Open",
+      "company": "Other",
+      "elo": "938±4",
+      "votes": "23,396",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 57,
+      "idx": "5757",
+      "model": "BytedancebagelBytedance · Apache 2.0",
+      "company": "Other",
+      "elo": "898±6",
+      "votes": "12,461",
+      "price": "N/A",
+      "context": "N/A"
+    }
+  ],
+  "image-to-video": [
+    {
+      "rank": 1,
+      "idx": "12",
+      "model": "Bytedancedreamina-seedance-2.0-720pBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1454±10",
+      "votes": "18,176",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 2,
+      "idx": "12",
+      "model": "happyhorse-1.0Alibaba-ATH · Proprietary",
+      "company": "Alibaba",
+      "elo": "1444±10Preliminary",
+      "votes": "4,216",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 3,
+      "idx": "34",
+      "model": "grok-imagine-video-720pxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1421±7",
+      "votes": "256,734",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 4,
+      "idx": "37",
+      "model": "veo-3.1-audio-1080pGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1402±12",
+      "votes": "11,184",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 5,
+      "idx": "48",
+      "model": "veo-3.1-audioGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1396±11",
+      "votes": "25,115",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 6,
+      "idx": "48",
+      "model": "veo-3.1-fast-audioGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1383±9",
+      "votes": "99,900",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 7,
+      "idx": "48",
+      "model": "grok-imagine-video-480pxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1382±9",
+      "votes": "19,417",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 8,
+      "idx": "510",
+      "model": "veo-3.1-fast-audio-1080pGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1376±13",
+      "votes": "11,638",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 9,
+      "idx": "810",
+      "model": "Viduvidu-q3-proShengshu · Proprietary",
+      "company": "Other",
+      "elo": "1359±8",
+      "votes": "36,673",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 10,
+      "idx": "810",
+      "model": "kling-v3-proKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1357±10",
+      "votes": "66,906",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 11,
+      "idx": "1113",
+      "model": "wan2.5-i2v-previewAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1334±12",
+      "votes": "12,118",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 12,
+      "idx": "1114",
+      "model": "veo-3-audioGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1330±11",
+      "votes": "32,383",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 13,
+      "idx": "1114",
+      "model": "veo-3-fast-audioGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1324±9",
+      "votes": "41,216",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 14,
+      "idx": "1217",
+      "model": "wan2.6-i2vAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1308±13",
+      "votes": "31,705",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 15,
+      "idx": "1417",
+      "model": "Bytedanceseedance-v1.5-proBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1304±8",
+      "votes": "162,989",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 16,
+      "idx": "1417",
+      "model": "pixverse-v5.6Pixverse · Proprietary",
+      "company": "Other",
+      "elo": "1298±11",
+      "votes": "63,581",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 17,
+      "idx": "1418",
+      "model": "kling-2.6-proKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1290±9",
+      "votes": "132,791",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 18,
+      "idx": "1721",
+      "model": "kling-2.5-turbo-1080pKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1274±12",
+      "votes": "3,790",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 19,
+      "idx": "1821",
+      "model": "Bytedanceseedance-v1-proBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1271±7",
+      "votes": "34,028",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 20,
+      "idx": "1824",
+      "model": "veo-3-fastGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1256±10",
+      "votes": "26,297",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 21,
+      "idx": "1824",
+      "model": "veo-3Google · Proprietary",
+      "company": "Google",
+      "elo": "1255±10",
+      "votes": "26,105",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 22,
+      "idx": "2024",
+      "model": "hailuo-2.3MiniMax · Proprietary",
+      "company": "Other",
+      "elo": "1255±6",
+      "votes": "158,264",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 23,
+      "idx": "2030",
+      "model": "Viduvidu-q2-turboShengshu · Proprietary",
+      "company": "Other",
+      "elo": "1242±17",
+      "votes": "2,506",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 24,
+      "idx": "2030",
+      "model": "p-videoPruna · Proprietary",
+      "company": "Other",
+      "elo": "1237±17",
+      "votes": "22,189",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 25,
+      "idx": "2330",
+      "model": "kling-v2.1-masterKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1233±8",
+      "votes": "29,849",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 26,
+      "idx": "2330",
+      "model": "hailuo-02-proMiniMax · Proprietary",
+      "company": "Other",
+      "elo": "1227±10",
+      "votes": "21,751",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 27,
+      "idx": "2330",
+      "model": "kling-v2.1-standardKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1227±8",
+      "votes": "29,952",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 28,
+      "idx": "2331",
+      "model": "Lumaray-3Luma AI · Proprietary",
+      "company": "Other",
+      "elo": "1225±19",
+      "votes": "1,588",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 29,
+      "idx": "2330",
+      "model": "hailuo-02-standardMiniMax · Proprietary",
+      "company": "Other",
+      "elo": "1222±9",
+      "votes": "21,782",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 30,
+      "idx": "2331",
+      "model": "Viduvidu-q2-proShengshu · Proprietary",
+      "company": "Other",
+      "elo": "1222±17",
+      "votes": "2,608",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 31,
+      "idx": "2933",
+      "model": "Tencenthunyuan-video-1.5Tencent · tencent-hunyuan-community",
+      "company": "Other",
+      "elo": "1195±15",
+      "votes": "5,475",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 32,
+      "idx": "3133",
+      "model": "hailuo-02-fastMiniMax · Proprietary",
+      "company": "Other",
+      "elo": "1192±10",
+      "votes": "22,549",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 33,
+      "idx": "3135",
+      "model": "Bytedanceseedance-v1-liteBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1183±7",
+      "votes": "33,754",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 34,
+      "idx": "3335",
+      "model": "wan-v2.2-a14bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1169±9",
+      "votes": "27,067",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 35,
+      "idx": "3335",
+      "model": "veo-2Google · Proprietary",
+      "company": "Google",
+      "elo": "1164±16",
+      "votes": "10,319",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 36,
+      "idx": "3636",
+      "model": "Lightricksltx-2-19blightricks · ltx-2-community-license-agreement",
+      "company": "Other",
+      "elo": "1139±6",
+      "votes": "115,246",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 37,
+      "idx": "3737",
+      "model": "Lumaray2Luma AI · Proprietary",
+      "company": "Other",
+      "elo": "1106±16",
+      "votes": "9,527",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 38,
+      "idx": "3838",
+      "model": "runway-gen4-turboRunway · Proprietary",
+      "company": "Other",
+      "elo": "1051±13",
+      "votes": "6,811",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 39,
+      "idx": "3939",
+      "model": "pika-v2.2Pika · Proprietary",
+      "company": "Other",
+      "elo": "995±13",
+      "votes": "8,655",
+      "price": "N/A",
+      "context": "N/A"
+    }
+  ],
+  "text-to-video": [
+    {
+      "rank": 1,
+      "idx": "12",
+      "model": "Bytedancedreamina-seedance-2.0-720pBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1460±11",
+      "votes": "6,836",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 2,
+      "idx": "12",
+      "model": "happyhorse-1.0Alibaba-ATH · Proprietary",
+      "company": "Alibaba",
+      "elo": "1444±15Preliminary",
+      "votes": "1,843",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 3,
+      "idx": "38",
+      "model": "veo-3.1-audio-1080pGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1375±13",
+      "votes": "7,762",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 4,
+      "idx": "310",
+      "model": "veo-3.1-fast-audio-1080pGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1368±12",
+      "votes": "7,815",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 5,
+      "idx": "39",
+      "model": "sora-2-proOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1366±8",
+      "votes": "29,247",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 6,
+      "idx": "311",
+      "model": "veo-3.1-audioGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1366±14",
+      "votes": "13,690",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 7,
+      "idx": "311",
+      "model": "veo-3.1-fast-audioGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1364±11",
+      "votes": "39,320",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 8,
+      "idx": "311",
+      "model": "grok-imagine-video-720pxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1359±7",
+      "votes": "78,990",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 9,
+      "idx": "412",
+      "model": "veo-3-fast-audioGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1349±11",
+      "votes": "25,155",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 10,
+      "idx": "512",
+      "model": "wan2.6-t2vAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1345±12",
+      "votes": "18,683",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 11,
+      "idx": "612",
+      "model": "veo-3-audioGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1341±12",
+      "votes": "18,971",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 12,
+      "idx": "912",
+      "model": "sora-2OpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1340±8",
+      "votes": "39,158",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 13,
+      "idx": "1318",
+      "model": "wan2.5-t2v-previewAlibaba · Proprietary",
+      "company": "Alibaba",
+      "elo": "1259±14",
+      "votes": "8,449",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 14,
+      "idx": "1318",
+      "model": "Bytedanceseedance-v1.5-proBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1259±7",
+      "votes": "53,293",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 15,
+      "idx": "1318",
+      "model": "veo-3Google · Proprietary",
+      "company": "Google",
+      "elo": "1254±11",
+      "votes": "14,953",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 16,
+      "idx": "1318",
+      "model": "veo-3-fastGoogle · Proprietary",
+      "company": "Google",
+      "elo": "1249±12",
+      "votes": "15,228",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 17,
+      "idx": "1320",
+      "model": "pixverse-v5.6Pixverse · Proprietary",
+      "company": "Other",
+      "elo": "1242±10",
+      "votes": "15,140",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 18,
+      "idx": "1322",
+      "model": "runway-gen-4.5Runway · Proprietary",
+      "company": "Other",
+      "elo": "1239±14",
+      "votes": "15,116",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 19,
+      "idx": "1725",
+      "model": "kling-2.5-turbo-1080pKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1220±17",
+      "votes": "2,103",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 20,
+      "idx": "1823",
+      "model": "kling-2.6-proKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1219±7",
+      "votes": "53,469",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 21,
+      "idx": "1829",
+      "model": "Lumaray-3Luma AI · Proprietary",
+      "company": "Other",
+      "elo": "1207±22",
+      "votes": "1,121",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 22,
+      "idx": "1730",
+      "model": "kling-o1-proKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1207±27",
+      "votes": "1,194",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 23,
+      "idx": "1928",
+      "model": "p-videoPruna · Proprietary",
+      "company": "Other",
+      "elo": "1206±18",
+      "votes": "6,666",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 24,
+      "idx": "2029",
+      "model": "hailuo-02-proMiniMax · Proprietary",
+      "company": "Other",
+      "elo": "1199±12",
+      "votes": "9,370",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 25,
+      "idx": "2028",
+      "model": "hailuo-2.3MiniMax · Proprietary",
+      "company": "Other",
+      "elo": "1198±8",
+      "votes": "42,821",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 26,
+      "idx": "2129",
+      "model": "Bytedanceseedance-v1-proBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1192±11",
+      "votes": "12,122",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 27,
+      "idx": "2131",
+      "model": "hailuo-02-standardMiniMax · Proprietary",
+      "company": "Other",
+      "elo": "1181±12",
+      "votes": "9,333",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 28,
+      "idx": "2131",
+      "model": "kandinsky-5.0-t2v-proKandinsky · MIT",
+      "company": "Other",
+      "elo": "1176±21",
+      "votes": "2,020",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 29,
+      "idx": "2331",
+      "model": "Tencenthunyuan-video-1.5Tencent · tencent-hunyuan-community",
+      "company": "Other",
+      "elo": "1170±16",
+      "votes": "4,272",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 30,
+      "idx": "2631",
+      "model": "veo-2Google · Proprietary",
+      "company": "Google",
+      "elo": "1164±16",
+      "votes": "6,511",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 31,
+      "idx": "2731",
+      "model": "kling-v2.1-masterKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1164±9",
+      "votes": "14,051",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 32,
+      "idx": "3235",
+      "model": "wan-v2.2-a14bAlibaba · Apache 2.0",
+      "company": "Alibaba",
+      "elo": "1133±15",
+      "votes": "10,419",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 33,
+      "idx": "3235",
+      "model": "Lightricksltx-2-19blightricks · ltx-2-community-license-agreement",
+      "company": "Other",
+      "elo": "1131±9",
+      "votes": "35,975",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 34,
+      "idx": "3235",
+      "model": "kandinsky-5.0-t2v-liteKandinsky · MIT",
+      "company": "Other",
+      "elo": "1115±18",
+      "votes": "1,475",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 35,
+      "idx": "3235",
+      "model": "Bytedanceseedance-v1-liteBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1114±9",
+      "votes": "16,215",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 36,
+      "idx": "3637",
+      "model": "soraOpenAI · Proprietary",
+      "company": "OpenAI",
+      "elo": "1070±16",
+      "votes": "4,080",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 37,
+      "idx": "3637",
+      "model": "Lumaray2Luma AI · Proprietary",
+      "company": "Other",
+      "elo": "1066±17",
+      "votes": "5,217",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 38,
+      "idx": "3839",
+      "model": "pika-v2.2Pika · Proprietary",
+      "company": "Other",
+      "elo": "1009±15",
+      "votes": "5,728",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 39,
+      "idx": "3839",
+      "model": "mochi-v1Genmo AI · Apache 2.0",
+      "company": "Other",
+      "elo": "1007±16",
+      "votes": "5,862",
+      "price": "N/A",
+      "context": "N/A"
+    }
+  ],
+  "video-edit": [
+    {
+      "rank": 1,
+      "idx": "11",
+      "model": "Bytedancedreamina-seedance-2.0-720pBytedance · Proprietary",
+      "company": "Other",
+      "elo": "1362±21",
+      "votes": "506",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 2,
+      "idx": "22",
+      "model": "happyhorse-1.0Alibaba-ATH · Proprietary",
+      "company": "Alibaba",
+      "elo": "1302±17Preliminary",
+      "votes": "761",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 3,
+      "idx": "34",
+      "model": "grok-imagine-videoxAI · Proprietary",
+      "company": "xAI",
+      "elo": "1259±11",
+      "votes": "8,753",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 4,
+      "idx": "34",
+      "model": "kling-o3-proKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1244±15",
+      "votes": "4,678",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 5,
+      "idx": "56",
+      "model": "runway-gen4-alephRunway · Proprietary",
+      "company": "Other",
+      "elo": "1208±9",
+      "votes": "5,661",
+      "price": "N/A",
+      "context": "N/A"
+    },
+    {
+      "rank": 6,
+      "idx": "56",
+      "model": "kling-o1-proKlingAI · Proprietary",
+      "company": "Other",
+      "elo": "1208±12",
+      "votes": "6,291",
+      "price": "N/A",
+      "context": "N/A"
+    }
+  ]
+}

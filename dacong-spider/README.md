@@ -1,6 +1,6 @@
 # DaCong Spider
 
-AI 模型数据爬虫 — 采集 GitHub Trending、HuggingFace Models、HackerNews、OpenRouter、Reddit 等平台的 AI 相关数据。
+AI 模型数据爬虫 — 采集 GitHub Trending、HuggingFace Models、HackerNews、OpenRouter、Reddit 等平台的 AI 相关数据，以及 AI 评测平台排行数据。
 
 ## 特性
 
@@ -144,6 +144,37 @@ python main.py --debug
 | `--list` | `-l` | 列出所有可用的爬虫 |
 | `--debug` | `-d` | 启用调试模式 |
 | `--validate-config` | `-v` | 验证配置文件 |
+
+## AI 评测平台排行
+
+从多个 AI 评测平台抓取排行数据：
+
+```bash
+# 抓取所有排行数据
+python run_all_rankings.py --save-db
+
+# 单独抓取 LMArena
+python run_all_rankings.py --lmarena
+
+# 单独抓取 Artificial Analysis
+python run_all_rankings.py --aa
+
+# 启动定时调度（默认每 6 小时）
+python scheduler.py
+
+# 每天早上 8 点运行
+python scheduler.py --daily
+```
+
+### LMArena（HuggingFace 社区投票 ELO）
+
+- 模型排名、ELO 评分、投票数
+- 数据来源：https://lmarena.ai
+
+### Artificial Analysis（性能/价格）
+
+- 模型价格、吞吐量、延迟
+- 数据来源：https://artificialanalysis.ai
 
 ## 配置说明
 

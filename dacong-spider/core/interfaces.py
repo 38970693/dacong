@@ -22,6 +22,9 @@ class MetricSource(str, Enum):
     OPENROUTER = "openrouter"
     REDDIT = "reddit"
     HACKERNEWS = "hackernews"
+    LM_ARENA = "lm_arena"
+    ARTIFICIAL_ANALYSIS = "artificial_analysis"
+    AI_PING = "ai_ping"
 
 
 class DataType(str, Enum):

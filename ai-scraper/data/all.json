@@ -1,0 +1,239 @@
+{
+  "fetchedAt": "2026-05-04T08:10:03.818Z",
+  "sources": [
+    {
+      "name": "lmarena",
+      "data": {
+        "source": "lmarena",
+        "fetchedAt": "2026-05-04T08:10:03.818Z",
+        "categories": []
+      }
+    },
+    {
+      "name": "swebench",
+      "data": {
+        "source": "swebench",
+        "fetchedAt": "2026-05-04T08:09:21.778Z",
+        "models": [
+          {
+            "rank": 1,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Claude 4.5 Opus (high reasoning)",
+            "averageCost": "76.80",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Claude 4.5 Opus (high reasoning)",
+              "cost": "76.80"
+            }
+          },
+          {
+            "rank": 2,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Gemini 3 Flash (high reasoning)",
+            "averageCost": "75.80",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Gemini 3 Flash (high reasoning)",
+              "cost": "75.80"
+            }
+          },
+          {
+            "rank": 3,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            MiniMax M2.5 (high reasoning)",
+            "averageCost": "75.80",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            MiniMax M2.5 (high reasoning)",
+              "cost": "75.80"
+            }
+          },
+          {
+            "rank": 4,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Claude Opus 4.6",
+            "averageCost": "75.60",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Claude Opus 4.6",
+              "cost": "75.60"
+            }
+          },
+          {
+            "rank": 5,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GPT-5-2 Codex",
+            "averageCost": "72.80",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GPT-5-2 Codex",
+              "cost": "72.80"
+            }
+          },
+          {
+            "rank": 6,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GLM-5 (high reasoning)",
+            "averageCost": "72.80",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GLM-5 (high reasoning)",
+              "cost": "72.80"
+            }
+          },
+          {
+            "rank": 7,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GPT-5-2 (high reasoning)",
+            "averageCost": "72.80",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GPT-5-2 (high reasoning)",
+              "cost": "72.80"
+            }
+          },
+          {
+            "rank": 8,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GPT 5.2 Codex",
+            "averageCost": "72.80",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GPT 5.2 Codex",
+              "cost": "72.80"
+            }
+          },
+          {
+            "rank": 9,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Claude 4.5 Sonnet (high reasoning)",
+            "averageCost": "71.40",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Claude 4.5 Sonnet (high reasoning)",
+              "cost": "71.40"
+            }
+          },
+          {
+            "rank": 10,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Kimi K2.5 (high reasoning)",
+            "averageCost": "70.80",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Kimi K2.5 (high reasoning)",
+              "cost": "70.80"
+            }
+          },
+          {
+            "rank": 11,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            DeepSeek V3.2 (high reasoning)",
+            "averageCost": "70.00",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            DeepSeek V3.2 (high reasoning)",
+              "cost": "70.00"
+            }
+          },
+          {
+            "rank": 12,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Gemini 3 Pro",
+            "averageCost": "69.60",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Gemini 3 Pro",
+              "cost": "69.60"
+            }
+          },
+          {
+            "rank": 13,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Claude 4.5 Haiku (high reasoning)",
+            "averageCost": "66.60",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            Claude 4.5 Haiku (high reasoning)",
+              "cost": "66.60"
+            }
+          },
+          {
+            "rank": 14,
+            "modelName": "",
+            "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GPT-5 Mini",
+            "averageCost": "56.20",
+            "instanceCount": "N/A",
+            "developer": "",
+            "date": "",
+            "metadata": {
+              "modelName": "",
+              "passRate": "🆕\n                                                \n                                                \n                                            \n                                            GPT-5 Mini",
+              "cost": "56.20"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "artificial-analysis",
+      "data": {
+        "source": "artificial-analysis",
+        "fetchedAt": "2026-05-04T08:09:34.807Z",
+        "models": []
+      }
+    },
+    {
+      "name": "aiping",
+      "data": {
+        "source": "aiping",
+        "fetchedAt": "2026-05-04T08:09:25.935Z",
+        "models": [],
+        "error": "net::ERR_CONNECTION_CLOSED at https://aiping.dev"
+      }
+    }
+  ],
+  "failedSources": [],
+  "totalSources": 4,
+  "successCount": 4,
+  "failedCount": 0
+}

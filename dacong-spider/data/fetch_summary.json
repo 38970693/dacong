@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-05-04T20:34:59.083164",
+  "results": [
+    {
+      "source": "LMArena",
+      "status": "success",
+      "total": 20029,
+      "categories": [
+        "text",
+        "text_style_control",
+        "search",
+        "search_style_control",
+        "vision",
+        "vision_style_control",
+        "image_edit",
+        "image_to_video",
+        "text_to_image",
+        "text_to_video",
+        "video_edit",
+        "webdev",
+        "document",
+        "document_style_control"
+      ],
+      "output_file": "E:\\gitlab\\dacong\\dacong-spider\\data\\lmarena_rankings.json"
+    },
+    {
+      "source": "Artificial Analysis",
+      "status": "success",
+      "total": 857,
+      "providers": [
+        "Baseten",
+        "Lightning AI",
+        "Amazon",
+        "Parasail",
+        "Databricks",
+        "Together.ai",
+        "Fireworks",
+        "Groq",
+        "Weights & Biases",
+        "Cerebras",
+        "Clarifai",
+        "SambaNova",
+        "Nebius Base",
+        "Google Vertex",
+        "Cloudflare",
+        "Azure",
+        "Eigen AI",
+        "Novita",
+        "DeepInfra",
+        "OpenAI"
+      ],
+      "output_file": "E:\\gitlab\\dacong\\dacong-spider\\data\\artificial_analysis_rankings.json"
+    }
+  ]
+}

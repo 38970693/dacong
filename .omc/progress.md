@@ -1,10 +1,31 @@
 # DaCong 项目进度记录
 
-## 最后更新：2026-05-03
+## 最后更新：2026-05-04
 
 ---
 
 ## ✅ 已完成
+
+### 排行榜数据系统 (dacong-spider)
+
+| 数据源 | 记录数 | 状态 |
+|--------|--------|------|
+| LMArena | 19,925 | ✅ 正常 |
+| Artificial Analysis | 348 | ⚠️ 部分同步 |
+| SWE-bench | 0 | ❌ API 不可用 |
+
+**新增功能**:
+- [x] LMArena 排行榜爬虫（从 HuggingFace API）
+- [x] Artificial Analysis 排行榜爬虫（HTML 解析）
+- [x] 数据同步到 Supabase `raw_data` 表
+- [x] 增量同步逻辑（基于 source_id 去重）
+- [x] 修复 BaseRankingsSpider 接口兼容性
+
+**数据文件**:
+- `dacong-spider/data/lmarena_rankings.json` (20,029 条)
+- `dacong-spider/data/artificial_analysis_rankings.json` (857 条)
+
+---
 
 ### 前端 (dacong-console)
 
