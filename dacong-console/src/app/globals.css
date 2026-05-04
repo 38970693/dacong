@@ -1,18 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  /* 琥珀暖调配色方案 */
-  --background: #fafafa;
-  --background-secondary: #ffffff;
-  --foreground: #1a1a1a;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
+  /* Design D - 渐变创意配色方案 */
+  --background: #ffffff;
+  --background-secondary: #fafbfc;
+  --foreground: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
   --primary: #f59e0b;
-  --primary-light: #fef3c7;
+  --primary-light: #fef3ec;
   --primary-dark: #d97706;
-  --border: #e5e7eb;
-  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --border: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0,0,0,0.05);
   --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
+
+  /* 渐变色变量 */
+  --gradient-purple: #8b5cf6;
+  --gradient-blue: #3b82f6;
+  --gradient-pink: #ec4899;
+  --gradient-amber: #f59e0b;
 }
 
 @theme inline {
@@ -25,6 +31,9 @@
   --color-primary-light: var(--primary-light);
   --color-primary-dark: var(--primary-dark);
   --color-border: var(--border);
+  --color-gradient-purple: var(--gradient-purple);
+  --color-gradient-blue: var(--gradient-blue);
+  --color-gradient-pink: var(--gradient-pink);
   --font-sans: var(--font-inter);
 }
 
@@ -52,7 +61,7 @@ body {
 
 /* 卡片悬浮效果 */
 .card-hover {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
 
@@ -63,20 +72,56 @@ body {
 
 /* 按钮悬浮效果 */
 .btn-hover {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 
 /* 渐变文字 */
 .gradient-text {
-  background: linear-gradient(135deg, var(--primary) 0%, #ef4444 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--gradient-pink) 50%, var(--gradient-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* 渐变按钮 */
+.gradient-btn {
+  background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gradient-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+}
+
+/* 渐变边框 */
+.gradient-border {
+  position: relative;
+  background: var(--background);
+  border-radius: 20px;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 50%, var(--gradient-purple) 100%);
+  border-radius: inherit;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
 }
 
 /* 动画 */
@@ -95,27 +140,42 @@ body {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s ease-out forwards;
+}
+
 /* 卡片图标渐变背景 */
 .icon-gradient-1 {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
 }
 
 .icon-gradient-2 {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  background: linear-gradient(135deg, var(--gradient-purple) 0%, var(--gradient-blue) 100%);
 }
 
 .icon-gradient-3 {
-  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  background: linear-gradient(135deg, var(--gradient-blue) 0%, var(--gradient-pink) 100%);
 }
 
 /* 输入框样式 */
 .input-base {
   width: 100%;
-  padding: 12px 16px;
-  background: var(--background-secondary);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 14px;
+  padding: 14px 18px;
+  background: var(--background);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  font-size: 15px;
   color: var(--foreground);
   transition: all 0.2s;
   outline: none;
@@ -123,7 +183,7 @@ body {
 
 .input-base:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
 }
 
 .input-base::placeholder {
@@ -134,12 +194,12 @@ body {
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
-  background: var(--primary-light);
-  color: var(--primary);
+  padding: 6px 14px;
+  background: linear-gradient(135deg, var(--primary-light) 0%, rgba(236, 72, 153, 0.1) 100%);
+  color: var(--primary-dark);
   border-radius: 100px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* 空状态样式 */
@@ -148,16 +208,16 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: 64px 32px;
   text-align: center;
   color: var(--text-muted);
 }
 
 /* 加载动画 */
 .loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--primary-light);
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--primary-light);
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -173,15 +233,15 @@ body {
 .divider {
   height: 1px;
   background: var(--border);
-  margin: 16px 0;
+  margin: 24px 0;
 }
 
 /* 头像圆形 */
 .avatar {
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  background: #f5f5f5;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary-light) 0%, rgba(236, 72, 153, 0.1) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,12 +254,86 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  background: #ef4444;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
   color: white;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 600;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* 排名徽章 */
+.rank-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+}
+
+.rank-badge-1 {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.rank-badge-2 {
+  background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+}
+
+.rank-badge-3 {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+}
+
+/* 排行榜容器 */
+.leaderboard-card {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.leaderboard-card:hover {
+  border-color: transparent;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+/* 特色卡片 */
+.feature-card {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 28px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gradient-amber), var(--gradient-pink), var(--gradient-purple));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.feature-card:hover {
+  border-color: transparent;
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+.feature-card:hover::before {
+  opacity: 1;
 }

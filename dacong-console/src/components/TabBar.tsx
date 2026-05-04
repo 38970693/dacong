@@ -16,9 +16,9 @@ interface TabBarProps {
 
 export function TabBar({ activeTab, onTabChange }: TabBarProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-[var(--border)] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-[var(--border)] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
       <div className="max-w-lg mx-auto flex justify-around items-center h-16">
-        {tabs.map((tab, index) => {
+        {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
             <button
@@ -30,21 +30,21 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
             >
               {/* 活跃指示器 */}
               {isActive && (
-                <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-[var(--primary)] rounded-full animate-fade-in-up" />
+                <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-[var(--gradient-amber)] to-[var(--gradient-pink)] rounded-full animate-fade-in-up" />
               )}
 
               <svg
-                className={`w-6 h-6 transition-transform duration-300 ${isActive ? 'scale-110' : ''}`}
-                fill="none"
+                className={`w-6 h-6 transition-all duration-300 ${isActive ? 'scale-110' : ''}`}
+                fill={isActive ? "currentColor" : "none"}
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={isActive ? 2.5 : 1.5}
+                strokeWidth={isActive ? 0 : 1.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d={tab.icon} />
               </svg>
 
-              <span className={`text-[11px] mt-1 font-medium transition-all duration-300 ${
-                isActive ? 'font-semibold' : ''
+              <span className={`text-[11px] mt-1 font-semibold transition-all duration-300 ${
+                isActive ? 'font-bold' : ''
               }`}>
                 {tab.label}
               </span>

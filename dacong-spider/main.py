@@ -32,10 +32,13 @@ def setup_logging(debug: bool = False):
         level=getattr(logging, log_level),
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
         handlers=[
-            logging.FileHandler(config.log_file),
+            logging.FileHandler(config.log_file, encoding='utf-8'),
             logging.StreamHandler(sys.stdout)
         ]
     )
+
+    # 强制设置 stdout 的编码为 UTF-8
+    sys.stdout.reconfigure(encoding='utf-8')
 
 
 def setup_sentry(debug: bool = False):
@@ -212,17 +215,17 @@ async def list_spiders():
     registry = create_default_registry()
     spiders = registry.list_names()
 
-    print("\n可用的爬虫:")
+    print("\n[Spider List]")
     print("=" * 60)
 
     for name in spiders:
         spider_config = config.get_spider_config(name)
-        status = "✅ 启用" if spider_config.get("enabled", False) else "❌ 禁用"
+        status = "[enabled]" if spider_config.get("enabled", False) else "[disabled]"
         interval = spider_config.get("interval_hours", "N/A")
-        print(f"  {name:20s} {status:10s} 间隔: {interval} 小时")
+        print(f"  {name:20s} {status:12s} interval: {interval}h")
 
     print("=" * 60)
-    print(f"总计: {len(spiders)} 个爬虫\n")
+    print(f"Total: {len(spiders)} spiders\n")
 
     await registry.factory.cleanup()
 
@@ -231,38 +234,38 @@ def validate_config():
     """验证配置文件"""
     from config import config
 
-    print("\n配置验证:")
+    print("\n[Config Validation]")
     print("=" * 60)
 
     try:
         # 检查必需配置
-        print(f"✅ Supabase URL: {config.supabase_url[:30]}...")
-        print(f"✅ Supabase Key: {'*' * 20}")
-        print(f"✅ 日志级别: {config.log_level}")
-        print(f"✅ 日志文件: {config.log_file}")
+        print(f"[OK] Supabase URL: {config.supabase_url[:30]}...")
+        print(f"[OK] Supabase Key: {'*' * 20}")
+        print(f"[OK] Log Level: {config.log_level}")
+        print(f"[OK] Log File: {config.log_file}")
 
         # 检查可选配置
         if config.github_token:
-            print(f"✅ GitHub Token: 已配置")
+            print(f"[OK] GitHub Token: configured")
         else:
-            print(f"⚠️  GitHub Token: 未配置（可选）")
+            print(f"[WARN] GitHub Token: not configured (optional)")
 
         if config.openrouter_api_key:
-            print(f"✅ OpenRouter API Key: 已配置")
+            print(f"[OK] OpenRouter API Key: configured")
         else:
-            print(f"⚠️  OpenRouter API Key: 未配置（可选）")
+            print(f"[WARN] OpenRouter API Key: not configured (optional)")
 
         if config.reddit_client_id:
-            print(f"✅ Reddit API: 已配置")
+            print(f"[OK] Reddit API: configured")
         else:
-            print(f"⚠️  Reddit API: 未配置（可选）")
+            print(f"[WARN] Reddit API: not configured (optional)")
 
         print("=" * 60)
-        print("✅ 配置验证通过\n")
+        print("[OK] Config validation passed\n")
         return True
 
     except Exception as e:
-        print(f"❌ 配置验证失败: {e}\n")
+        print(f"[FAIL] Config validation failed: {e}\n")
         return False
 
 

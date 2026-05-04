@@ -104,7 +104,40 @@ class RedditDataProcessor(IDataProcessor):
         self.base = BaseDataProcessor(MetricSource.REDDIT, DataType.POST)
 
     def process(self, raw_data: dict):
-        return self.base.process(raw_data)
+        """
+        处理原始数据，转换为 RawData DTO
+        注意：直接实现以使用子类自己的 _extract_ 方法
+        """
+        from datetime import datetime, timezone
+        import hashlib
+        import json
+        from core.implementations import RawData
+
+        try:
+            source_id = self._extract_source_id(raw_data)
+            title = self._extract_title(raw_data)
+            description = self._extract_description(raw_data)
+            url = self._extract_url(raw_data)
+            metadata = self._extract_metadata(raw_data)
+
+            content = json.dumps(raw_data, sort_keys=True, ensure_ascii=False)
+            content_hash = hashlib.md5(content.encode()).hexdigest()
+
+            return RawData(
+                source=MetricSource.REDDIT,
+                data_type="post",
+                source_id=source_id,
+                title=title,
+                description=description,
+                url=url,
+                metadata=metadata,
+                raw_content=content,
+                content_hash=content_hash,
+                fetched_at=datetime.now(timezone.utc)
+            )
+        except Exception as e:
+            logging.error(f"Failed to process Reddit data: {e}")
+            return None
 
     def generate_content_hash(self, data: dict) -> str:
         return self.base.generate_content_hash(data)

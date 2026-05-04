@@ -89,13 +89,47 @@ class HackerNewsDataProcessor(IDataProcessor):
         self.base = BaseDataProcessor(MetricSource.HACKERNEWS, DataType.NEWS)
 
     def process(self, raw_data: dict):
-        return self.base.process(raw_data)
+        """
+        处理原始数据，转换为 RawData DTO
+        注意：直接实现而不是委托给 base，以使用子类自己的 _extract_ 方法
+        """
+        from datetime import datetime, timezone
+        import hashlib
+        import json
+        from core.implementations import RawData
+
+        try:
+            source_id = self._extract_source_id(raw_data)
+            title = self._extract_title(raw_data)
+            description = self._extract_description(raw_data)
+            url = self._extract_url(raw_data)
+            metadata = self._extract_metadata(raw_data)
+
+            content = json.dumps(raw_data, sort_keys=True, ensure_ascii=False)
+            content_hash = hashlib.md5(content.encode()).hexdigest()
+
+            return RawData(
+                source=MetricSource.HACKERNEWS,
+                data_type="news",
+                source_id=source_id,
+                title=title,
+                description=description,
+                url=url,
+                metadata=metadata,
+                raw_content=content,
+                content_hash=content_hash,
+                fetched_at=datetime.now(timezone.utc)
+            )
+        except Exception as e:
+            logging.error(f"Failed to process data: {e}")
+            return None
 
     def generate_content_hash(self, data: dict) -> str:
         return self.base.generate_content_hash(data)
 
     def _extract_source_id(self, data: dict) -> str:
-        return str(data["id"])
+        # 优先使用 hn_id，其次使用 id
+        return str(data.get("hn_id") or data.get("id", ""))
 
     def _extract_title(self, data: dict) -> str:
         return data["title"]

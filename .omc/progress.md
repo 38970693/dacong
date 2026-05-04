@@ -1,81 +1,119 @@
 # DaCong 项目进度记录
 
-## 最后更新：2026-05-02 (晚间)
+## 最后更新：2026-05-03
 
 ---
 
 ## ✅ 已完成
 
 ### 前端 (dacong-console)
+
+#### Web 端页面
+| 页面 | 路由 | 状态 | 说明 |
+|------|------|------|------|
+| 首页 | `/web` | ✅ | 资讯 feed |
+| 热门 | `/web/trending` | ✅ | 热门内容 |
+| 关注 | `/web/following` | ✅ | 关注内容 |
+| 收藏 | `/web/saved` | ✅ | 收藏内容 |
+| 我的 | `/web/profile` | ✅ | 个人中心 |
+| 榜单 | `/web/ranking` | ✅ | AI 模型排行（新增） |
+| 评测 | `/web/review` | ✅ | 模型评测文章（新增） |
+| 帖子详情 | `/web/post/[id]` | ✅ | 文章详情页 |
+
+#### 技术特性
 - [x] Next.js 16.2.4 + TypeScript + Tailwind CSS
 - [x] Zustand 状态管理
-- [x] API Routes (`/api/posts`, `/api/trending`, `/api/posts/[id]`)
-- [x] UI 组件 (PostCard, PostList, TrendingList, TabBar, Messages, Profile)
-- [x] 数据库类型定义
+- [x] 响应式设计（桌面/移动）
+- [x] 深色/浅色主题
+- [x] 移动端底部导航
+- [x] 桌面端侧边栏
+- [x] API Routes
+- [x] Middleware 路由处理
 - [x] GitHub Actions CI/CD
-- [x] 移动端适配（深色主题，移动优先设计）
-- [x] Middleware 排除 API 路由
 
 ### 后端 Worker (dacong-worker)
-- [x] 爬虫（7个数据源）
-- [x] AI 审核（本地关键词 + OpenAI 预留）
-- [x] 榜单计算（热榜 + 最新榜）
-- [x] GitHub Actions 定时任务（每5分钟）
+- [x] 爬虫抓取（多数据源）
+- [x] AI 内容审核（关键词 + OpenAI）
+- [x] 榜单计算（热榜 + 新榜）
+- [x] GitHub Actions 定时任务
 
 ### 数据库 (Supabase)
 - [x] Schema 迁移完成
-- [x] 示例数据添加（10条 posts + 40条 trending_cache）
+- [x] 示例数据
 
 ---
 
-## 🔴 待解决问题 (2026-05-03)
+## 🚀 v2.0 规划 - 核心体验升级
+
+### 页面功能
+
+| 功能 | 优先级 | 状态 | 说明 |
+|------|--------|------|------|
+| 榜单数据对接 | P0 | 🔄 | 对接 Supabase 获取真实模型数据 |
+| 评测文章管理 | P0 | 🔄 | 完整 CRUD + Markdown 编辑器 |
+| 搜索功能 | P1 | 📋 | 全文搜索 + 筛选 |
+| 标签系统 | P1 | 📋 | 文章标签 + 模型分类标签 |
+| 用户系统 | P1 | 📋 | 注册/登录/个人主页 |
+| 评论系统 | P2 | 📋 | 帖子评论 + 回复 |
+| 点赞收藏 | P2 | 📋 | 互动功能 |
+
+### 技术升级
+
+| 功能 | 优先级 | 说明 |
+|------|--------|------|
+| 国际化 (i18n) | P1 | 中英文切换 |
+| PWA 支持 | P1 | 离线缓存 + 安装 |
+| 性能优化 | P1 | 图片懒加载 + 代码分割 |
+| 无障碍 | P2 | WCAG 2.1 AA |
+
+---
+
+## 📋 v2.1 规划 - 社区功能
+
+| 功能 | 优先级 | 说明 |
+|------|--------|------|
+| 关注体系 | P1 | 关注用户/话题 |
+| 通知系统 | P1 | 评论/点赞/关注通知 |
+| 用户积分 | P2 | 积分商城 |
+| 私信功能 | P3 | 用户间私信 |
+| 话题广场 | P3 | 话题讨论 |
+
+---
+
+## 🤖 v2.2 规划 - AI 增强
+
+| 功能 | 优先级 | 说明 |
+|------|--------|------|
+| AI 推荐 | P1 | 个性化内容推荐 |
+| 智能摘要 | P2 | AI 生成文章摘要 |
+| 模型对比 | P2 | 模型参数对比表 |
+| 个性化榜单 | P2 | 用户偏好榜单 |
+
+---
+
+## 💰 v2.3 规划 - 商业化
+
+| 功能 | 优先级 | 说明 |
+|------|--------|------|
+| 订阅制 | P2 | 高级会员 |
+| API 开放 | P2 | 开放平台 |
+| 广告系统 | P3 | 广告位管理 |
+| 数据分析 | P3 | 流量统计后台 |
+
+---
+
+## 🔴 待解决问题
 
 ### Vercel API 重定向问题
 
-**问题**：API `/api/posts` 返回 HTML 而非 JSON，被 Vercel 代理重定向
+**状态**: 已记录，待解决
 
-**症状**：
-```
-curl https://dacong-weld.vercelapp.com/api/posts
-→ 返回 vercelapp.com 指纹脚本 HTML
-```
+**问题**: API `/api/posts` 返回 HTML 而非 JSON
 
-**根本原因**：Vercel 代理层将 API 请求重定向到广告/追踪页面，而不是转发到 Next.js 应用
-
-**已尝试修复**：
-1. ✅ 添加 `vercel.json` 禁用 cleanUrls
-2. ✅ 添加 `/api/.*` 到 middleware 排除
-3. ✅ Vercel 环境变量已配置
-4. ❌ 问题仍然存在
-
-**可能原因**：
-1. ❌ Vercel 免费版限制 API 路由带宽
-2. ❌ 项目被标记为"滥用"或"需要审核"
-3. ❌ Vercel 代理层面拦截
-
-**建议方案**：
-1. **方案A**：联系 Vercel 支持 - 询问 API 路由问题
-2. **方案B**：使用其他平台部署：
-   - Railway (简单 Node.js 服务)
-   - Cloudflare Pages + Functions
-   - AWS Lambda + API Gateway
-3. **方案C**：降级 API 复杂度：
-   - 静态生成 + ISR
-   - CDN 缓存
-
----
-
-## 📋 完整环境变量
-
-```
-# dacong-console/.env.local (本地)
-NEXT_PUBLIC_SUPABASE_URL=https://prszkdbdgffbdqclbgol.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-# Vercel 环境变量 (需配置)
-NEXT_PUBLIC_SUPABASE_URL=https://prszkdbdgffbdqclbgol.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
+**建议方案**:
+1. 联系 Vercel 支持
+2. 迁移到 Railway + Cloudflare
+3. 静态生成 + ISR
 
 ---
 
@@ -83,16 +121,24 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ```
 dacong/
-├── dacong-console/          # Next.js 前端 (Vercel)
-├── dacong-worker/           # Node.js Worker (GitHub Actions)
+├── dacong-console/          # Next.js 前端
+│   └── src/app/web/         # Web 页面
+│       ├── page.tsx         # 首页
+│       ├── ranking/         # 榜单页
+│       ├── review/         # 评测页
+│       └── ...
+├── dacong-worker/           # Node.js Worker
 ├── .github/workflows/       # CI/CD
-└── .omc/                    # 项目进度记录
+└── .omc/                    # 项目记录
 ```
 
 ---
 
-## 🎯 后续计划
+## 🎯 当前任务
 
-1. (进行中) 解决 Vercel API 重定向问题
-2. (待定) 联系 Vercel 支持或迁移到其他平台
-3. (可选) 配置 FCM 推送
+**进行中**: v2.0 功能开发
+- [x] 榜单页面框架
+- [x] 评测页面框架
+- [ ] 榜单数据对接 Supabase
+- [ ] 评测文章 CRUD
+- [ ] 搜索功能

@@ -34,8 +34,8 @@ class StructuredLogger:
         # 移除现有的处理器
         self.logger.handlers.clear()
 
-        # 添加控制台处理器
-        handler = logging.StreamHandler(sys.stdout)
+        # 添加控制台处理器（UTF-8编码）
+        handler = logging.StreamHandler(sys.stdout.buffer)
         handler.setLevel(logging.DEBUG)
         self.logger.addHandler(handler)
 

@@ -9,12 +9,10 @@ export function TrendingList() {
   const { hot, new: newPosts, isLoading, error, refreshAll } = useTrendingStore();
   const [activeTab, setActiveTab] = useState<'hot' | 'new'>('hot');
 
-  // 初始化加载
   useEffect(() => {
     refreshAll();
   }, [refreshAll]);
 
-  // 30秒轮询
   useEffect(() => {
     const interval = setInterval(refreshAll, 30000);
     return () => clearInterval(interval);
@@ -33,15 +31,15 @@ export function TrendingList() {
   if (error) {
     return (
       <div className="empty-state">
-        <div className="w-16 h-16 mb-4 rounded-full bg-[var(--primary-light)] flex items-center justify-center">
-          <svg className="w-8 h-8 text-[var(--primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-[var(--gradient-amber)] to-[var(--gradient-pink)] flex items-center justify-center">
+          <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
         <p className="text-[var(--text-secondary)] mb-4">{error}</p>
         <button
           onClick={refreshAll}
-          className="px-6 py-2.5 bg-[var(--primary)] text-white rounded-full font-medium btn-hover"
+          className="px-6 py-2.5 gradient-btn text-white rounded-full font-semibold"
         >
           重试
         </button>
@@ -64,20 +62,20 @@ export function TrendingList() {
       <div className="flex gap-3 px-5 py-4">
         <button
           onClick={() => setActiveTab('hot')}
-          className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
+          className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
             activeTab === 'hot'
-              ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/30'
-              : 'bg-white text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)]'
+              ? 'gradient-btn text-white shadow-lg'
+              : 'bg-white text-[var(--text-secondary)] border-2 border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--foreground)]'
           }`}
         >
           🌡️ 热榜
         </button>
         <button
           onClick={() => setActiveTab('new')}
-          className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
+          className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
             activeTab === 'new'
-              ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/30'
-              : 'bg-white text-[var(--text-secondary)] border border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)]'
+              ? 'gradient-btn text-white shadow-lg'
+              : 'bg-white text-[var(--text-secondary)] border-2 border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--foreground)]'
           }`}
         >
           ✨ 最新
@@ -88,9 +86,9 @@ export function TrendingList() {
       <div className="flex-1 overflow-y-auto px-5 pb-20 hide-scrollbar">
         {activeTab === 'hot' && hot.length > 0 && (
           <div className="mb-4">
-            {/* Top 3 突出显示 - 排行榜样式 */}
-            <div className="bg-white rounded-2xl p-4 mb-4 border border-[var(--border)] shadow-sm">
-              <h3 className="text-sm font-semibold text-[var(--text-secondary)] mb-3 flex items-center gap-2">
+            {/* Top 3 排行榜 */}
+            <div className="leaderboard-card mb-4">
+              <h3 className="text-sm font-bold text-[var(--text-secondary)] mb-4 flex items-center gap-2">
                 <span>🏆</span>
                 <span>TOP 3</span>
               </h3>
@@ -99,22 +97,22 @@ export function TrendingList() {
                   <div
                     key={item.id}
                     className={`flex items-center gap-4 p-3 rounded-xl transition-all card-hover ${
-                      idx === 0 ? 'bg-[var(--primary-light)]' : 'bg-[var(--background)]'
+                      idx === 0 ? 'bg-gradient-to-r from-[var(--primary-light)] to-white' : 'bg-[var(--background)]'
                     }`}
                   >
-                    <span className={`text-3xl font-bold w-10 text-center ${
-                      idx === 0 ? 'text-[var(--primary)]' : idx === 1 ? 'text-[var(--text-muted)]' : 'text-[var(--primary-dark)]'
+                    <div className={`rank-badge ${
+                      idx === 0 ? 'rank-badge-1' : idx === 1 ? 'rank-badge-2' : 'rank-badge-3'
                     }`}>
                       {idx + 1}
-                    </span>
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-[var(--foreground)] truncate">{item.title}</p>
+                      <p className="font-bold text-[var(--foreground)] truncate">{item.title}</p>
                       <p className="text-xs text-[var(--text-muted)] mt-1">
                         {item.source || '综合'} • ❤️ {item.likes}
                       </p>
                     </div>
                     {idx === 0 && (
-                      <span className="px-2 py-1 bg-[var(--primary)] text-white text-xs rounded-full font-medium">热</span>
+                      <span className="px-2.5 py-1 bg-gradient-to-r from-[var(--gradient-amber)] to-[var(--gradient-pink)] text-white text-xs rounded-full font-bold">热</span>
                     )}
                   </div>
                 ))}
@@ -141,7 +139,7 @@ export function TrendingList() {
 
         {currentList.length === 0 && (
           <div className="empty-state">
-            <div className="w-16 h-16 mb-4 rounded-xl bg-[var(--primary-light)] flex items-center justify-center">
+            <div className="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-[var(--gradient-amber)] to-[var(--gradient-pink)] flex items-center justify-center">
               <span className="text-3xl">📊</span>
             </div>
             <p className="text-[var(--text-secondary)]">暂无数据</p>

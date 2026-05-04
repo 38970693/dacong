@@ -16,7 +16,6 @@ export default function Home() {
 
   const handleLogin = async () => {
     try {
-      // 暂时使用匿名登录，后续添加 Google/Apple 登录
       const { data, error } = await supabase.auth.signInAnonymously();
       if (error) throw error;
       if (data.user) {
@@ -44,22 +43,53 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[var(--background)] flex flex-col max-w-lg mx-auto relative">
-      {/* 顶部搜索栏 */}
-      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-lg border-b border-[var(--border)] px-5 py-3">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-[var(--foreground)]">
-            Da<span className="text-[var(--primary)]">Cong</span>
-          </h1>
-          <button className="w-10 h-10 rounded-full bg-[var(--primary-light)] flex items-center justify-center">
-            <svg className="w-5 h-5 text-[var(--primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
+      {/* 顶部导航栏 */}
+      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-xl border-b border-[var(--border)]">
+        <div className="px-5 py-3 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--gradient-amber)] to-[var(--gradient-pink)] flex items-center justify-center">
+              <span className="text-white font-bold text-sm">AI</span>
+            </div>
+            <h1 className="text-lg font-bold">
+              Da<span className="bg-gradient-to-r from-[var(--gradient-amber)] to-[var(--gradient-pink)] bg-clip-text text-transparent">Cong</span>
+            </h1>
+          </div>
+
+          {/* 操作按钮 */}
+          <div className="flex items-center gap-2">
+            <button className="w-10 h-10 rounded-xl bg-[var(--background)] border border-[var(--border)] flex items-center justify-center hover:border-[var(--primary)] transition-colors">
+              <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            </button>
+            <button className="w-10 h-10 rounded-xl gradient-btn flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* 分类标签 */}
+        <div className="px-5 pb-3 flex gap-2 overflow-x-auto hide-scrollbar">
+          <button className="px-4 py-2 rounded-full text-sm font-semibold gradient-btn text-white whitespace-nowrap">
+            全部
+          </button>
+          <button className="px-4 py-2 rounded-full text-sm font-medium bg-white border border-[var(--border)] text-[var(--text-secondary)] whitespace-nowrap hover:border-[var(--primary)] hover:text-[var(--foreground)] transition-colors">
+            🤖 AI 模型
+          </button>
+          <button className="px-4 py-2 rounded-full text-sm font-medium bg-white border border-[var(--border)] text-[var(--text-secondary)] whitespace-nowrap hover:border-[var(--primary)] hover:text-[var(--foreground)] transition-colors">
+            📰 科技资讯
+          </button>
+          <button className="px-4 py-2 rounded-full text-sm font-medium bg-white border border-[var(--border)] text-[var(--text-secondary)] whitespace-nowrap hover:border-[var(--primary)] hover:text-[var(--foreground)] transition-colors">
+            💡 深度解读
           </button>
         </div>
       </header>
 
       {/* 主内容区 */}
-      <main className="flex-1 overflow-hidden pb-16">
+      <main className="flex-1 overflow-hidden pb-16 bg-[var(--background)]">
         {renderContent()}
       </main>
 

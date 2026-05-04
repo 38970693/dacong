@@ -81,7 +81,7 @@ class SupabaseStorage(IDataStorage):
         """检查数据是否已存在"""
         try:
             result = self.client.table(self.table_name).select("id").eq(
-                "source", source.value
+                "source", source
             ).eq(
                 "source_id", source_id
             ).limit(1).execute()
@@ -96,7 +96,7 @@ class SupabaseStorage(IDataStorage):
         """获取已存储数据的内容哈希"""
         try:
             result = self.client.table(self.table_name).select("content_hash").eq(
-                "source", source.value
+                "source", source
             ).eq(
                 "source_id", source_id
             ).limit(1).execute()
@@ -113,8 +113,8 @@ class SupabaseStorage(IDataStorage):
     def _to_db_row(self, data: RawData) -> dict:
         """将 RawData DTO 转换为数据库行"""
         return {
-            "source": data.source.value,
-            "data_type": data.data_type.value,
+            "source": data.source,
+            "data_type": data.data_type,
             "source_id": data.source_id,
             "title": data.title,
             "description": data.description,

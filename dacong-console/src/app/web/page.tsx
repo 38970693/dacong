@@ -2,6 +2,7 @@
 
 import { usePostsStore } from '@/stores';
 import { PostCard } from '@/components/PostCard';
+import SearchBar from '@/components/SearchBar';
 
 export default function HomePage() {
   const { posts, isLoading, error, fetchPosts } = usePostsStore();
@@ -56,10 +57,9 @@ export default function HomePage() {
 
   return (
     <div className="pb-16 md:pb-0">
-      {/* 页面标题 */}
+      {/* 搜索栏 */}
       <div className="sticky top-14 md:top-16 z-10 bg-white/95 backdrop-blur-sm px-4 md:px-5 py-3 md:py-4 border-b border-[var(--border)]">
-        <h1 className="text-lg font-bold text-[var(--foreground)]">首页</h1>
-        <p className="text-xs text-[var(--text-muted)] hidden md:block">发现最新最热的 AI 模型相关内容</p>
+        <SearchBar />
       </div>
 
       {/* 帖子列表 */}
