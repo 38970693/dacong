@@ -89,7 +89,7 @@ export default function Home() {
       </header>
 
       {/* 主内容区 */}
-      <main className="flex-1 overflow-hidden pb-16 bg-[var(--background)]">
+      <main className="h-[calc(100vh-140px)] bg-[var(--background)] overflow-y-auto">
         {renderContent()}
       </main>
 

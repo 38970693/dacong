@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/stores';
 
 interface ProfileProps {
@@ -7,7 +8,16 @@ interface ProfileProps {
 }
 
 export function Profile({ onLogin }: ProfileProps) {
+  const router = useRouter();
   const { isAuthenticated, userId, role } = useUserStore();
+
+  const handleEditProfile = () => {
+    alert('编辑资料功能即将上线...');
+  };
+
+  const handleSettings = () => {
+    alert('设置功能即将上线...');
+  };
 
   // 未登录状态
   if (!isAuthenticated) {
@@ -83,10 +93,16 @@ export function Profile({ onLogin }: ProfileProps) {
 
         {/* 操作按钮 */}
         <div className="flex gap-3 mt-4">
-          <button className="flex-1 py-2.5 bg-[var(--foreground)] text-white rounded-full font-medium text-sm btn-hover">
+          <button
+            onClick={handleEditProfile}
+            className="flex-1 py-2.5 bg-[var(--foreground)] text-white rounded-full font-medium text-sm btn-hover"
+          >
             编辑资料
           </button>
-          <button className="px-5 py-2.5 bg-white border border-[var(--border)] rounded-full text-sm">
+          <button
+            onClick={handleSettings}
+            className="px-5 py-2.5 bg-white border border-[var(--border)] rounded-full text-sm"
+          >
             <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.388.48.831 1.012 1.096C15.056 6.654 15.822 7 16.5 7H17v3.5c0 1.1-.9 2-2 2h-1a2 2 0 01-2-2v-1H8.5c-.667 0-1.25-.56-1.25-1.125V7.5h1.25c.565 0 1.062-.388 1.11-.94l.212-1.281z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

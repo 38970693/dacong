@@ -1,12 +1,19 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { usePostsStore } from '@/stores';
 import { PostCard } from './PostCard';
 
 export function PostList() {
+  const router = useRouter();
   const { posts, isLoading, error, hasMore, fetchPosts, loadMore, refresh } = usePostsStore();
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  // 帖子点击跳转
+  const handlePostClick = useCallback((postId: string) => {
+    router.push(`/web/post/${postId}`);
+  }, [router]);
 
   // 初始化加载
   useEffect(() => {
@@ -77,22 +84,28 @@ export function PostList() {
   }
 
   return (
-    <div className="h-full overflow-y-auto pb-20 hide-scrollbar">
+    <div className="min-h-full">
       {/* 刷新提示条 */}
-      <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur-sm px-5 py-3 border-b border-[var(--border)] flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm px-5 py-3 border-b border-[var(--border)] flex items-center justify-between">
         <span className="text-sm text-[var(--text-secondary)]">{posts.length} 条内容</span>
-        <span className="text-xs text-[var(--primary)] font-medium">下拉刷新</span>
+        <button
+          onClick={refresh}
+          className="text-xs text-[var(--primary)] font-medium hover:underline"
+        >
+          刷新
+        </button>
       </div>
 
       {/* 帖子列表 */}
-      <div className="p-5">
+      <div className="divide-y divide-[var(--border)]">
         {posts.map((post, index) => (
           <div
             key={post.id}
-            className="animate-fade-in-up"
+            onClick={() => handlePostClick(post.id)}
+            className="p-4 hover:bg-gray-50 transition-colors cursor-pointer active:bg-gray-100"
             style={{ animationDelay: `${index * 50}ms` }}
           >
-            <PostCard post={post} />
+            <PostCard post={post} onLoginRequired={() => {}} />
           </div>
         ))}
       </div>

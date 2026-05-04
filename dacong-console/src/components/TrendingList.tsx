@@ -1,13 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Post } from '@/types/database';
 import { PostCard } from './PostCard';
 import { useTrendingStore } from '@/stores';
 
 export function TrendingList() {
+  const router = useRouter();
   const { hot, new: newPosts, isLoading, error, refreshAll } = useTrendingStore();
   const [activeTab, setActiveTab] = useState<'hot' | 'new'>('hot');
+
+  const handleItemClick = (postId: string) => {
+    router.push(`/web/post/${postId}`);
+  };
 
   useEffect(() => {
     refreshAll();
@@ -96,7 +102,8 @@ export function TrendingList() {
                 {hot.slice(0, 3).map((item, idx) => (
                   <div
                     key={item.id}
-                    className={`flex items-center gap-4 p-3 rounded-xl transition-all card-hover ${
+                    onClick={() => handleItemClick(item.id)}
+                    className={`flex items-center gap-4 p-3 rounded-xl transition-all card-hover cursor-pointer ${
                       idx === 0 ? 'bg-gradient-to-r from-[var(--primary-light)] to-white' : 'bg-[var(--background)]'
                     }`}
                   >
@@ -123,16 +130,18 @@ export function TrendingList() {
 
         {/* 完整列表 */}
         {currentList.map((item, idx) => (
-          <div key={item.id} className="mb-3 animate-fade-in-up" style={{ animationDelay: `${idx * 30}ms` }}>
+          <div key={item.id} className="mb-3 animate-fade-in-up cursor-pointer" style={{ animationDelay: `${idx * 30}ms` }}>
             {activeTab === 'hot' ? (
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3" onClick={() => handleItemClick(item.id)}>
                 <span className="text-[var(--text-muted)] font-bold w-6 text-center pt-3 text-lg">{idx + 4}</span>
                 <div className="flex-1">
-                  <PostCard post={item} />
+                  <PostCard post={item} onLoginRequired={() => {}} />
                 </div>
               </div>
             ) : (
-              <PostCard post={item} />
+              <div onClick={() => handleItemClick(item.id)}>
+                <PostCard post={item} onLoginRequired={() => {}} />
+              </div>
             )}
           </div>
         ))}
