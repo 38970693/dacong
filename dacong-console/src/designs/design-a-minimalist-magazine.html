@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DaCong - AI 模型排行</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #fafafa;
+      --bg-secondary: #ffffff;
+      --bg-dark: #0a0a0b;
+      --text-primary: #18181b;
+      --text-secondary: #71717a;
+      --text-muted: #a1a1aa;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --accent-hover: #d97706;
+      --border: #e4e4e7;
+      --gradient-start: #fef3c7;
+      --gradient-end: #fed7aa;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* 极简杂志风设计 */
+    .magazine-design {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* 顶部导航 */
+    .magazine-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 80px;
+    }
+
+    .magazine-logo {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .magazine-logo span {
+      color: var(--accent);
+    }
+
+    .magazine-nav {
+      display: flex;
+      gap: 40px;
+    }
+
+    .magazine-nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .magazine-nav a:hover {
+      color: var(--text-primary);
+    }
+
+    .magazine-nav a.active {
+      color: var(--text-primary);
+    }
+
+    /* 英雄区 */
+    .magazine-hero {
+      text-align: center;
+      margin-bottom: 120px;
+    }
+
+    .magazine-hero h1 {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .magazine-hero p {
+      font-size: 20px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .magazine-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      background: var(--text-primary);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 100px;
+      transition: all 0.3s ease;
+    }
+
+    .magazine-cta:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(245, 158, 11, 0.3);
+    }
+
+    /* 特色区域 */
+    .magazine-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      margin-bottom: 120px;
+    }
+
+    .magazine-feature {
+      text-align: center;
+      padding: 48px 32px;
+      background: var(--bg-secondary);
+      border-radius: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .magazine-feature:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    }
+
+    .feature-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+
+    .magazine-feature h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .magazine-feature p {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* 排行榜区 */
+    .magazine-ranking {
+      margin-bottom: 120px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .section-main {
+      font-size: 36px;
+      font-weight: 700;
+    }
+
+    .view-all {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .view-all:hover {
+      color: var(--accent);
+    }
+
+    /* 模型卡片 */
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .model-card {
+      display: flex;
+      gap: 24px;
+      padding: 28px;
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .model-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+    }
+
+    .model-rank {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1;
+      min-width: 60px;
+    }
+
+    .model-card:nth-child(1) .model-rank { color: #fbbf24; }
+    .model-card:nth-child(2) .model-rank { color: #a1a1aa; }
+    .model-card:nth-child(3) .model-rank { color: #cd7f32; }
+
+    .model-info {
+      flex: 1;
+    }
+
+    .model-name {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .model-vendor {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .model-stats {
+      display: flex;
+      gap: 24px;
+    }
+
+    .model-stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .model-stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .model-stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* 文章预览 */
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .article-card {
+      cursor: pointer;
+    }
+
+    .article-image {
+      aspect-ratio: 16/10;
+      background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      transition: transform 0.3s ease;
+    }
+
+    .article-card:hover .article-image {
+      transform: scale(1.02);
+    }
+
+    .article-category {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .article-title {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .article-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* 页脚 */
+    .magazine-footer {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .magazine-header {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+      }
+
+      .magazine-nav {
+        gap: 24px;
+      }
+
+      .magazine-features {
+        grid-template-columns: 1fr;
+      }
+
+      .model-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .article-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="magazine-design">
+    <!-- 顶部导航 -->
+    <header class="magazine-header">
+      <div class="magazine-logo">Da<span>Cong</span></div>
+      <nav class="magazine-nav">
+        <a href="#" class="active">首页</a>
+        <a href="#">排行榜</a>
+        <a href="#">社区</a>
+        <a href="#">资讯</a>
+      </nav>
+    </header>
+
+    <!-- 英雄区 -->
+    <section class="magazine-hero">
+      <h1>探索 AI 的边界</h1>
+      <p>DaCong 汇聚全球顶尖 AI 模型，提供实时排行、社区讨论和最新资讯，让你在 AI 时代保持领先。</p>
+      <a href="#" class="magazine-cta">
+        立即探索
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </section>
+
+    <!-- 特色区域 -->
+    <section class="magazine-features">
+      <div class="magazine-feature">
+        <div class="feature-icon">🏆</div>
+        <h3>实时排行</h3>
+        <p>基于多维度数据，自动更新全球 AI 模型排行榜</p>
+      </div>
+      <div class="magazine-feature">
+        <div class="feature-icon">💬</div>
+        <h3>活跃社区</h3>
+        <p>与全球 AI 爱好者和专家交流分享见解</p>
+      </div>
+      <div class="magazine-feature">
+        <div class="feature-icon">📰</div>
+        <h3>精选资讯</h3>
+        <p>聚合 Hugging Face、GitHub 等平台的最新动态</p>
+      </div>
+    </section>
+
+    <!-- 排行榜区 -->
+    <section class="magazine-ranking">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Model Ranking</div>
+          <h2 class="section-main">热门模型排行</h2>
+        </div>
+        <a href="#" class="view-all">
+          查看全部
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="model-grid">
+        <div class="model-card">
+          <div class="model-rank">#1</div>
+          <div class="model-info">
+            <div class="model-name">GPT-4 Turbo</div>
+            <div class="model-vendor">OpenAI</div>
+            <div class="model-stats">
+              <div class="model-stat">
+                <span class="model-stat-value">4.8</span>
+                <span class="model-stat-label">综合评分</span>
+              </div>
+              <div class="model-stat">
+                <span class="model-stat-value">128K</span>
+                <span class="model-stat-label">上下文</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <div class="model-rank">#2</div>
+          <div class="model-info">
+            <div class="model-name">Claude 3 Opus</div>
+            <div class="model-vendor">Anthropic</div>
+            <div class="model-stats">
+              <div class="model-stat">
+                <span class="model-stat-value">4.7</span>
+                <span class="model-stat-label">综合评分</span>
+              </div>
+              <div class="model-stat">
+                <span class="model-stat-value">200K</span>
+                <span class="model-stat-label">上下文</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <div class="model-rank">#3</div>
+          <div class="model-info">
+            <div class="model-name">Gemini Ultra</div>
+            <div class="model-vendor">Google</div>
+            <div class="model-stats">
+              <div class="model-stat">
+                <span class="model-stat-value">4.6</span>
+                <span class="model-stat-label">综合评分</span>
+              </div>
+              <div class="model-stat">
+                <span class="model-stat-value">1M</span>
+                <span class="model-stat-label">上下文</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <div class="model-rank">#4</div>
+          <div class="model-info">
+            <div class="model-name">Llama 3 70B</div>
+            <div class="model-vendor">Meta</div>
+            <div class="model-stats">
+              <div class="model-stat">
+                <span class="model-stat-value">4.5</span>
+                <span class="model-stat-label">综合评分</span>
+              </div>
+              <div class="model-stat">
+                <span class="model-stat-value">8K</span>
+                <span class="model-stat-label">上下文</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 最新文章 -->
+    <section class="magazine-ranking">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Latest News</div>
+          <h2 class="section-main">精选资讯</h2>
+        </div>
+        <a href="#" class="view-all">
+          查看全部
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="article-grid">
+        <div class="article-card">
+          <div class="article-image">🤖</div>
+          <div class="article-category">技术解读</div>
+          <div class="article-title">GPT-5 即将发布：AGI 时代的曙光</div>
+          <div class="article-meta">2026-05-03 · 8 分钟阅读</div>
+        </div>
+
+        <div class="article-card">
+          <div class="article-image">🚀</div>
+          <div class="article-category">产品动态</div>
+          <div class="article-title">Claude 3.5 全面升级：性能提升 200%</div>
+          <div class="article-meta">2026-05-02 · 5 分钟阅读</div>
+        </div>
+
+        <div class="article-card">
+          <div class="article-image">💡</div>
+          <div class="article-category">行业分析</div>
+          <div class="article-title">开源模型 vs 闭源模型：谁才是未来？</div>
+          <div class="article-meta">2026-05-01 · 12 分钟阅读</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="magazine-footer">
+      <p>© 2026 DaCong. 探索 AI，创造未来。</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DaCong - AI 模型排行</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-card: #111111;
+      --bg-card-hover: #1a1a1a;
+      --text-primary: #ffffff;
+      --text-secondary: #888888;
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.4);
+      --gradient-1: #f59e0b;
+      --gradient-2: #ef4444;
+      --gradient-3: #8b5cf6;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* 深色玻璃态设计 */
+    .glassmorphism {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* 背景效果 */
+    .bg-effects {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-1 {
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      opacity: 0.3;
+    }
+
+    .glow-2 {
+      position: absolute;
+      bottom: -200px;
+      left: -200px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+      opacity: 0.3;
+    }
+
+    /* 容器 */
+    .glass-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* 导航 */
+    .glass-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+    }
+
+    .glass-logo {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass-nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .glass-nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .glass-nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .glass-cta {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gradient-2) 100%);
+      border: none;
+      border-radius: 100px;
+      color: var(--bg-dark);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .glass-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px var(--accent-glow);
+    }
+
+    /* Hero 区域 */
+    .glass-hero {
+      padding: 120px 0 80px;
+      text-align: center;
+    }
+
+    .glass-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .glass-hero h1 {
+      font-size: clamp(48px, 10vw, 120px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -3px;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 50%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass-hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 48px;
+    }
+
+    .glass-hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gradient-2) 100%);
+      border: none;
+      border-radius: 12px;
+      color: var(--bg-dark);
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 60px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      padding: 16px 40px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* 统计区域 */
+    .glass-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      padding: 60px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 32px;
+    }
+
+    .stat-value {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gradient-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* 模型卡片 */
+    .glass-section {
+      padding: 100px 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+
+    .section-main {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .glass-models {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .model-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
+      padding: 32px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .model-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .model-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .model-rank {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gradient-2) 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .model-trend {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #22c55e;
+    }
+
+    .model-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .model-vendor {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .model-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .metric-item {
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    /* 特色列表 */
+    .glass-features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 24px;
+      padding: 32px;
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .feature-item:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gradient-3) 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .feature-content h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-content p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* 页脚 */
+    .glass-footer {
+      padding: 60px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    @media (max-width: 1024px) {
+      .glass-models,
+      .glass-features {
+        grid-template-columns: 1fr;
+      }
+
+      .glass-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .glass-nav-links {
+        display: none;
+      }
+
+      .glass-hero-buttons {
+        flex-direction: column;
+      }
+
+      .glass-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 背景效果 -->
+  <div class="bg-effects">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+  </div>
+
+  <div class="glass-container">
+    <!-- 导航 -->
+    <nav class="glass-nav">
+      <div class="glass-logo">DaCong</div>
+      <div class="glass-nav-links">
+        <a href="#">首页</a>
+        <a href="#">排行榜</a>
+        <a href="#">社区</a>
+        <a href="#">资讯</a>
+      </div>
+      <button class="glass-cta">开始探索</button>
+    </nav>
+
+    <!-- Hero 区域 -->
+    <section class="glass-hero">
+      <div class="glass-badge">
+        <span>🔥</span>
+        实时更新 · 全球 AI 模型排行
+      </div>
+      <h1>探索 AI<br>无限可能</h1>
+      <p>DaCong 汇聚全球顶尖 AI 模型，基于多维度数据为你呈现最客观的模型排行与专业评测。</p>
+      <div class="glass-hero-buttons">
+        <button class="btn-primary">查看排行榜</button>
+        <button class="btn-secondary">了解更多</button>
+      </div>
+    </section>
+
+    <!-- 统计 -->
+    <div class="glass-stats">
+      <div class="stat-card">
+        <div class="stat-value">500+</div>
+        <div class="stat-label">AI 模型</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">50K+</div>
+        <div class="stat-label">社区用户</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">1M+</div>
+        <div class="stat-label">评测数据</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">实时更新</div>
+      </div>
+    </div>
+
+    <!-- 模型排行 -->
+    <section class="glass-section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Model Ranking</div>
+          <h2 class="section-main">热门模型排行榜</h2>
+        </div>
+        <button class="btn-secondary">查看全部</button>
+      </div>
+
+      <div class="glass-models">
+        <div class="model-card">
+          <div class="model-header">
+            <div class="model-rank">#1</div>
+            <div class="model-trend">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 4l-8 8h6v8h4v-8h6z"/>
+              </svg>
+              +2
+            </div>
+          </div>
+          <div class="model-name">GPT-4 Turbo</div>
+          <div class="model-vendor">OpenAI · 美国</div>
+          <div class="model-metrics">
+            <div class="metric-item">
+              <div class="metric-label">综合评分</div>
+              <div class="metric-value">4.8</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">上下文</div>
+              <div class="metric-value">128K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <div class="model-header">
+            <div class="model-rank">#2</div>
+            <div class="model-trend">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 4l-8 8h6v8h4v-8h6z"/>
+              </svg>
+              +1
+            </div>
+          </div>
+          <div class="model-name">Claude 3 Opus</div>
+          <div class="model-vendor">Anthropic · 美国</div>
+          <div class="model-metrics">
+            <div class="metric-item">
+              <div class="metric-label">综合评分</div>
+              <div class="metric-value">4.7</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">上下文</div>
+              <div class="metric-value">200K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <div class="model-header">
+            <div class="model-rank">#3</div>
+            <div class="model-trend">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 20l8-8h-6V4h-4v8H4z"/>
+              </svg>
+              -1
+            </div>
+          </div>
+          <div class="model-name">Gemini Ultra</div>
+          <div class="model-vendor">Google · 美国</div>
+          <div class="model-metrics">
+            <div class="metric-item">
+              <div class="metric-label">综合评分</div>
+              <div class="metric-value">4.6</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">上下文</div>
+              <div class="metric-value">1M</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 特色功能 -->
+    <section class="glass-section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Features</div>
+          <h2 class="section-main">为什么选择 DaCong</h2>
+        </div>
+      </div>
+
+      <div class="glass-features">
+        <div class="feature-item">
+          <div class="feature-icon">📊</div>
+          <div class="feature-content">
+            <h3>客观公正的排行</h3>
+            <p>基于真实使用数据、性能测试、用户评价等多维度指标，为你呈现最客观的模型排行。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-content">
+            <h3>实时数据更新</h3>
+            <p>7×24 小时监控全球主流 AI 模型动态，第一时间更新模型信息和排行榜。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">👥</div>
+          <div class="feature-content">
+            <h3>活跃的社区生态</h3>
+            <p>与全球 AI 爱好者交流分享，获取最新资讯，参与讨论和评测。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🔧</div>
+          <div class="feature-content">
+            <h3>专业的工具支持</h3>
+            <p>提供 API 接口、模型对比、定价查询等实用工具，助你做出最佳选择。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="glass-footer">
+      <p>© 2026 DaCong. 探索 AI，创造未来。</p>
+    </footer>
+  </div>
+</body>
+</html>

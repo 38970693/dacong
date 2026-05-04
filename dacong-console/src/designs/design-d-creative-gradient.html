@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DaCong - AI 模型排行</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #f59e0b;
+      --primary-dark: #d97706;
+      --gradient-purple: #8b5cf6;
+      --gradient-blue: #3b82f6;
+      --gradient-pink: #ec4899;
+      --gradient-amber: #f59e0b;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* 渐变创意设计 */
+    .gradient-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    /* 顶部导航 */
+    .gradient-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+    }
+
+    .gradient-logo {
+      font-size: 26px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-nav {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .gradient-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .gradient-nav a:hover {
+      color: var(--text);
+    }
+
+    .gradient-nav a.active {
+      color: var(--text);
+    }
+
+    .gradient-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .gradient-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+    }
+
+    /* Hero 区域 */
+    .gradient-hero {
+      position: relative;
+      padding: 80px 0 120px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 32px;
+    }
+
+    .gradient-hero h1 {
+      font-size: clamp(48px, 8vw, 88px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    .gradient-hero h1 span {
+      background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 50%, var(--gradient-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-hero p {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 auto 48px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .btn-gradient-primary {
+      padding: 18px 40px;
+      background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-gradient-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-gradient-secondary {
+      padding: 18px 40px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-gradient-secondary:hover {
+      border-color: var(--text);
+    }
+
+    /* 特色卡片 */
+    .gradient-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 100px;
+    }
+
+    .feature-card {
+      padding: 36px 32px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gradient-amber), var(--gradient-pink), var(--gradient-purple));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: transparent;
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 24px;
+    }
+
+    .feature-card:nth-child(2) .feature-icon {
+      background: linear-gradient(135deg, var(--gradient-purple) 0%, var(--gradient-blue) 100%);
+    }
+
+    .feature-card:nth-child(3) .feature-icon {
+      background: linear-gradient(135deg, var(--gradient-blue) 0%, var(--gradient-pink) 100%);
+    }
+
+    .feature-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* 排行区域 */
+    .gradient-ranking {
+      margin-bottom: 100px;
+    }
+
+    .ranking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+
+    .ranking-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+
+    .ranking-title {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .view-all {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .view-all:hover {
+      color: var(--text);
+    }
+
+    /* 模型网格 */
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .model-card {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .model-card:hover {
+      border-color: transparent;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .model-rank-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .model-card:nth-child(1) .model-rank-badge {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    }
+
+    .model-card:nth-child(2) .model-rank-badge {
+      background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+    }
+
+    .model-card:nth-child(3) .model-rank-badge {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    }
+
+    .model-card:nth-child(4) .model-rank-badge {
+      background: linear-gradient(135deg, var(--gradient-purple) 0%, var(--gradient-blue) 100%);
+    }
+
+    .model-content {
+      flex: 1;
+    }
+
+    .model-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .model-vendor {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .model-score {
+      text-align: right;
+    }
+
+    .score-value {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .score-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* 文章区域 */
+    .gradient-articles {
+      margin-bottom: 100px;
+    }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .article-card {
+      cursor: pointer;
+    }
+
+    .article-thumb {
+      aspect-ratio: 16/10;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .article-card:nth-child(1) .article-thumb {
+      background: linear-gradient(135deg, var(--gradient-amber) 0%, var(--gradient-pink) 100%);
+    }
+
+    .article-card:nth-child(2) .article-thumb {
+      background: linear-gradient(135deg, var(--gradient-purple) 0%, var(--gradient-blue) 100%);
+    }
+
+    .article-card:nth-child(3) .article-thumb {
+      background: linear-gradient(135deg, var(--gradient-blue) 0%, var(--gradient-pink) 100%);
+    }
+
+    .article-card:hover .article-thumb {
+      transform: scale(1.03);
+    }
+
+    .article-thumb {
+      transition: transform 0.3s;
+    }
+
+    .article-category {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .article-title {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .article-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* 页脚 */
+    .gradient-footer {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 1024px) {
+      .model-grid,
+      .article-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .gradient-container {
+        padding: 0 24px;
+      }
+
+      .gradient-nav {
+        display: none;
+      }
+
+      .gradient-features {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-container">
+    <!-- 顶部导航 -->
+    <header class="gradient-header">
+      <div class="gradient-logo">DaCong</div>
+      <nav class="gradient-nav">
+        <a href="#" class="active">首页</a>
+        <a href="#">排行榜</a>
+        <a href="#">社区</a>
+        <a href="#">资讯</a>
+      </nav>
+      <button class="gradient-btn">开始探索</button>
+    </header>
+
+    <!-- Hero 区域 -->
+    <section class="gradient-hero">
+      <div class="hero-bg"></div>
+      <div class="hero-label">
+        <span>🔥</span>
+        实时更新 · 全球 AI 模型排行
+      </div>
+      <h1>探索 <span>AI</span> 的无限可能</h1>
+      <p>DaCong 汇聚全球顶尖 AI 模型，基于真实数据为你呈现最客观的排行与评测。</p>
+      <div class="hero-actions">
+        <button class="btn-gradient-primary">查看排行榜</button>
+        <button class="btn-gradient-secondary">了解更多</button>
+      </div>
+    </section>
+
+    <!-- 特色功能 -->
+    <section class="gradient-features">
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>客观排行</h3>
+        <p>基于多维度数据，为你呈现最客观、最公正的 AI 模型排行榜。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>实时更新</h3>
+        <p>7×24 小时监控全球 AI 模型动态，数据实时同步更新。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>活跃社区</h3>
+        <p>与全球 AI 爱好者交流分享，获取最新资讯，参与讨论。</p>
+      </div>
+    </section>
+
+    <!-- 模型排行 -->
+    <section class="gradient-ranking">
+      <div class="ranking-header">
+        <div>
+          <div class="ranking-label">Model Ranking</div>
+          <h2 class="ranking-title">热门模型排行</h2>
+        </div>
+        <a href="#" class="view-all">
+          查看全部
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="model-grid">
+        <div class="model-card">
+          <div class="model-rank-badge">#1</div>
+          <div class="model-content">
+            <div class="model-name">GPT-4 Turbo</div>
+            <div class="model-vendor">OpenAI · 美国</div>
+          </div>
+          <div class="model-score">
+            <div class="score-value">4.8</div>
+            <div class="score-label">综合评分</div>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <div class="model-rank-badge">#2</div>
+          <div class="model-content">
+            <div class="model-name">Claude 3 Opus</div>
+            <div class="model-vendor">Anthropic · 美国</div>
+          </div>
+          <div class="model-score">
+            <div class="score-value">4.7</div>
+            <div class="score-label">综合评分</div>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <div class="model-rank-badge">#3</div>
+          <div class="model-content">
+            <div class="model-name">Gemini Ultra</div>
+            <div class="model-vendor">Google · 美国</div>
+          </div>
+          <div class="model-score">
+            <div class="score-value">4.6</div>
+            <div class="score-label">综合评分</div>
+          </div>
+        </div>
+
+        <div class="model-card">
+          <div class="model-rank-badge">#4</div>
+          <div class="model-content">
+            <div class="model-name">Llama 3 70B</div>
+            <div class="model-vendor">Meta · 美国</div>
+          </div>
+          <div class="model-score">
+            <div class="score-value">4.5</div>
+            <div class="score-label">综合评分</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 最新资讯 -->
+    <section class="gradient-articles">
+      <div class="ranking-header">
+        <div>
+          <div class="ranking-label">Latest News</div>
+          <h2 class="ranking-title">精选资讯</h2>
+        </div>
+      </div>
+
+      <div class="article-grid">
+        <div class="article-card">
+          <div class="article-thumb">🤖</div>
+          <div class="article-category">技术解读</div>
+          <div class="article-title">GPT-5 即将发布：AGI 时代的曙光</div>
+          <div class="article-meta">2026-05-03 · 8 分钟阅读</div>
+        </div>
+
+        <div class="article-card">
+          <div class="article-thumb">🚀</div>
+          <div class="article-category">产品动态</div>
+          <div class="article-title">Claude 3.5 全面升级：性能提升 200%</div>
+          <div class="article-meta">2026-05-02 · 5 分钟阅读</div>
+        </div>
+
+        <div class="article-card">
+          <div class="article-thumb">💡</div>
+          <div class="article-category">行业分析</div>
+          <div class="article-title">开源模型 vs 闭源模型：谁才是未来？</div>
+          <div class="article-meta">2026-05-01 · 12 分钟阅读</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="gradient-footer">
+      <p>© 2026 DaCong. 探索 AI，创造未来。</p>
+    </footer>
+  </div>
+</body>
+</html>
