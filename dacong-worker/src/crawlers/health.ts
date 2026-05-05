@@ -1,6 +1,7 @@
 import { crawlAll } from './index';
 import { crawlAllRSS } from './rss';
 import { logger } from '../logger';
+import { createSupabaseAdmin } from '../supabase';
 
 // 健康状态
 interface HealthStatus {
@@ -24,12 +25,17 @@ let lastCrawlSources: string[] = [];
 let startTime = Date.now();
 let recentErrors: string[] = [];
 
+// 直接打印到 stdout（确保 GitHub Actions 能看到）
+function log(...args: unknown[]) {
+  console.log('[Crawler]', new Date().toISOString(), ...args);
+}
+
 // 爬取并更新状态
 export async function runCrawlWithHealth(): Promise<void> {
   const start = Date.now();
 
   try {
-    logger.info('开始爬取...');
+    log('开始爬取...');
 
     // 同时运行 HTTP 爬虫和 RSS 爬虫
     const [htmlResults, rssResults] = await Promise.allSettled([
@@ -63,7 +69,12 @@ export async function runCrawlWithHealth(): Promise<void> {
     recentErrors = [...errors, ...recentErrors].slice(0, 10);
 
     const duration = Date.now() - start;
-    logger.info(`爬取完成: ${lastCrawlTotal} 条数据, ${successfulSources.length} 个来源成功, 耗时 ${duration}ms`);
+    log(`爬取完成: ${lastCrawlTotal} 条数据, ${successfulSources.length} 个来源成功, 耗时 ${duration}ms`);
+
+    // 如果有数据，同步到 posts 表
+    if (lastCrawlTotal > 0) {
+      await syncToPosts();
+    }
 
   } catch (error) {
     lastCrawlTime = new Date();
@@ -72,7 +83,61 @@ export async function runCrawlWithHealth(): Promise<void> {
     const errorMsg = error instanceof Error ? error.message : 'Unknown error';
     recentErrors = [errorMsg, ...recentErrors].slice(0, 10);
 
-    logger.error('爬取失败:', error);
+    console.error('[Crawler] 爬取失败:', errorMsg);
+  }
+}
+
+// 将 raw_posts 同步到 posts 表
+async function syncToPosts() {
+  const supabase = createSupabaseAdmin();
+
+  try {
+    // 获取所有待发布的 raw_posts
+    const { data: rawPosts, error } = await supabase
+      .from('raw_posts')
+      .select('*')
+      .eq('status', 'pending')
+      .limit(50);
+
+    if (error) {
+      console.error('[Crawler] 获取 raw_posts 失败:', error);
+      return;
+    }
+
+    if (!rawPosts || rawPosts.length === 0) {
+      log('没有待发布的数据');
+      return;
+    }
+
+    log(`准备发布 ${rawPosts.length} 条数据到 posts 表`);
+
+    // 转换并批量插入
+    const posts = rawPosts.map(raw => ({
+      raw_post_id: raw.id,
+      title: raw.title,
+      content: raw.content,
+      source: raw.source,
+      source_url: raw.source_url,
+      status: 'approved' as const,
+    }));
+
+    // 使用 upsert 避免重复
+    const { error: insertError } = await supabase
+      .from('posts')
+      .upsert(posts, {
+        onConflict: 'raw_post_id',
+        ignoreDuplicates: false
+      });
+
+    if (insertError) {
+      console.error('[Crawler] 发布数据失败:', insertError);
+      return;
+    }
+
+    log(`成功发布 ${rawPosts.length} 条数据到 posts 表`);
+
+  } catch (err) {
+    console.error('[Crawler] syncToPosts 异常:', err);
   }
 }
 
