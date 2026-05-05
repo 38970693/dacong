@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import WebSocket from 'ws';
 
 export function createSupabaseAdmin() {
   return createClient(
@@ -9,10 +10,8 @@ export function createSupabaseAdmin() {
         persistSession: false,
         autoRefreshToken: false,
       },
-      // 禁用 Realtime，因为 Worker 不需要实时订阅功能
-      // 启用 Realtime 需要安装 ws 包或使用 Node.js 22+
       realtime: {
-        enabled: false,
+        transport: WebSocket,
       },
     }
   );
