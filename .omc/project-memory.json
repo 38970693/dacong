@@ -22,10 +22,11 @@
       "database": "PostgreSQL via Supabase"
     },
     "spider": {
-      "language": "Python 3.13",
-      "framework": "asyncio + httpx",
-      "storage": "Supabase raw_data 表",
-      "location": "dacong-spider/"
+      "language": "TypeScript / Node.js",
+      "framework": "tsx + dotenv",
+      "storage": "Supabase raw_posts + posts 表",
+      "location": "dacong-worker/",
+      "crawlInterval": "10 分钟"
     }
   },
   "keyFiles": {
@@ -37,7 +38,10 @@
     "spiderBase": "dacong-spider/spiders/rankings_base.py",
     "spiderHuggingFace": "dacong-spider/spiders/huggingface_leaderboard.py",
     "spiderArtificialAnalysis": "dacong-spider/spiders/artificial_analysis.py",
-    "rankingsWorkflow": ".github/workflows/rankings-update.yml"
+    "rankingsWorkflow": ".github/workflows/rankings-update.yml",
+    "crawlerHealth": "dacong-worker/src/crawlers/health.ts",
+    "crawlerRSS": "dacong-worker/src/crawlers/rss.ts",
+    "crawlerIndex": "dacong-worker/src/crawlers/index.ts"
   },
   "resolvedIssues": [
     {
@@ -67,6 +71,10 @@
     {
       "issue": "Artificial Analysis 爬虫数据提取失败",
       "solution": "修复 API 端点和数据解析逻辑"
+    },
+    {
+      "issue": "首页数据是老数据",
+      "solution": "修复 crawler 数据同步问题：(1) health.ts syncToPosts 改用 insert + update 模式；(2) logger.ts 添加 dotenv 加载；(3) 移除 rss.ts/index.ts 重复的 publishPosts，统一由 syncToPosts 处理"
     }
   ],
   "completedFeatures": [
@@ -78,7 +86,10 @@
     "Artificial Analysis 排行榜数据抓取",
     "排行榜数据同步到 Supabase",
     "GitHub Actions 定时更新排行榜数据",
-    "排行榜页面 UI 优化（Logo、下拉加载、Top3 卡片）"
+    "排行榜页面 UI 优化（Logo、下拉加载、Top3 卡片）",
+    "首页新闻数据展示（使用 posts 表）",
+    "36kr RSS 新闻爬虫",
+    "爬虫数据同步到 posts 表"
   ],
   "rankingsData": {
     "lmarena": {
@@ -92,13 +103,19 @@
       "dataFile": "dacong-spider/data/artificial_analysis_rankings.json"
     }
   },
+  "crawlerConfig": {
+    "interval": "10 分钟",
+    "sources": ["36kr RSS (工作正常)", "huxiu (504错误)", "jiemian (404错误)", "sina (部分工作)", "163tech (网络错误)"],
+    "syncMode": "统一由 health.ts syncToPosts 处理"
+  },
   "nextSteps": [
     "评测文章 CRUD（Markdown 编辑器）",
     "搜索功能实现",
     "标签系统",
     "用户收藏/点赞功能",
     "SWE-bench 排行榜（待 API 修复）",
-    "AI Ping 排行榜（需研究数据源）"
+    "AI Ping 排行榜（需研究数据源）",
+    "修复其他 RSS 源（huxiu, jiemian, 163tech）"
   ],
-  "lastUpdated": "2026-05-04"
+  "lastUpdated": "2026-05-05"
 }

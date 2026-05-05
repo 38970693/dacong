@@ -43,10 +43,10 @@ export async function runCrawlWithHealth(): Promise<void> {
       crawlAllRSS(),
     ]);
 
+    // 统计成功的数据源和总爬取数量
     const htmlData = htmlResults.status === 'fulfilled' ? htmlResults.value : [];
     const rssData = rssResults.status === 'fulfilled' ? rssResults.value : [];
 
-    // 统计成功的数据源
     const successfulSources = [
       ...htmlData.filter(r => r.success).map(r => r.source),
       ...rssData.filter(r => r.success).map(r => r.source),
@@ -55,6 +55,7 @@ export async function runCrawlWithHealth(): Promise<void> {
     // 更新状态
     lastCrawlTime = new Date();
     lastCrawlSuccess = successfulSources.length > 0;
+    // 正确计算总爬取数量：从 HTML 和 RSS 结果中汇总
     lastCrawlTotal = htmlData.reduce((sum, r) => sum + r.crawledCount, 0) +
                      rssData.reduce((sum, r) => sum + r.crawledCount, 0);
     lastCrawlSources = successfulSources;
@@ -121,18 +122,22 @@ async function syncToPosts() {
       status: 'approved' as const,
     }));
 
-    // 使用 upsert 避免重复
+    // 先插入数据，然后标记 raw_posts 为已发布
     const { error: insertError } = await supabase
       .from('posts')
-      .upsert(posts, {
-        onConflict: 'raw_post_id',
-        ignoreDuplicates: false
-      });
+      .insert(posts);
 
     if (insertError) {
       console.error('[Crawler] 发布数据失败:', insertError);
       return;
     }
+
+    // 更新 raw_posts 状态为 approved
+    const ids = rawPosts.map(p => p.id);
+    await supabase
+      .from('raw_posts')
+      .update({ status: 'approved' })
+      .in('id', ids);
 
     log(`成功发布 ${rawPosts.length} 条数据到 posts 表`);
 
