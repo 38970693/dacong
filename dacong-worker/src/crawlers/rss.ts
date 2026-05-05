@@ -184,6 +184,58 @@ function parseDate(dateStr: string | undefined): string {
   }
 }
 
+// 将 raw_posts 发布到 posts 表
+async function publishPosts(source: string) {
+  const supabase = createSupabaseAdmin();
+
+  // 获取该来源的待审核数据
+  const { data: rawPosts, error } = await supabase
+    .from('raw_posts')
+    .select('id, source, source_url, title, content, author, published_at')
+    .eq('source', source)
+    .eq('status', 'pending')
+    .limit(20);
+
+  if (error || !rawPosts || rawPosts.length === 0) {
+    logger.info(`[publishPosts] ${source}: 没有待发布的数据`);
+    return;
+  }
+
+  logger.info(`[publishPosts] ${source}: 准备发布 ${rawPosts.length} 条数据`);
+
+  // 转换到 posts 表，使用 upsert 处理重复
+  const posts = rawPosts.map(raw => ({
+    raw_post_id: raw.id,
+    title: raw.title,
+    content: raw.content,
+    source: raw.source,
+    source_url: raw.source_url,
+    status: 'approved' as const,
+  }));
+
+  // 使用 upsert 代替 insert，避免重复键错误
+  const { error: insertError } = await supabase
+    .from('posts')
+    .upsert(posts, {
+      onConflict: 'raw_post_id',
+      ignoreDuplicates: false
+    });
+
+  if (insertError) {
+    logger.error(`发布 ${source} 数据失败:`, insertError);
+    return;
+  }
+
+  // 更新 raw_posts 状态为 approved（关键！否则不会同步）
+  const ids = rawPosts.map(p => p.id);
+  await supabase
+    .from('raw_posts')
+    .update({ status: 'approved' })
+    .in('id', ids);
+
+  logger.info(`已将 ${rawPosts.length} 条 ${source} 数据发布到 posts 表`);
+}
+
 // 爬取所有 RSS 源
 export async function crawlAllRSS(): Promise<CrawlResult[]> {
   logger.info('开始爬取所有 RSS 源...');
@@ -193,11 +245,6 @@ export async function crawlAllRSS(): Promise<CrawlResult[]> {
   for (const source of RSS_SOURCES) {
     const result = await crawlRSS(source.name, source.url, source.source);
     results.push(result);
-
-    // 如果爬取成功，立即将数据发布到 posts 表
-    if (result.success && result.posts.length > 0) {
-      await publishPosts(source.source);
-    }
   }
 
   const totalCrawled = results.reduce((sum, r) => sum + r.crawledCount, 0);

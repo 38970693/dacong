@@ -35,11 +35,6 @@ export async function crawlAll(): Promise<CrawlResult[]> {
       const crawler = crawlers[source];
       const result = await crawler();
       results.push(result);
-
-      // 如果爬取成功，立即将数据写入 posts 表
-      if (result.success && result.posts.length > 0) {
-        await publishPosts(source);
-      }
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.error(`[crawlAll] 爬取 ${source} 失败:`, msg, error);
@@ -127,6 +122,13 @@ async function publishPosts(source: string) {
     logger.error(`发布 ${source} 数据失败:`, insertError);
     return;
   }
+
+  // 更新 raw_posts 状态为 approved（关键！否则不会同步）
+  const ids = rawPosts.map(p => p.id);
+  await supabase
+    .from('raw_posts')
+    .update({ status: 'approved' })
+    .in('id', ids);
 
   logger.info(`已将 ${rawPosts.length} 条 ${source} 数据发布到 posts 表`);
 }
