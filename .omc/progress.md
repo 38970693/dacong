@@ -165,7 +165,9 @@ dacong/
 - [x] 榜单数据对接 Supabase
 - [x] Artificial Analysis 数据抓取修复
 - [x] GitHub Actions 定时任务配置
-- [ ] 评测文章 CRUD
+- [x] 模型 Logo 显示（公司 logo 优先匹配）
+- [x] 下拉加载更多功能
+- [ ] 评测文章 CRUD（Markdown 编辑器）
 - [ ] 搜索功能
 
 **更新于: 2026-05-05**

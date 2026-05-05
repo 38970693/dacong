@@ -36,7 +36,8 @@
     "spiderMain": "dacong-spider/run_rankings.py",
     "spiderBase": "dacong-spider/spiders/rankings_base.py",
     "spiderHuggingFace": "dacong-spider/spiders/huggingface_leaderboard.py",
-    "spiderArtificialAnalysis": "dacong-spider/spiders/artificial_analysis.py"
+    "spiderArtificialAnalysis": "dacong-spider/spiders/artificial_analysis.py",
+    "rankingsWorkflow": ".github/workflows/rankings-update.yml"
   },
   "resolvedIssues": [
     {
@@ -62,6 +63,10 @@
     {
       "issue": "BaseRankingsSpider.run() 接口不兼容 SpiderBase",
       "solution": "添加可选参数 async def run(self, fetcher=None, writer=None)"
+    },
+    {
+      "issue": "Artificial Analysis 爬虫数据提取失败",
+      "solution": "修复 API 端点和数据解析逻辑"
     }
   ],
   "completedFeatures": [
@@ -71,7 +76,9 @@
     "Netlify CDN 托管",
     "LMArena 排行榜数据抓取",
     "Artificial Analysis 排行榜数据抓取",
-    "排行榜数据同步到 Supabase"
+    "排行榜数据同步到 Supabase",
+    "GitHub Actions 定时更新排行榜数据",
+    "排行榜页面 UI 优化（Logo、下拉加载、Top3 卡片）"
   ],
   "rankingsData": {
     "lmarena": {
@@ -85,14 +92,13 @@
       "dataFile": "dacong-spider/data/artificial_analysis_rankings.json"
     }
   },
-  "pendingFeatures": [
-    "自定义域名绑定",
-    "用户收藏功能",
-    "评论功能",
-    "SEO 优化",
-    "SWE-bench 排行榜数据抓取（API 不可用）",
-    "AI Ping 排行榜数据抓取",
-    "排行榜前端展示"
+  "nextSteps": [
+    "评测文章 CRUD（Markdown 编辑器）",
+    "搜索功能实现",
+    "标签系统",
+    "用户收藏/点赞功能",
+    "SWE-bench 排行榜（待 API 修复）",
+    "AI Ping 排行榜（需研究数据源）"
   ],
   "lastUpdated": "2026-05-04"
 }

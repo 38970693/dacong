@@ -97,22 +97,29 @@ async function publishPosts(source: string) {
     .limit(20);
 
   if (error || !rawPosts || rawPosts.length === 0) {
+    logger.info(`[publishPosts] ${source}: 没有待发布的数据`);
     return;
   }
 
-  // 转换到 posts 表
+  logger.info(`[publishPosts] ${source}: 准备发布 ${rawPosts.length} 条数据`);
+
+  // 转换到 posts 表，使用 upsert 处理重复
   const posts = rawPosts.map(raw => ({
     raw_post_id: raw.id,
     title: raw.title,
     content: raw.content,
     source: raw.source,
     source_url: raw.source_url,
-    status: 'approved' as const, // 直接通过，后续可改进为 pending
+    status: 'approved' as const,
   }));
 
+  // 使用 upsert 代替 insert，避免重复键错误
   const { error: insertError } = await supabase
     .from('posts')
-    .insert(posts);
+    .upsert(posts, {
+      onConflict: 'raw_post_id',
+      ignoreDuplicates: false
+    });
 
   if (insertError) {
     logger.error(`发布 ${source} 数据失败:`, insertError);

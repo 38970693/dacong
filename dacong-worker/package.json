@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
-    "crawl": "tsx src/crawlers/index.ts",
+    "crawl": "tsx src/crawlers/health.ts",
+    "crawl:http": "tsx src/crawlers/index.ts",
+    "crawl:rss": "tsx src/crawlers/rss.ts",
     "moderate": "tsx src/moderator.ts",
     "trending": "tsx src/trending.ts",
     "test": "vitest"

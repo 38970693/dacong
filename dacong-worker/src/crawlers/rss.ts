@@ -192,6 +192,11 @@ export async function crawlAllRSS(): Promise<CrawlResult[]> {
   for (const source of RSS_SOURCES) {
     const result = await crawlRSS(source.name, source.url, source.source);
     results.push(result);
+
+    // 如果爬取成功，立即将数据发布到 posts 表
+    if (result.success && result.posts.length > 0) {
+      await publishPosts(source.source);
+    }
   }
 
   const totalCrawled = results.reduce((sum, r) => sum + r.crawledCount, 0);
