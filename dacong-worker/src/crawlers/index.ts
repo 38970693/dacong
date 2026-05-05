@@ -41,12 +41,14 @@ export async function crawlAll(): Promise<CrawlResult[]> {
         await publishPosts(source);
       }
     } catch (error) {
-      logger.error(`爬取 ${source} 失败:`, error);
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error(`[crawlAll] 爬取 ${source} 失败:`, msg, error);
+      logger.error(`爬取 ${source} 失败:`, msg, error);
       results.push({
         source,
         posts: [],
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: msg,
         crawledCount: 0,
       });
     }

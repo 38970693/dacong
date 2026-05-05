@@ -80,8 +80,14 @@ export async function crawl36kr(): Promise<CrawlResult> {
     };
 
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    logger.error(`36kr 爬取失败: ${message}`);
+    let message = 'Unknown error';
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (typeof error === 'string') {
+      message = error;
+    }
+    console.error('[36kr] 爬取失败:', message, error);
+    logger.error(`36kr 爬取失败: ${message}`, error);
 
     return {
       source: '36kr',

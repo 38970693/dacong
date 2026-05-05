@@ -156,8 +156,9 @@ async function crawlRSS(
     };
 
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    logger.error(`${name} RSS 爬取失败: ${message}`);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`[crawlRSS] ${name} 爬取失败:`, message, error);
+    logger.error(`${name} RSS 爬取失败: ${message}`, error);
 
     return {
       source: name,
