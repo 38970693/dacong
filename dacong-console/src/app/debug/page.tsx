@@ -25,8 +25,6 @@ class ErrorBoundary extends React.Component<
   }
 }
 
-import React from 'react';
-
 export default function DebugPage() {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

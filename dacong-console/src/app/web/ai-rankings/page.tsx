@@ -14,7 +14,8 @@ const platforms: { id: Platform; label: string; icon: string }[] = [
 ];
 
 // 通用表格列配置
-const columnConfigs: Record<Platform, { key: string; label: string; sortable: boolean; align: 'left' | 'right' }[]> = {
+type TextAlign = 'left' | 'center' | 'right';
+const columnConfigs: Record<Platform, { key: string; label: string; sortable: boolean; align: TextAlign }[]> = {
   swebench: [
     { key: 'rank', label: '#', sortable: true, align: 'center' },
     { key: 'model_name', label: '模型', sortable: true, align: 'left' },
@@ -133,7 +134,8 @@ export default function AIRankingsPage() {
     : filteredData;
 
   // 添加排名
-  const displayData = sortedData.map((item, idx) => ({ ...item, rank: idx + 1 }));
+  type DataItem = Record<string, unknown>;
+  const displayData: (DataItem & { rank: number })[] = sortedData.map((item, idx) => ({ ...item, rank: idx + 1 }));
 
   const handleSort = (key: string) => {
     if (sortKey === key) {
@@ -198,7 +200,7 @@ export default function AIRankingsPage() {
                   key={col.key}
                   onClick={() => col.sortable && handleSort(col.key)}
                   className={`px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider ${
-                    col.align === 'right' ? 'text-right' : 'text-left'
+                    col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'
                   } ${col.sortable ? 'cursor-pointer hover:text-[var(--foreground)]' : ''}`}
                 >
                   {col.label}
@@ -235,7 +237,7 @@ export default function AIRankingsPage() {
                     <td
                       key={col.key}
                       className={`px-4 py-3 text-sm ${
-                        col.align === 'right' ? 'text-right' : 'text-left'
+                        col.align === 'right' ? 'text-right' : col.align === 'center' ? 'text-center' : 'text-left'
                       }`}
                     >
                       {col.key === 'rank' ? (
@@ -246,15 +248,15 @@ export default function AIRankingsPage() {
                         </span>
                       ) : col.key === 'model_name' ? (
                         <span className="font-medium text-[var(--foreground)]">
-                          {row.model_name as string}
+                          {String(row.model_name || row[col.key] || '')}
                         </span>
                       ) : col.key === 'elo_score' || col.key === 'overall_score' || col.key === 'pass_rate' ? (
                         <span className="font-semibold text-[var(--primary)]">
-                          {row[col.key] != null ? String(row[col.key]) : '-'}
+                          {String(row.elo_score ?? row.overall_score ?? row.pass_rate ?? row[col.key] ?? '-')}
                         </span>
                       ) : (
                         <span className="text-[var(--text-secondary)]">
-                          {row[col.key] != null ? String(row[col.key]) : '-'}
+                          {String(row[col.key] ?? '-')}
                         </span>
                       )}
                     </td>

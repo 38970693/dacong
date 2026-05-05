@@ -11,15 +11,17 @@
 | 数据源 | 记录数 | 状态 |
 |--------|--------|------|
 | LMArena | 19,925 | ✅ 正常 |
-| Artificial Analysis | 348 | ⚠️ 部分同步 |
+| Artificial Analysis | 1,205 | ✅ 已修复并同步 |
 | SWE-bench | 0 | ❌ API 不可用 |
 
 **新增功能**:
 - [x] LMArena 排行榜爬虫（从 HuggingFace API）
-- [x] Artificial Analysis 排行榜爬虫（HTML 解析）
+- [x] Artificial Analysis 排行榜爬虫（API 端点修复）
 - [x] 数据同步到 Supabase `raw_data` 表
 - [x] 增量同步逻辑（基于 source_id 去重）
-- [x] 修复 BaseRankingsSpider 接口兼容性
+- [x] GitHub Actions 定时任务 (rankings-update.yml)
+- [x] 修复 TypeScript 构建错误
+- [x] 排行榜前端页面 (/web/ranking, /web/ai-rankings)
 
 **数据文件**:
 - `dacong-spider/data/lmarena_rankings.json` (20,029 条)
@@ -158,8 +160,12 @@ dacong/
 ## 🎯 当前任务
 
 **进行中**: v2.0 功能开发
-- [x] 榜单页面框架
+- [x] 榜单页面框架 (/web/ranking, /web/ai-rankings)
 - [x] 评测页面框架
-- [ ] 榜单数据对接 Supabase
+- [x] 榜单数据对接 Supabase
+- [x] Artificial Analysis 数据抓取修复
+- [x] GitHub Actions 定时任务配置
 - [ ] 评测文章 CRUD
 - [ ] 搜索功能
+
+**更新于: 2026-05-05**

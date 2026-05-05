@@ -3,8 +3,10 @@ Artificial Analysis 排行榜爬虫
 
 数据源: https://artificialanalysis.ai
 评估模型性能、速度和成本效益
+
+API: https://artificialanalysis.ai/api/data/website/host-models/performance
 """
-import re
+import json
 from typing import Optional
 
 from spiders.rankings_base import BaseRankingsSpider
@@ -12,6 +14,8 @@ from spiders.rankings_base import BaseRankingsSpider
 
 class ArtificialAnalysisSpider(BaseRankingsSpider):
     """Artificial Analysis 排行榜爬虫 - 综合评估模型"""
+
+    API_URL = "https://artificialanalysis.ai/api/data/website/host-models/performance"
 
     @property
     def name(self) -> str:
@@ -26,106 +30,72 @@ class ArtificialAnalysisSpider(BaseRankingsSpider):
         return "artificial_analysis_rankings"
 
     async def fetch(self) -> list[dict]:
-        """从 Artificial Analysis 抓取排行数据"""
-        url = "https://artificialanalysis.ai/models"
-
+        """从 Artificial Analysis API 抓取排行数据"""
         headers = {
-            "Accept": "text/html,application/xhtml+xml",
+            "Accept": "application/json",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         }
 
         try:
-            html = await self.http_client.get(url, headers=headers)
-            if not html:
+            response = await self.http_client.get(self.API_URL, headers=headers)
+            if not response:
+                self.logger.error("API 请求无响应")
                 return []
 
-            # 解析 HTML 获取表格数据
-            items = self._parse_html(html)
-            return items
+            data = json.loads(response) if isinstance(response, str) else response
+            return self._parse_api_response(data)
 
         except Exception as e:
             self.logger.error(f"抓取失败: {e}")
             return []
 
-    def _parse_html(self, html: str) -> list[dict]:
-        """解析 HTML 表格"""
+    def _parse_api_response(self, data: dict) -> list[dict]:
+        """解析 API 响应"""
         items = []
+        host_models = data.get("hostModels", [])
 
-        # 使用正则提取表格行
-        # 实际应该用 BeautifulSoup，但这里用正则避免额外依赖
-        table_pattern = r'<tr[^>]*>(.*?)</tr>'
-        row_pattern = r'<td[^>]*>(.*?)</td>'
+        for model in host_models:
+            # 跳过已删除的模型
+            if model.get("deleted"):
+                continue
 
-        rows = re.findall(table_pattern, html, re.DOTALL)
+            item = {
+                "model_name": model.get("name") or model.get("model_label") or "",
+                "slug": model.get("slug") or "",
+                "provider": model.get("host_label") or "",
+                "provider_id": model.get("host_id") or "",
+                "provider_string": model.get("host_model_string") or "",
+                # 价格信息
+                "price_1m_input_tokens": model.get("price_1m_input_tokens"),
+                "price_1m_output_tokens": model.get("price_1m_output_tokens"),
+                # 混合价格 (不同输入:输出 token 比例)
+                "price_1m_blended_0_3_1": model.get("price_1m_blended_0_3_1"),
+                "price_1m_blended_7_2_1": model.get("price_1m_blended_7_2_1"),
+                "price_1m_blended_0_1_1": model.get("price_1m_blended_0_1_1"),
+                "price_1m_blended_100_1_1": model.get("price_1m_blended_100_1_1"),
+                # 上下文窗口
+                "context_window_tokens": model.get("context_window_tokens") or 0,
+                "context_window_formatted": model.get("context_window_formatted") or "",
+                # 其他元数据
+                "short_name": model.get("short_name") or "",
+                "model_label": model.get("model_label") or "",
+                "logo_url": model.get("logo_url") or "",
+                "logo_small_url": model.get("logo_small_url") or "",
+                "host_color": model.get("host_color") or "",
+                # 功能标志
+                "json_mode": model.get("json_mode") or False,
+                "function_calling": model.get("function_calling") or False,
+                "supports_images": model.get("override_supports_images_input") or False,
+                # 价格相关
+                "cache_hit_price": model.get("cache_hit_price"),
+                "cache_write_price": model.get("cache_write_price"),
+                "image_input_pricing_notes": model.get("image_input_pricing_notes") or "",
+            }
 
-        for row in rows[1:]:  # 跳过表头
-            cells = re.findall(row_pattern, row, re.DOTALL)
-            if len(cells) >= 6:
-                # 解析各列数据
-                model_name = self._clean_html(cells[1] if len(cells) > 1 else "")
-                if not model_name or model_name == "Model":
-                    continue
+            items.append(item)
 
-                # 尝试解析数值
-                try:
-                    overall_rank = int(self._clean_html(cells[0]))
-                    speed_score = int(self._clean_html(cells[2])) if len(cells) > 2 else 0
-                    cost_score = int(self._clean_html(cells[3])) if len(cells) > 3 else 0
-                    price = self._parse_price(cells[4] if len(cells) > 4 else "")
-                    context = int(cells[5].replace(",", "").strip()) if len(cells) > 5 else 0
-
-                    items.append({
-                        "model_name": model_name,
-                        "overall_rank": overall_rank,
-                        "speed_score": speed_score,
-                        "cost_score": cost_score,
-                        "price_per_million_tokens": price,
-                        "context_window": context,
-                        "company": self._extract_company(model_name),
-                    })
-                except (ValueError, IndexError):
-                    continue
-
+        self.logger.info(f"解析到 {len(items)} 条活跃模型记录")
         return items
-
-    def _clean_html(self, text: str) -> str:
-        """清理 HTML 标签"""
-        import re
-        text = re.sub(r'<[^>]+>', '', text)
-        return text.strip()
-
-    def _parse_price(self, price_str: str) -> float:
-        """解析价格字符串"""
-        price_str = self._clean_html(price_str)
-        price_str = price_str.replace("$", "").replace(",", "").strip()
-
-        # 处理范围值
-        if "-" in price_str:
-            price_str = price_str.split("-")[0].strip()
-
-        try:
-            return float(price_str)
-        except ValueError:
-            return 0.0
-
-    def _extract_company(self, model_name: str) -> str:
-        """从模型名称中提取公司名"""
-        prefixes = [
-            "gpt-4", "gpt-3.5", "claude-3", "claude-2", "claude",
-            "gemini-", "gemini-2", "gemini-pro",
-            "llama-", "llama3", "llama4",
-            "mistral-", "mixtral-",
-            "qwen-", "qwen2", "qwen2.5",
-            "deepseek-", "deepseek-v3",
-            "yi-", "yi-1.5",
-        ]
-
-        model_lower = model_name.lower()
-        for prefix in prefixes:
-            if model_lower.startswith(prefix):
-                return prefix.rstrip("/-").replace("-", " ").title()
-
-        return ""
 
     async def save_to_table(self, items: list[dict]) -> int:
         """保存到 Artificial Analysis 表"""
@@ -143,7 +113,7 @@ class ArtificialAnalysisSpider(BaseRankingsSpider):
             try:
                 response = client.table(self.table_name).upsert(
                     item,
-                    on_conflict="model_name,fetched_at::date"
+                    on_conflict="slug"
                 ).execute()
 
                 if response.data:
@@ -153,3 +123,50 @@ class ArtificialAnalysisSpider(BaseRankingsSpider):
                 self.logger.debug(f"写入失败: {e}")
 
         return written
+
+    async def save_to_json(self, items: list[dict], filepath: str) -> bool:
+        """保存数据到 JSON 文件"""
+        try:
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump({
+                    "source": "artificial_analysis",
+                    "fetched_at": items[0].get("fetched_at") if items else None,
+                    "total_count": len(items),
+                    "models": items
+                }, f, ensure_ascii=False, indent=2)
+            self.logger.info(f"已保存 {len(items)} 条数据到 {filepath}")
+            return True
+        except Exception as e:
+            self.logger.error(f"保存 JSON 失败: {e}")
+            return False
+
+
+async def run_and_save():
+    """运行爬虫并保存到 JSON 文件"""
+    spider = ArtificialAnalysisSpider()
+
+    # 抓取数据
+    items = await spider.fetch()
+    print(f"抓取到 {len(items)} 条模型数据")
+
+    if items:
+        # 添加抓取时间
+        from datetime import datetime, timezone
+        for item in items:
+            item["fetched_at"] = datetime.now(timezone.utc).isoformat()
+
+        # 保存到 JSON
+        output_path = "e:\\gitlab\\dacong\\dacong-spider\\data\\artificial_analysis_rankings.json"
+        success = await spider.save_to_json(items, output_path)
+        if success:
+            print(f"✅ 成功保存到: {output_path}")
+        else:
+            print("❌ JSON 保存失败")
+
+    return items
+
+
+if __name__ == "__main__":
+    import asyncio
+    results = asyncio.run(run_and_save())
+    print(f"\n总计: {len(results)} 条记录")
