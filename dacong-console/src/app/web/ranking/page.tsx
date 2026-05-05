@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { createSupabaseClient } from '@/utils/supabase/client';
 
 // raw_data 表的 metadata 结构
@@ -332,14 +333,15 @@ export default function RankingPage() {
         <div className="p-4 md:p-5 border-b border-[var(--border)]">
           <div className="grid grid-cols-3 gap-2 md:gap-4">
             {top3.map((model, idx) => (
-              <div
+              <Link
                 key={model.id}
+                href={`/web/model/${model.id}`}
                 className={`relative p-3 md:p-4 rounded-2xl border transition-all ${
                   idx === 0
-                    ? 'bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200'
+                    ? 'bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200 hover:shadow-lg cursor-pointer'
                     : idx === 1
-                    ? 'bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200'
-                    : 'bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-100'
+                    ? 'bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200 hover:shadow-lg cursor-pointer'
+                    : 'bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-100 hover:shadow-lg cursor-pointer'
                 }`}
               >
                 {/* 排名标签 */}
@@ -377,7 +379,7 @@ export default function RankingPage() {
                 <p className="text-xs text-[var(--text-muted)] mt-1">
                   {model.metadata?.vote_count || 0} 票
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -395,9 +397,10 @@ export default function RankingPage() {
           </div>
         ) : (
           restList.map((model, idx) => (
-            <div
+            <Link
               key={model.id}
-              className="px-4 md:px-5 py-3 md:py-4 hover:bg-[var(--background)] transition-colors flex items-center gap-3"
+              href={`/web/model/${model.id}`}
+              className="px-4 md:px-5 py-3 md:py-4 hover:bg-[var(--background)] transition-colors flex items-center gap-3 cursor-pointer block"
             >
               {/* 排名 */}
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
@@ -431,7 +434,7 @@ export default function RankingPage() {
                 </div>
                 <div className="text-xs text-[var(--text-muted)]">ELO</div>
               </div>
-            </div>
+            </Link>
           ))
         )}
       </div>
