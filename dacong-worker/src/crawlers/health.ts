@@ -185,3 +185,9 @@ export function healthHandler(): { status: number; body: HealthStatus } {
     body: health,
   };
 }
+
+// 主入口 - 直接运行此文件时执行爬虫
+runCrawlWithHealth().catch((err) => {
+  console.error('[Crawler] 主入口执行失败:', err);
+  process.exit(1);
+});
