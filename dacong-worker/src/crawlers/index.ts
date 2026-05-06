@@ -1,8 +1,8 @@
 import { crawl36kr } from './36kr';
 import { crawlHuxiu } from './huxiu';
-import { crawlSinaFinance } from './sina';
-import { crawl163Tech } from './163tech';
-import { crawlJiemian } from './jiemian';
+import { crawlSinaFinance } from './obscura/sina';
+import { crawl163Tech } from './obscura/163tech';
+import { crawlJiemian } from './obscura/jiemian';
 import type { CrawlResult } from '../types';
 import { logger } from '../logger';
 import { createSupabaseAdmin } from '../supabase';

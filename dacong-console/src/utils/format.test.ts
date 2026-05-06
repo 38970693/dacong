@@ -54,7 +54,9 @@ describe('Date Formatting', () => {
   });
 
   it('应该正确处理 ISO 字符串', () => {
-    const result = formatRelativeTime('2024-01-01T00:00:00Z');
+    // 使用最近一周内的日期
+    const recentDate = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000); // 2天前
+    const result = formatRelativeTime(recentDate.toISOString());
     expect(result).toContain('天前');
   });
 
