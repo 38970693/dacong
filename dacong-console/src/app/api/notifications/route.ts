@@ -5,12 +5,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://prszkdbdgffbdqclbgol.supabase.co';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_KEY || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 // 延迟初始化 Supabase 客户端
 function getSupabaseClient() {
   if (!supabaseKey) {
-    throw new Error('NEXT_PUBLIC_SUPABASE_SERVICE_KEY is not configured');
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not configured');
   }
   return createClient(supabaseUrl, supabaseKey);
 }
