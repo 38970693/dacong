@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import SearchBar from '@/components/SearchBar';
+import { EmptyState } from '@/components/ui/EmptyState';
 import type { SearchResult } from '@/types/database';
 
 function SearchContent() {
@@ -112,19 +113,19 @@ function SearchContent() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <div className="text-4xl mb-4">🔍</div>
-                <h3 className="font-semibold text-[var(--foreground)] mb-2">未找到相关结果</h3>
-                <p className="text-sm text-[var(--text-muted)]">试试其他关键词</p>
-              </div>
+              <EmptyState
+                title="未找到相关结果"
+                description="试试其他关键词，或调整搜索词"
+                icon="search"
+              />
             )}
           </>
         ) : (
-          <div className="text-center py-12">
-            <div className="text-4xl mb-4">💡</div>
-            <h3 className="font-semibold text-[var(--foreground)] mb-2">搜索 AI 模型、评测文章</h3>
-            <p className="text-sm text-[var(--text-muted)]">输入关键词开始搜索</p>
-          </div>
+          <EmptyState
+            title="搜索 AI 模型、评测文章"
+            description="输入关键词开始搜索"
+            icon="search"
+          />
         )}
       </div>
     </div>

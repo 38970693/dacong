@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { createSupabaseClient } from '@/utils/supabase/client';
 
 // raw_data 表的 metadata 结构
@@ -118,32 +119,32 @@ function ModelLogo({ modelName, organization, size = 'normal' }: { modelName?: s
   const logoUrl = getCompanyLogoUrl(modelName, organization);
   const initial = getCompanyInitial(organization);
 
-  const sizeClasses = {
-    small: 'w-8 h-8 text-xs',
-    normal: 'w-10 h-10 text-sm',
-    large: 'w-14 h-14 text-lg',
+  const sizeMap = {
+    small: { w: 32, h: 32, font: 'text-xs' },
+    normal: { w: 40, h: 40, font: 'text-sm' },
+    large: { w: 56, h: 56, font: 'text-lg' },
   };
+
+  const { w, h, font } = sizeMap[size];
 
   if (logoUrl) {
     return (
-      <img
-        src={logoUrl}
-        alt={organization || 'logo'}
-        className={`${sizeClasses[size]} rounded-lg object-cover bg-white border border-[var(--border)]`}
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          target.style.display = 'none';
-          const fallback = target.nextElementSibling as HTMLElement;
-          if (fallback) fallback.style.display = 'flex';
-        }}
-      />
+      <div className={`relative w-[${w}px] h-[${h}px]`}>
+        <Image
+          src={logoUrl}
+          alt={organization || 'logo'}
+          width={w}
+          height={h}
+          className={`rounded-lg object-cover bg-white border border-[var(--border)]`}
+          unoptimized // 静态导出需要
+        />
+      </div>
     );
   }
 
   return (
     <div
-      className={`${sizeClasses[size]} rounded-lg bg-[var(--background)] border border-[var(--border)] flex items-center justify-center font-bold text-[var(--text-muted)]`}
-      style={{ display: 'flex' }}
+      className={`w-[${w}px] h-[${h}px] rounded-lg bg-[var(--background)] border border-[var(--border)] flex items-center justify-center font-bold text-[var(--text-muted)] ${font}`}
     >
       {initial}
     </div>

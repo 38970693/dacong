@@ -2,7 +2,7 @@
 
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useId } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { useAuthStore, useFavoritesStore, useLikesStore } from '@/stores';
 
@@ -39,15 +39,15 @@ function formatTime(dateStr: string): string {
 
 export function PostCard({ post, onLoginRequired }: { post: PostCardProps; onLoginRequired?: () => void }) {
   const { user } = useAuthStore();
-  const { isFavorited, addFavorite, removeFavorite, favorites } = useFavoritesStore();
-  const { isLiked, likePost, unlikePost, likes } = useLikesStore();
+  const { isFavorited, addFavorite, removeFavorite } = useFavoritesStore();
+  const { isLiked, like, unlike } = useLikesStore();
 
   const [likeCount, setLikeCount] = useState(post.likes || 0);
   const [isLiking, setIsLiking] = useState(false);
 
   // 同步数据库中的点赞数到本地状态
-  const userHasLiked = isLiked(post.id);
-  const userHasFavorited = isFavorited(post.id);
+  const userHasLiked = isLiked('post', post.id);
+  const userHasFavorited = isFavorited('post', post.id);
 
   const handleLike = useCallback(async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -82,9 +82,9 @@ export function PostCard({ post, onLoginRequired }: { post: PostCardProps; onLog
 
       // 更新用户点赞记录
       if (wasLiked) {
-        await unlikePost(user.id, post.id);
+        await unlike(user.id, 'post', post.id);
       } else {
-        await likePost(user.id, post.id);
+        await like(user.id, 'post', post.id);
       }
     } catch (err) {
       // 回滚 UI
@@ -93,7 +93,7 @@ export function PostCard({ post, onLoginRequired }: { post: PostCardProps; onLog
     } finally {
       setIsLiking(false);
     }
-  }, [user, userHasLiked, isLiking, likeCount, post.id, onLoginRequired, likePost, unlikePost]);
+  }, [user, userHasLiked, isLiking, likeCount, post.id, onLoginRequired, like, unlike]);
 
   const handleFavorite = useCallback(async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -108,9 +108,9 @@ export function PostCard({ post, onLoginRequired }: { post: PostCardProps; onLog
 
     try {
       if (wasFavorited) {
-        await removeFavorite(user.id, post.id);
+        await removeFavorite(user.id, 'post', post.id);
       } else {
-        await addFavorite(user.id, post.id);
+        await addFavorite(user.id, 'post', post.id);
       }
     } catch (err) {
       console.error('收藏操作失败:', err);
@@ -148,17 +148,19 @@ export function PostCard({ post, onLoginRequired }: { post: PostCardProps; onLog
         {/* 互动数据 */}
         <div className="flex items-center gap-5">
           {/* 浏览数 */}
-          <button className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors group">
-            <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <button className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors group" aria-label={`浏览次数 ${post.views}`}>
+            <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            <span className="text-xs font-medium">{formatNumber(post.views)}</span>
+            <span className="text-xs font-medium" aria-hidden="true">{formatNumber(post.views)}</span>
           </button>
 
           {/* 点赞按钮 */}
           <button
             onClick={handleLike}
+            aria-label={userHasLiked ? `取消点赞，当前点赞数 ${likeCount}` : `点赞，点赞数 ${likeCount}`}
+            aria-pressed={userHasLiked}
             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all ${
               userHasLiked
                 ? 'bg-red-50 text-red-500'
@@ -170,15 +172,18 @@ export function PostCard({ post, onLoginRequired }: { post: PostCardProps; onLog
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={1.5}
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>
-            <span className="text-xs font-medium">{formatNumber(likeCount)}</span>
+            <span className="text-xs font-medium" aria-hidden="true">{formatNumber(likeCount)}</span>
           </button>
 
           {/* 收藏按钮 */}
           <button
             onClick={handleFavorite}
+            aria-label={userHasFavorited ? '取消收藏' : '收藏'}
+            aria-pressed={userHasFavorited}
             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all ${
               userHasFavorited
                 ? 'bg-yellow-50 text-yellow-600'
@@ -190,17 +195,18 @@ export function PostCard({ post, onLoginRequired }: { post: PostCardProps; onLog
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={1.5}
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
             </svg>
           </button>
 
           {/* 评论数 */}
-          <button className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors group">
-            <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <button className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors group" aria-label={`评论数 ${post.comments_count}`}>
+            <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
-            <span className="text-xs font-medium">{formatNumber(post.comments_count)}</span>
+            <span className="text-xs font-medium" aria-hidden="true">{formatNumber(post.comments_count)}</span>
           </button>
         </div>
       </div>

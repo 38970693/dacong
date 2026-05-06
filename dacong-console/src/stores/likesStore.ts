@@ -1,5 +1,5 @@
 /**
- * 点赞 Store - 管理用户点赞的帖子
+ * 点赞 Store - 管理用户点赞的内容（支持 post/review/model）
  */
 import { create } from 'zustand';
 import { createClient } from '@supabase/supabase-js';
@@ -8,22 +8,27 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://prszkdbdgff
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByc3prZGJkZ2ZmYmRxY2xiZ29sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NzUyMDksImV4cCI6MjA5MzI1MTIwOX0.m2eElXYUlB-XHXZ8w988APQs4u1s2rn5VlIOjn2m_t0';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+type TargetType = 'post' | 'review' | 'model';
+
+interface LikeItem {
+  id: string;
+  user_id: string;
+  target_type: TargetType;
+  target_id: string;
+  created_at: string;
+}
+
 interface LikesState {
-  likes: string[]; // 点赞的帖子 ID 列表
+  likes: LikeItem[];
   isLoading: boolean;
   error: string | null;
 }
 
 interface LikesStore extends LikesState {
-  // 加载用户的点赞列表
   loadLikes: (userId: string) => Promise<void>;
-  // 点赞帖子
-  likePost: (userId: string, postId: string) => Promise<boolean>;
-  // 取消点赞
-  unlikePost: (userId: string, postId: string) => Promise<boolean>;
-  // 检查是否已点赞
-  isLiked: (postId: string) => boolean;
-  // 清空点赞列表
+  like: (userId: string, targetType: TargetType, targetId: string) => Promise<boolean>;
+  unlike: (userId: string, targetType: TargetType, targetId: string) => Promise<boolean>;
+  isLiked: (targetType: TargetType, targetId: string) => boolean;
   clear: () => void;
 }
 
@@ -38,14 +43,11 @@ export const useLikesStore = create<LikesStore>((set, get) => ({
     try {
       const { data, error } = await supabase
         .from('likes')
-        .select('post_id')
+        .select('*')
         .eq('user_id', userId);
 
       if (error) throw error;
-      set({
-        likes: data?.map(l => l.post_id) || [],
-        isLoading: false
-      });
+      set({ likes: data || [], isLoading: false });
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to load likes',
@@ -54,21 +56,20 @@ export const useLikesStore = create<LikesStore>((set, get) => ({
     }
   },
 
-  likePost: async (userId: string, postId: string) => {
+  like: async (userId: string, targetType: TargetType, targetId: string) => {
     if (!userId) return false;
     try {
       const { error } = await supabase
         .from('likes')
-        .insert({ user_id: userId, post_id: postId });
+        .insert({ user_id: userId, target_type: targetType, target_id: targetId });
 
       if (error) {
         console.error('点赞失败:', error.message);
         return false;
       }
 
-      // 乐观更新
       set(state => ({
-        likes: [...state.likes, postId]
+        likes: [...state.likes, { id: crypto.randomUUID(), user_id: userId, target_type: targetType, target_id: targetId, created_at: new Date().toISOString() }]
       }));
       return true;
     } catch (err) {
@@ -77,23 +78,23 @@ export const useLikesStore = create<LikesStore>((set, get) => ({
     }
   },
 
-  unlikePost: async (userId: string, postId: string) => {
+  unlike: async (userId: string, targetType: TargetType, targetId: string) => {
     if (!userId) return false;
     try {
       const { error } = await supabase
         .from('likes')
         .delete()
         .eq('user_id', userId)
-        .eq('post_id', postId);
+        .eq('target_type', targetType)
+        .eq('target_id', targetId);
 
       if (error) {
         console.error('取消点赞失败:', error.message);
         return false;
       }
 
-      // 乐观更新
       set(state => ({
-        likes: state.likes.filter(id => id !== postId)
+        likes: state.likes.filter(l => !(l.target_type === targetType && l.target_id === targetId))
       }));
       return true;
     } catch (err) {
@@ -102,8 +103,8 @@ export const useLikesStore = create<LikesStore>((set, get) => ({
     }
   },
 
-  isLiked: (postId: string) => {
-    return get().likes.includes(postId);
+  isLiked: (targetType: TargetType, targetId: string) => {
+    return get().likes.some(l => l.target_type === targetType && l.target_id === targetId);
   },
 
   clear: () => {

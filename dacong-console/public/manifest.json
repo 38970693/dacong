@@ -1,0 +1,32 @@
+{
+  "name": "DaCong - AI 模型排行榜",
+  "short_name": "DaCong",
+  "description": "DaCong 汇聚全球顶尖 AI 模型，提供实时排行、社区讨论和最新资讯",
+  "start_url": "/web",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["news", "utilities"],
+  "lang": "zh-CN",
+  "dir": "ltr"
+}

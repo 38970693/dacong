@@ -122,43 +122,45 @@ services:
     networks:
       - dacong-network
 
-  # ── Client Web App ───────────────────────────────
-  client:
+  # ── Console Web App (Next.js) ──────────────────────
+  console:
     build:
-      context: ./dacong-client
-      dockerfile: Dockerfile
-    container_name: dacong-client
+      context: ./dacong-console
+      dockerfile: .docker/Dockerfile
+      args:
+        - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://dacong.netlify.app}
+    container_name: dacong-console
     restart: unless-stopped
     ports:
-      - "${CLIENT_PORT:-80}:80"
-    depends_on:
-      - api
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 5s
+      - "${CONSOLE_PORT:-3000}:3000"
     networks:
       - dacong-network
 
-  # ── Admin Dashboard ──────────────────────────────
-  admin:
+  # ── Worker Service (Node.js) ─────────────────────
+  worker:
     build:
-      context: ./dacong-admin
+      context: ./dacong-worker
       dockerfile: Dockerfile
-    container_name: dacong-admin
+    container_name: dacong-worker
     restart: unless-stopped
-    ports:
-      - "${ADMIN_PORT:-8080}:80"
-    depends_on:
-      - api
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 5s
+    environment:
+      # Supabase
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      # Spider APIs
+      LMARENA_API_KEY: ${LMARENA_API_KEY:-}
+      ARTIFICIAL_ANALYSIS_API_KEY: ${ARTIFICIAL_ANALYSIS_API_KEY:-}
+      # Cron
+      CRON_SECRET: ${CRON_SECRET:-}
+      # Monitoring
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    volumes:
+      - worker-logs:/app/logs
     networks:
       - dacong-network
 

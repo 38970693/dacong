@@ -1,50 +1,30 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useReviewsStore } from '@/stores';
 import type { Review } from '@/types/database';
 
 const reviewTypes = ['全部', '深度评测', '对比测试', '专项测试', '用户评测'];
 const sortOptions = ['最新', '评分最高', '最热'];
 
-function getMockReviews(): Review[] {
-  return [
-    { id: '1', model_id: '1', model_name: 'Claude 3.5 Sonnet', title: 'Claude 3.5 Sonnet 深度评测：编程能力质的飞跃', summary: '在编程任务中表现出色，支持200k上下文，能够快速理解项目结构并提供高质量代码建议...', content: '', reviewer: 'AI评测官', rating: 5, review_type: '深度评测', tags: ['编程', '代码生成'], likes: 234, comments_count: 45, is_featured: true, status: 'published', created_at: '2026-05-02', updated_at: '' },
-    { id: '2', model_id: '2', model_name: 'GPT-4 Turbo', title: 'GPT-4 Turbo vs Claude 3.5 Sonnet 全面对比', summary: 'GPT-4 Turbo 在多模态和创意写作方面仍有优势，但 Claude 在性价比和编程辅助上更胜一筹...', content: '', reviewer: '科技前沿', rating: 4.5, review_type: '对比测试', tags: ['对比评测', '多模态'], likes: 567, comments_count: 123, is_featured: false, status: 'published', created_at: '2026-05-01', updated_at: '' },
-    { id: '3', model_id: '3', model_name: 'Gemini 1.5 Pro', title: 'Gemini 1.5 Pro 中文能力专项测试', summary: 'Gemini 在中文理解上有惊喜表现，但在某些特定领域的专业术语上仍有提升空间...', content: '', reviewer: '中文AI爱好者', rating: 4, review_type: '专项测试', tags: ['中文', '专项测试'], likes: 189, comments_count: 34, is_featured: false, status: 'published', created_at: '2026-04-30', updated_at: '' },
-    { id: '4', model_id: '4', model_name: 'Llama 3.1 405B', title: 'Llama 3.1 405B 开源最强音评测', summary: '作为当前最强的开源模型，Llama 3.1 405B 在多项基准测试中逼近闭源模型，但部署成本较高...', content: '', reviewer: '开源社区', rating: 4.5, review_type: '深度评测', tags: ['开源', 'LLM'], likes: 423, comments_count: 89, is_featured: false, status: 'published', created_at: '2026-04-28', updated_at: '' },
-  ];
-}
+// Mock 数据备用
+const mockReviews: Review[] = [
+  { id: '1', model_id: '1', model_name: 'Claude 3.5 Sonnet', title: 'Claude 3.5 Sonnet 深度评测：编程能力质的飞跃', summary: '在编程任务中表现出色，支持200k上下文...', content: '', reviewer: 'AI评测官', rating: 5, review_type: '深度评测', tags: ['编程', '代码生成'], likes: 234, comments_count: 45, is_featured: true, status: 'published', created_at: '2026-05-02', updated_at: '' },
+  { id: '2', model_id: '2', model_name: 'GPT-4 Turbo', title: 'GPT-4 Turbo vs Claude 3.5 Sonnet 全面对比', summary: 'GPT-4 Turbo 在多模态和创意写作方面仍有优势...', content: '', reviewer: '科技前沿', rating: 4.5, review_type: '对比测试', tags: ['对比评测', '多模态'], likes: 567, comments_count: 123, is_featured: false, status: 'published', created_at: '2026-05-01', updated_at: '' },
+  { id: '3', model_id: '3', model_name: 'Gemini 1.5 Pro', title: 'Gemini 1.5 Pro 中文能力专项测试', summary: 'Gemini 在中文理解上有惊喜表现...', content: '', reviewer: '中文AI爱好者', rating: 4, review_type: '专项测试', tags: ['中文', '专项测试'], likes: 189, comments_count: 34, is_featured: false, status: 'published', created_at: '2026-04-30', updated_at: '' },
+];
 
 export default function ReviewPage() {
   const [activeType, setActiveType] = useState('全部');
   const [activeSort, setActiveSort] = useState('最新');
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { reviews, isLoading, fetchReviews, getFeatured } = useReviewsStore();
 
   useEffect(() => {
-    fetchReviews();
-  }, [activeType, activeSort]);
+    fetchReviews(activeType as Review['review_type'] || undefined, activeSort as '最新' | '评分最高' | '最热');
+  }, [activeType, activeSort, fetchReviews]);
 
-  async function fetchReviews() {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({ type: activeType, sort: activeSort });
-      const res = await fetch(`/api/reviews?${params}`);
-      const json = await res.json();
-      if (json.success && json.data?.length > 0) {
-        setReviews(json.data);
-      } else {
-        setReviews(getMockReviews());
-      }
-    } catch {
-      setReviews(getMockReviews());
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const featured = reviews.find(r => r.is_featured) || reviews[0];
-  const rest = reviews.filter(r => r.id !== featured?.id);
+  const featured = getFeatured();
+  const rest = featured ? reviews.filter(r => r.id !== featured.id) : reviews;
 
   return (
     <div className="pb-16 md:pb-0">
@@ -98,7 +78,7 @@ export default function ReviewPage() {
       </div>
 
       {/* 精选评测 */}
-      {loading ? (
+      {isLoading ? (
         <div className="p-8 flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -133,32 +113,22 @@ export default function ReviewPage() {
 
       {/* 评测列表 */}
       <div className="divide-y divide-[var(--border)]">
-        {loading ? (
+        {isLoading ? (
           <div className="p-8 text-center text-[var(--text-muted)]">加载中...</div>
-        ) : rest.length === 0 ? (
-          <div className="p-8 text-center text-[var(--text-muted)]">暂无数据</div>
-        ) : (
-          rest.map((review) => (
+        ) : rest.length === 0 && !featured ? (
+          // 使用 mock 数据作为备用
+          mockReviews.map((review) => (
             <div
               key={review.id}
               className="px-4 md:px-5 py-4 hover:bg-[var(--background)] transition-colors cursor-pointer"
             >
-              {/* 标题 */}
               <h3 className="font-semibold text-[var(--foreground)] mb-2 leading-snug">{review.title}</h3>
-
-              {/* 摘要 */}
               <p className="text-sm text-[var(--text-secondary)] mb-3 line-clamp-2">{review.summary}</p>
-
-              {/* 标签 */}
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {review.tags.map((tag) => (
-                  <span key={tag} className="px-2 py-0.5 bg-[var(--background)] text-[var(--text-muted)] text-xs rounded">
-                    {tag}
-                  </span>
+                  <span key={tag} className="px-2 py-0.5 bg-[var(--background)] text-[var(--text-muted)] text-xs rounded">{tag}</span>
                 ))}
               </div>
-
-              {/* 元信息 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3 text-xs text-[var(--text-muted)]">
                   <span>{review.reviewer}</span>
@@ -166,12 +136,36 @@ export default function ReviewPage() {
                   <span>{new Date(review.created_at).toLocaleDateString('zh-CN')}</span>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-[var(--text-muted)]">
-                  <span className="flex items-center gap-1">❤️ {review.likes}</span>
-                  <span className="flex items-center gap-1">💬 {review.comments_count}</span>
+                  <span>❤️ {review.likes}</span>
+                  <span>💬 {review.comments_count}</span>
                 </div>
               </div>
-
-              {/* 评分 */}
+            </div>
+          ))
+        ) : (
+          rest.map((review) => (
+            <div
+              key={review.id}
+              className="px-4 md:px-5 py-4 hover:bg-[var(--background)] transition-colors cursor-pointer"
+            >
+              <h3 className="font-semibold text-[var(--foreground)] mb-2 leading-snug">{review.title}</h3>
+              <p className="text-sm text-[var(--text-secondary)] mb-3 line-clamp-2">{review.summary}</p>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {(review.tags || []).map((tag) => (
+                  <span key={tag} className="px-2 py-0.5 bg-[var(--background)] text-[var(--text-muted)] text-xs rounded">{tag}</span>
+                ))}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 text-xs text-[var(--text-muted)]">
+                  <span>{review.reviewer}</span>
+                  <span>•</span>
+                  <span>{new Date(review.created_at).toLocaleDateString('zh-CN')}</span>
+                </div>
+                <div className="flex items-center gap-4 text-xs text-[var(--text-muted)]">
+                  <span>❤️ {review.likes}</span>
+                  <span>💬 {review.comments_count}</span>
+                </div>
+              </div>
               <div className="mt-2 flex items-center gap-1">
                 <span className="text-amber-400 text-sm">
                   {Array.from({ length: 5 }).map((_, i) => (

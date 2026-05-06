@@ -24,6 +24,8 @@ interface AuthStore extends AuthState {
   signInWithEmail: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   // 注册
   signUp: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  // OAuth 第三方登录
+  signInWithOAuth: (provider: 'google' | 'facebook') => Promise<void>;
   // 退出登录
   signOut: () => Promise<void>;
   // 获取当前用户
@@ -32,6 +34,8 @@ interface AuthStore extends AuthState {
   getSupabase: () => SupabaseClient;
   // 重置错误
   clearError: () => void;
+  // 是否已认证（computed）
+  isAuthenticated: boolean;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -41,6 +45,11 @@ export const useAuthStore = create<AuthStore>()(
       isLoading: false,
       isInitialized: false,
       error: null,
+
+      // computed
+      get isAuthenticated() {
+        return !!get().user;
+      },
 
       initialize: async () => {
         if (get().isInitialized) return;
@@ -118,6 +127,26 @@ export const useAuthStore = create<AuthStore>()(
           const message = err instanceof Error ? err.message : '注册失败';
           set({ error: message, isLoading: false });
           return { success: false, error: message };
+        }
+      },
+
+      signInWithOAuth: async (provider: 'google' | 'facebook') => {
+        set({ isLoading: true, error: null });
+
+        try {
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider,
+            options: {
+              redirectTo: `${window.location.origin}/auth/callback`
+            }
+          });
+
+          if (error) {
+            set({ error: error.message, isLoading: false });
+          }
+        } catch (err) {
+          const message = err instanceof Error ? err.message : '第三方登录失败';
+          set({ error: message, isLoading: false });
         }
       },
 
