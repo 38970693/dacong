@@ -55,9 +55,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     });
                   }
                 },
+                loading: () {
+                  // loading 状态不处理
+                },
                 orElse: () {
-                  // 如果状态不是 error 且不是 loading，说明邮件发送成功
-                  if (state is! _Loading && _emailController.text.isNotEmpty) {
+                  // 如果不是 error 和 loading 状态，说明邮件发送成功
+                  if (_emailController.text.isNotEmpty) {
                     setState(() {
                       _emailSent = true;
                     });

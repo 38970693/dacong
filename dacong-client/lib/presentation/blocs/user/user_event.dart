@@ -5,7 +5,7 @@ part 'user_event.freezed.dart';
 
 /// 用户事件
 @freezed
-class UserEvent with _$UserEvent {
+abstract class UserEvent with _$UserEvent {
   /// 加载用户信息
   const factory UserEvent.loadUser() = LoadUser;
 

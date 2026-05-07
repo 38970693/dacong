@@ -4,7 +4,7 @@ part 'content.freezed.dart';
 
 /// 内容实体（不可变）
 @freezed
-class Content with _$Content {
+abstract class Content with _$Content {
   const factory Content({
     required String id,
     required String name,
@@ -34,7 +34,7 @@ class Content with _$Content {
 
 /// 价格信息
 @freezed
-class PriceInfo with _$PriceInfo {
+abstract class PriceInfo with _$PriceInfo {
   const factory PriceInfo({
     required bool isFree,
     required String? freeDescription,
@@ -45,7 +45,7 @@ class PriceInfo with _$PriceInfo {
 
 /// 价格档位
 @freezed
-class PriceTier with _$PriceTier {
+abstract class PriceTier with _$PriceTier {
   const factory PriceTier({
     required String name,
     required String price,
@@ -55,7 +55,7 @@ class PriceTier with _$PriceTier {
 
 /// 访问信息
 @freezed
-class AccessInfo with _$AccessInfo {
+abstract class AccessInfo with _$AccessInfo {
   const factory AccessInfo({
     required bool availableInChina,
     required bool needsVpn,

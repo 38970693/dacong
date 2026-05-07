@@ -1,8 +1,8 @@
 // 社区 Provider - Riverpod 状态管理（帖子 + 评论 + 话题）
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/post_model.dart';
-import '../../data/models/comment_model.dart';
 import '../../data/models/topic_model.dart';
+import '../../domain/entities/comment.dart';
 import '../../data/repositories/community_repository.dart';
 
 // Repository Provider

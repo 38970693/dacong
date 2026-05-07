@@ -1,8 +1,8 @@
 // 社区 Repository（帖子 + 评论）
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/post_model.dart';
-import '../models/comment_model.dart';
 import '../models/topic_model.dart';
+import '../../domain/entities/comment.dart';
 
 class CommunityRepository {
   CommunityRepository._();

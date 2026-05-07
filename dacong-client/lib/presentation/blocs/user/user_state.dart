@@ -6,7 +6,7 @@ part 'user_state.freezed.dart';
 
 /// 用户状态
 @freezed
-class UserState with _$UserState {
+abstract class UserState with _$UserState {
   const factory UserState({
     @Default(false) bool isLoading,
     User? user,

@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../domain/entities/scenario.dart';
+import '../../core/domain/entities/scenario.dart';
 
 part 'scenario_model.freezed.dart';
 part 'scenario_model.g.dart';
 
 @freezed
-class ScenarioModel with _$ScenarioModel {
+abstract class ScenarioModel with _$ScenarioModel {
   const factory ScenarioModel({
     required String id,
     required String name,

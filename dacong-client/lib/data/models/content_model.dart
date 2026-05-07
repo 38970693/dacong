@@ -6,7 +6,7 @@ part 'content_model.g.dart';
 
 /// 内容模型（继承自实体，添加序列化能力）
 @freezed
-class ContentModel with _$ContentModel {
+abstract class ContentModel with _$ContentModel {
   const factory ContentModel({
     required String id,
     required String name,
@@ -51,7 +51,7 @@ class ContentModel with _$ContentModel {
 }
 
 @freezed
-class PriceInfoModel with _$PriceInfoModel {
+abstract class PriceInfoModel with _$PriceInfoModel {
   const factory PriceInfoModel({
     required bool isFree,
     String? freeDescription,
@@ -75,7 +75,7 @@ class PriceInfoModel with _$PriceInfoModel {
 }
 
 @freezed
-class PriceTierModel with _$PriceTierModel {
+abstract class PriceTierModel with _$PriceTierModel {
   const factory PriceTierModel({
     required String name,
     required String price,
@@ -97,7 +97,7 @@ class PriceTierModel with _$PriceTierModel {
 }
 
 @freezed
-class AccessInfoModel with _$AccessInfoModel {
+abstract class AccessInfoModel with _$AccessInfoModel {
   const factory AccessInfoModel({
     required bool availableInChina,
     required bool needsVpn,

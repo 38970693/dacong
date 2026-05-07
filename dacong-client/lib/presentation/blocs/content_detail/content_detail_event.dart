@@ -5,7 +5,7 @@ part 'content_detail_event.freezed.dart';
 
 /// ContentDetail 事件
 @freezed
-class ContentDetailEvent with _$ContentDetailEvent {
+abstract class ContentDetailEvent with _$ContentDetailEvent {
   /// 加载内容详情
   const factory ContentDetailEvent.loadContentDetail(String contentId) =
       LoadContentDetail;

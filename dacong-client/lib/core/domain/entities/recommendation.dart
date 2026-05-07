@@ -4,7 +4,7 @@ part 'recommendation.freezed.dart';
 
 /// 推荐实体（不可变）
 @freezed
-class Recommendation with _$Recommendation {
+abstract class Recommendation with _$Recommendation {
   const factory Recommendation({
     required String id,
     required String contentId,

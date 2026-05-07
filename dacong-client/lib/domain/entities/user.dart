@@ -4,7 +4,7 @@ part 'user.freezed.dart';
 
 /// 用户实体
 @freezed
-class User with _$User {
+abstract class User with _$User {
   const factory User({
     required String id,
     required String email,
@@ -22,7 +22,7 @@ class User with _$User {
 
 /// 用户偏好设置
 @freezed
-class UserPreferences with _$UserPreferences {
+abstract class UserPreferences with _$UserPreferences {
   const factory UserPreferences({
     @Default('zh') String language,
     @Default('system') String theme, // 'light', 'dark', 'system'
@@ -34,7 +34,7 @@ class UserPreferences with _$UserPreferences {
 
 /// 浏览历史项
 @freezed
-class HistoryItem with _$HistoryItem {
+abstract class HistoryItem with _$HistoryItem {
   const factory HistoryItem({
     required String contentId,
     required String contentType, // 'recommendation', 'guide', 'weekly'

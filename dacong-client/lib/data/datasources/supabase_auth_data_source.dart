@@ -155,7 +155,7 @@ class SupabaseAuthDataSource {
       bio: user.userMetadata?['bio'] as String?,
       emailVerified: user.emailConfirmedAt != null,
       createdAt: user.createdAt != null ? DateTime.parse(user.createdAt) : null,
-      updatedAt: user.updatedAt != null ? DateTime.parse(user.updatedAt) : null,
+      updatedAt: user.updatedAt != null ? DateTime.parse(user.updatedAt!) : null,
     );
   }
 

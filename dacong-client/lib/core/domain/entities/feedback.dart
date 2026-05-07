@@ -4,7 +4,7 @@ part 'feedback.freezed.dart';
 
 /// 用户反馈实体（不可变）
 @freezed
-class UserFeedback with _$UserFeedback {
+abstract class UserFeedback with _$UserFeedback {
   const factory UserFeedback({
     required String id,
     required String contentId,

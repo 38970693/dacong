@@ -6,7 +6,7 @@ part 'content_detail_state.freezed.dart';
 
 /// ContentDetail 状态
 @freezed
-class ContentDetailState with _$ContentDetailState {
+abstract class ContentDetailState with _$ContentDetailState {
   /// 初始状态
   const factory ContentDetailState.initial() = ContentDetailInitial;
 

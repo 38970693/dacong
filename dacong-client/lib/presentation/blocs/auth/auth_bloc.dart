@@ -32,116 +32,75 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this._sendPasswordResetEmailUseCase,
     this._authRepository,
   ) : super(const AuthState.initial()) {
-    on<_AuthCheckRequested>(_onAuthCheckRequested);
-    on<_LoginRequested>(_onLoginRequested);
-    on<_RegisterRequested>(_onRegisterRequested);
-    on<_LogoutRequested>(_onLogoutRequested);
-    on<_PasswordResetRequested>(_onPasswordResetRequested);
-    on<_ProfileUpdateRequested>(_onProfileUpdateRequested);
+    on<AuthEvent>(_onEvent);
 
-    // 监听认证状态变化
     _authStateSubscription = _authRepository.authStateChanges.listen((user) {
       if (user != null) {
-        emit(AuthState.authenticated(user));
-      } else {
-        emit(const AuthState.unauthenticated());
+        add(AuthEvent.authCheckRequested());
       }
     });
   }
 
-  Future<void> _onAuthCheckRequested(
-    _AuthCheckRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthState.loading());
-
-    final result = await _getCurrentUserUseCase();
-
-    result.fold(
-      (failure) => emit(const AuthState.unauthenticated()),
-      (user) => emit(AuthState.authenticated(user)),
-    );
-  }
-
-  Future<void> _onLoginRequested(
-    _LoginRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthState.loading());
-
-    final result = await _loginUseCase(
-      email: event.email,
-      password: event.password,
-    );
-
-    result.fold(
-      (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
-      (session) => emit(AuthState.authenticated(session.user)),
-    );
-  }
-
-  Future<void> _onRegisterRequested(
-    _RegisterRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthState.loading());
-
-    final result = await _registerUseCase(
-      email: event.email,
-      password: event.password,
-      username: event.username,
-    );
-
-    result.fold(
-      (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
-      (session) => emit(AuthState.authenticated(session.user)),
-    );
-  }
-
-  Future<void> _onLogoutRequested(
-    _LogoutRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthState.loading());
-
-    final result = await _logoutUseCase();
-
-    result.fold(
-      (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
-      (_) => emit(const AuthState.unauthenticated()),
-    );
-  }
-
-  Future<void> _onPasswordResetRequested(
-    _PasswordResetRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    final currentState = state;
-    emit(const AuthState.loading());
-
-    final result = await _sendPasswordResetEmailUseCase(event.email);
-
-    result.fold(
-      (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
-      (_) => emit(currentState), // 恢复之前的状态
-    );
-  }
-
-  Future<void> _onProfileUpdateRequested(
-    _ProfileUpdateRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthState.loading());
-
-    final result = await _updateProfileUseCase(
-      username: event.username,
-      avatarUrl: event.avatarUrl,
-      bio: event.bio,
-    );
-
-    result.fold(
-      (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
-      (user) => emit(AuthState.authenticated(user)),
+  Future<void> _onEvent(AuthEvent event, Emitter<AuthState> emit) async {
+    await event.maybeWhen(
+      authCheckRequested: () async {
+        emit(const AuthState.loading());
+        final result = await _getCurrentUserUseCase();
+        result.fold(
+          (failure) => emit(const AuthState.unauthenticated()),
+          (user) => emit(AuthState.authenticated(user)),
+        );
+      },
+      loginRequested: (email, password) async {
+        emit(const AuthState.loading());
+        final result = await _loginUseCase(email: email, password: password);
+        result.fold(
+          (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
+          (session) => emit(AuthState.authenticated(session.user)),
+        );
+      },
+      registerRequested: (email, password, username) async {
+        emit(const AuthState.loading());
+        final result = await _registerUseCase(
+          email: email,
+          password: password,
+          username: username,
+        );
+        result.fold(
+          (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
+          (session) => emit(AuthState.authenticated(session.user)),
+        );
+      },
+      logoutRequested: () async {
+        emit(const AuthState.loading());
+        final result = await _logoutUseCase();
+        result.fold(
+          (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
+          (_) => emit(const AuthState.unauthenticated()),
+        );
+      },
+      passwordResetRequested: (email) async {
+        final currentState = state;
+        emit(const AuthState.loading());
+        final result = await _sendPasswordResetEmailUseCase(email);
+        result.fold(
+          (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
+          (_) => emit(currentState),
+        );
+      },
+      profileUpdateRequested: (username, avatarUrl, bio) async {
+        emit(const AuthState.loading());
+        final result = await _updateProfileUseCase(
+          username: username,
+          avatarUrl: avatarUrl,
+          bio: bio,
+        );
+        result.fold(
+          (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
+          (user) => emit(AuthState.authenticated(user)),
+        );
+      },
+      orElse: () async {},
     );
   }
 

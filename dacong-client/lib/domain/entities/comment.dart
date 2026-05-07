@@ -52,6 +52,34 @@ class Comment extends Equatable {
     );
   }
 
+  factory Comment.fromJson(Map<String, dynamic> json) {
+    return Comment(
+      id: json['id'] as String,
+      contentId: json['content_id'] as String? ?? json['post_id'] as String,
+      userId: json['user_id'] as String,
+      parentId: json['parent_id'] as String?,
+      content: json['content'] as String,
+      likesCount: json['likes_count'] as int? ?? 0,
+      replyCount: json['reply_count'] as int? ?? 0,
+      isLiked: json['is_liked'] as bool? ?? false,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'content_id': contentId,
+        'user_id': userId,
+        'parent_id': parentId,
+        'content': content,
+        'likes_count': likesCount,
+        'reply_count': replyCount,
+        'is_liked': isLiked,
+        'created_at': createdAt.toIso8601String(),
+        'updated_at': updatedAt.toIso8601String(),
+      };
+
   @override
   List<Object?> get props => [
         id,

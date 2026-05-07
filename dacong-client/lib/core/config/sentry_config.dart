@@ -43,7 +43,7 @@ class SentryConfig {
         options.attachViewHierarchy = true;
 
         // 过滤敏感信息
-        options.beforeSend = (event, {hint}) {
+        options.beforeSend = (event, hint) {
           // 移除敏感数据
           if (event.request?.data != null) {
             final data = event.request!.data;
@@ -57,7 +57,7 @@ class SentryConfig {
         };
 
         // 面包屑过滤
-        options.beforeBreadcrumb = (breadcrumb, {hint}) {
+        options.beforeBreadcrumb = (breadcrumb, hint) {
           // 过滤掉不重要的面包屑
           if (breadcrumb?.category == 'ui.click' &&
               breadcrumb?.message?.contains('debug') == true) {

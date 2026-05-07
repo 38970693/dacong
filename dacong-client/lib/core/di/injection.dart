@@ -3,12 +3,13 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../network/api_client.dart';
+
+import 'injection.config.dart';
 
 final getIt = GetIt.instance;
 
 @InjectableInit()
-void configureDependencies() => getIt.init();
+Future<GetIt> configureDependencies() => getIt.init();
 
 /// 依赖注入配置模块
 @module

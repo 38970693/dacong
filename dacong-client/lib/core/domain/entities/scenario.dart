@@ -4,7 +4,7 @@ part 'scenario.freezed.dart';
 
 /// 场景实体（不可变）
 @freezed
-class Scenario with _$Scenario {
+abstract class Scenario with _$Scenario {
   const factory Scenario({
     required String id,
     required String name,

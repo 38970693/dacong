@@ -4,7 +4,7 @@ part 'favorite_content.freezed.dart';
 
 /// 收藏的内容实体
 @freezed
-class FavoriteContent with _$FavoriteContent {
+abstract class FavoriteContent with _$FavoriteContent {
   const factory FavoriteContent({
     required String favoriteId,
     required String contentId,

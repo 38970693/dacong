@@ -63,7 +63,7 @@ class _EmpowerPageState extends ConsumerState<EmpowerPage>
           title: p['title']!,
           desc: p['desc']!,
           prompt: p['prompt']!,
-          icon: IconData(p['icon']!, fontFamily: 'MaterialIcons'),
+          icon: IconData(int.parse(p['icon']!), fontFamily: 'MaterialIcons'),
           color: Color(int.parse(p['color']!)),
           platform: p['platform']!,
         );
@@ -82,7 +82,7 @@ class _EmpowerPageState extends ConsumerState<EmpowerPage>
           name: t['name']!,
           desc: t['desc']!,
           url: t['url']!,
-          icon: IconData(t['icon']!, fontFamily: 'MaterialIcons'),
+          icon: IconData(int.parse(t['icon']!), fontFamily: 'MaterialIcons'),
           color: Color(int.parse(t['color']!)),
           tags: (t['tags']! as String).split(','),
           price: t['price']!,
