@@ -156,9 +156,11 @@ class ContentDetailBloc extends Bloc<ContentDetailEvent, ContentDetailState> {
 
     try {
       // 调用系统分享
-      await Share.share(
-        shareText,
-        subject: content.name,
+      await SharePlus.instance.share(
+        ShareParams(
+          text: shareText,
+          subject: content.name,
+        ),
       );
     } catch (e) {
       // 分享失败时不需要改变状态，只是静默失败

@@ -439,9 +439,11 @@ class _RecommendationDetailPageState extends State<RecommendationDetailPage> {
 
     try {
       // 调用系统分享
-      await Share.share(
-        shareText,
-        subject: '工具推荐',
+      await SharePlus.instance.share(
+        ShareParams(
+          text: shareText,
+          subject: '工具推荐',
+        ),
       );
     } catch (e) {
       // 分享失败，显示错误提示

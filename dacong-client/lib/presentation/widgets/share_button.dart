@@ -36,9 +36,11 @@ class ShareButton extends StatelessWidget {
           : '$title\n\n$shareUrl';
 
       // 使用 share_plus 分享
-      final result = await Share.share(
-        shareText,
-        subject: title,
+      final result = await SharePlus.instance.share(
+        ShareParams(
+          text: shareText,
+          subject: title,
+        ),
       );
 
       // 记录分享（如果分享成功）
@@ -131,7 +133,12 @@ class AdvancedShareButton extends StatelessWidget {
           ? '$title\n\n$summary\n\n$shareUrl'
           : '$title\n\n$shareUrl';
 
-      final result = await Share.share(shareText, subject: title);
+      final result = await SharePlus.instance.share(
+        ShareParams(
+          text: shareText,
+          subject: title,
+        ),
+      );
 
       if (result.status == ShareResultStatus.success) {
         onShare?.call(platform);
