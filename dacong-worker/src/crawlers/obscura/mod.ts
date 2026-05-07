@@ -7,14 +7,69 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { logger } from '../../logger';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// ES Module 中获取 __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const execAsync = promisify(exec);
 
-// Obscura 二进制路径
-const OBSCURA_PATH = process.env.OBSCURA_PATH ||
-  (process.platform === 'win32'
-    ? 'E:/gitlab/dacong/dacong-spider/tools/windows/obscura.exe'
-    : './bin/obscura');
+/**
+ * 获取 Obscura 工具的根目录
+ * 优先使用环境变量，否则回退到相对路径
+ */
+function getObscuraToolsRoot(): string {
+  // 环境变量优先
+  if (process.env.OBSCURA_TOOLS_ROOT) {
+    return process.env.OBSCURA_TOOLS_ROOT;
+  }
+
+  // 回退到 dacong-spider/tools/
+  const projectRoot = path.resolve(__dirname, '../../../../');
+  return path.join(projectRoot, 'dacong-spider', 'tools');
+}
+
+/**
+ * 根据平台获取 Obscura 二进制路径
+ */
+function getObscuraPath(): { obscura: string; worker: string } {
+  const toolsRoot = getObscuraToolsRoot();
+
+  if (process.platform === 'win32') {
+    return {
+      obscura: path.join(toolsRoot, 'windows', 'obscura.exe'),
+      worker: path.join(toolsRoot, 'windows', 'obscura-worker.exe'),
+    };
+  } else if (process.platform === 'darwin') {
+    return {
+      obscura: path.join(toolsRoot, 'mac', 'obscura'),
+      worker: path.join(toolsRoot, 'mac', 'obscura-worker'),
+    };
+  } else {
+    // Linux
+    return {
+      obscura: path.join(toolsRoot, 'linux', 'obscura'),
+      worker: path.join(toolsRoot, 'linux', 'obscura-worker'),
+    };
+  }
+}
+
+// 缓存路径，避免每次调用
+let cachedPaths: { obscura: string; worker: string } | null = null;
+
+function getObscura(): { obscura: string; worker: string } {
+  if (!cachedPaths) {
+    cachedPaths = getObscuraPath();
+    logger.info(`Obscura 路径: ${cachedPaths.obscura} (${process.platform})`);
+  }
+  return cachedPaths;
+}
+
+// 环境变量可以覆盖默认路径
+const envPath = process.env.OBSCURA_PATH;
+const OBSCURA_PATH = envPath || getObscura().obscura;
 
 export interface FetchOptions {
   /** 等待条件: load, domcontentloaded, networkidle0 */
@@ -199,11 +254,35 @@ export async function startCDPServer(port: number = 9222, stealth: boolean = tru
 /**
  * 检查 Obscura 是否可用
  */
-export async function checkObscura(): Promise<boolean> {
+export async function checkObscura(): Promise<{ available: boolean; version?: string; error?: string }> {
   try {
-    const { stdout } = await execAsync(`${OBSCURA_PATH} --help`);
-    return stdout.includes('Obscura');
-  } catch {
+    const { stdout } = await execAsync(`"${OBSCURA_PATH}" --help`);
+    if (stdout.includes('Obscura')) {
+      // 提取版本信息
+      const versionMatch = stdout.match(/Obscura\s+v?([\d.]+)/i);
+      return {
+        available: true,
+        version: versionMatch ? versionMatch[1] : 'unknown',
+      };
+    }
+    return { available: false, error: 'Unknown binary' };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return { available: false, error: message };
+  }
+}
+
+/**
+ * 初始化 Obscura - 在服务启动时调用
+ */
+export async function initObscura(): Promise<boolean> {
+  const check = await checkObscura();
+  if (check.available) {
+    logger.info(`Obscura 已就绪 (v${check.version})`);
+    return true;
+  } else {
+    logger.error(`Obscura 不可用: ${check.error}`);
+    logger.error(`期望路径: ${OBSCURA_PATH}`);
     return false;
   }
 }

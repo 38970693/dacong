@@ -9,10 +9,18 @@ import { createSupabaseAdmin } from '../../supabase';
 import { obscuraFetch } from './mod';
 
 const BASE_URL = 'https://www.jiemian.com';
-const LIST_URL = `${BASE_URL}/lists/3.html`;
 
-// 提取新闻列表的 JavaScript
-const EXTRACT_NEWS_SCRIPT = `JSON.stringify(Array.from(document.querySelectorAll('a[href*="/article/"]')).filter(a => { const href = a.href; const text = a.textContent?.trim() || ''; return href && text.length > 8 && !href.includes('javascript'); }).slice(0, 20).map(a => ({title: a.textContent?.trim(), url: a.href})).filter(item => item.title && item.url))`;
+// 使用商业分类 (lists/2.html)，文章更多
+const LIST_URL = `${BASE_URL}/lists/2.html`;
+
+// 提取新闻列表的 JavaScript - 更精确的选择器
+const EXTRACT_NEWS_SCRIPT = `JSON.stringify(Array.from(document.querySelectorAll('.article-list a[href*="/article/"], .news-list a[href*="/article/"], main a[href*="/article/"])).filter(a => {
+  const href = a.href;
+  const text = a.textContent?.trim() || '';
+  const isArticle = href && href.includes('/article/') && !href.includes('javascript') && text.length > 5;
+  const isNotNav = !a.closest('nav') && !a.closest('.header') && !a.closest('.footer');
+  return isArticle && isNotNav;
+}).slice(0, 30).map(a => ({title: a.textContent?.trim(), url: a.href})).filter(item => item.title && item.url && item.title.length > 5))`;
 
 export async function crawlJiemian(): Promise<CrawlResult> {
   const supabase = createSupabaseAdmin();
@@ -22,10 +30,11 @@ export async function crawlJiemian(): Promise<CrawlResult> {
 
   try {
     // 使用 Obscura 执行 JavaScript 提取结构化数据
+    // 使用 load 而不是 networkidle0，因为页面可能有持续的网络活动
     const result = await obscuraFetch(LIST_URL, {
       stealth: true,
-      waitUntil: 'networkidle0',
-      timeout: 30,
+      waitUntil: 'load',
+      timeout: 45,
       eval: EXTRACT_NEWS_SCRIPT,
     });
 
@@ -118,8 +127,8 @@ async function crawlJiemianHTML(): Promise<CrawlResult> {
   try {
     const result = await obscuraFetch(LIST_URL, {
       stealth: true,
-      waitUntil: 'networkidle0',
-      timeout: 30,
+      waitUntil: 'load',
+      timeout: 45,
     });
 
     if (!result.success || !result.content) {
@@ -199,16 +208,24 @@ async function crawlJiemianHTML(): Promise<CrawlResult> {
 function parseJiemianHTML(html: string): Array<{ title: string; url: string }> {
   const news: Array<{ title: string; url: string }> = [];
 
-  // 匹配文章链接模式
-  const pattern = /<a[^>]+href=["']([^"']*\/article\/[^"']+)["'][^>]*>\s*([^<]+)/gi;
+  // 匹配文章链接模式 - 多种选择器
+  const patterns = [
+    // 标准文章链接
+    /<a[^>]+href=["']([^"']*\/article\/[^"']+)["'][^>]*>\s*([^<]{5,200})/gi,
+    // 带 class 的文章链接
+    /<a[^>]+class=["'][^"']*(?:article|news|content)[^"']*["'][^>]+href=["']([^"']*\/article\/[^"']+)["']/gi,
+  ];
 
-  let match;
-  while ((match = pattern.exec(html)) !== null && news.length < 20) {
-    const url = match[1];
-    const title = match[2].trim();
+  for (const pattern of patterns) {
+    let match;
+    while ((match = pattern.exec(html)) !== null && news.length < 50) {
+      const url = match[1];
+      const titleMatch = match[2] || match[0].match(/>([^<]{5,200})</);
+      const title = titleMatch ? titleMatch[1].trim() : '';
 
-    if (url && title && title.length > 5 && !url.includes('javascript')) {
-      news.push({ url, title });
+      if (url && title && title.length > 5 && !url.includes('javascript') && !url.includes('writer')) {
+        news.push({ url, title });
+      }
     }
   }
 

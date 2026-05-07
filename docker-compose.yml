@@ -139,30 +139,30 @@ services:
       - dacong-network
 
   # ── Worker Service (Node.js) ─────────────────────
-  worker:
-    build:
-      context: ./dacong-worker
-      dockerfile: Dockerfile
-    container_name: dacong-worker
-    restart: unless-stopped
-    environment:
-      # Supabase
-      SUPABASE_URL: ${SUPABASE_URL}
-      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
-      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
-      # Spider APIs
-      LMARENA_API_KEY: ${LMARENA_API_KEY:-}
-      ARTIFICIAL_ANALYSIS_API_KEY: ${ARTIFICIAL_ANALYSIS_API_KEY:-}
-      # Cron
-      CRON_SECRET: ${CRON_SECRET:-}
-      # Monitoring
-      SENTRY_DSN: ${SENTRY_DSN:-}
-      LOG_LEVEL: ${LOG_LEVEL:-info}
-    volumes:
-      - worker-logs:/app/logs
-    networks:
-      - dacong-network
+  # worker:
+  #   build:
+  #     context: ./dacong-worker
+  #     dockerfile: Dockerfile
+  #   container_name: dacong-worker
+  #   restart: unless-stopped
+  #   environment:
+  #     # Supabase
+  #     SUPABASE_URL: ${SUPABASE_URL}
+  #     SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+  #     NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+  #     NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+  #     # Spider APIs
+  #     LMARENA_API_KEY: ${LMARENA_API_KEY:-}
+  #     ARTIFICIAL_ANALYSIS_API_KEY: ${ARTIFICIAL_ANALYSIS_API_KEY:-}
+  #     # Cron
+  #     CRON_SECRET: ${CRON_SECRET:-}
+  #     # Monitoring
+  #     SENTRY_DSN: ${SENTRY_DSN:-}
+  #     LOG_LEVEL: ${LOG_LEVEL:-info}
+  #   volumes:
+  #     - worker-logs:/app/logs
+  #   networks:
+  #     - dacong-network
 
 # ── Volumes ──────────────────────────────────────
 volumes:
@@ -171,6 +171,8 @@ volumes:
   redis-data:
     driver: local
   spider-logs:
+    driver: local
+  worker-logs:
     driver: local
 
 # ── Networks ─────────────────────────────────────
