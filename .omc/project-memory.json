@@ -21,9 +21,10 @@
       "auth": "匿名登录 (signInAnonymously)",
       "database": "PostgreSQL via Supabase"
     },
-    "spider": {
+    "worker": {
       "language": "TypeScript / Node.js",
       "framework": "tsx + dotenv",
+      "headlessBrowser": "Obscura (Rust 无头浏览器)",
       "storage": "Supabase raw_posts + posts 表",
       "location": "dacong-worker/",
       "crawlInterval": "10 分钟"
@@ -39,8 +40,10 @@
     "spiderHuggingFace": "dacong-spider/spiders/huggingface_leaderboard.py",
     "spiderArtificialAnalysis": "dacong-spider/spiders/artificial_analysis.py",
     "rankingsWorkflow": ".github/workflows/rankings-update.yml",
-    "crawlerHealth": "dacong-worker/src/crawlers/health.ts",
-    "crawlerRSS": "dacong-worker/src/crawlers/rss.ts",
+    "obscuraModule": "dacong-worker/src/crawlers/obscura/mod.ts",
+    "obscuraJiemian": "dacong-worker/src/crawlers/obscura/jiemian.ts",
+    "obscuraHuxiu": "dacong-worker/src/crawlers/huxiu.ts",
+    "obscuraTools": "dacong-spider/tools/",
     "crawlerIndex": "dacong-worker/src/crawlers/index.ts"
   },
   "resolvedIssues": [
@@ -75,6 +78,18 @@
     {
       "issue": "首页数据是老数据",
       "solution": "修复 crawler 数据同步问题：(1) health.ts syncToPosts 改用 insert + update 模式；(2) logger.ts 添加 dotenv 加载；(3) 移除 rss.ts/index.ts 重复的 publishPosts，统一由 syncToPosts 处理"
+    },
+    {
+      "issue": "界面新闻爬虫选择器失败 (404)",
+      "solution": "修复 CSS 选择器，改用 JS eval 直接提取结构化数据"
+    },
+    {
+      "issue": "虎嗅爬虫 504 错误",
+      "solution": "迁移到 Obscura 浏览器抓取，支持 Stealth 模式避免反爬"
+    },
+    {
+      "issue": "RSS 爬虫偶发性失败",
+      "solution": "集成 Obscura 无头浏览器，内存 30MB vs Chrome 200MB+，内置反指纹"
     }
   ],
   "completedFeatures": [
@@ -89,7 +104,10 @@
     "排行榜页面 UI 优化（Logo、下拉加载、Top3 卡片）",
     "首页新闻数据展示（使用 posts 表）",
     "36kr RSS 新闻爬虫",
-    "爬虫数据同步到 posts 表"
+    "Obscura 无头浏览器集成",
+    "虎嗅爬虫 Obscura 优化",
+    "界面新闻爬虫 Obscura 优化",
+    "Obscura 模块单元测试 (9 tests)"
   ],
   "rankingsData": {
     "lmarena": {
@@ -105,8 +123,14 @@
   },
   "crawlerConfig": {
     "interval": "10 分钟",
-    "sources": ["36kr RSS (工作正常)", "huxiu (504错误)", "jiemian (404错误)", "sina (部分工作)", "163tech (网络错误)"],
-    "syncMode": "统一由 health.ts syncToPosts 处理"
+    "headlessBrowser": "Obscura (支持 Windows/macOS/Linux)",
+    "sources": ["36kr RSS (稳定)", "huxiu (Obscura, Stealth模式)", "jiemian (Obscura, JS eval)"],
+    "syncMode": "统一由 health.ts syncToPosts 处理",
+    "tests": {
+      "total": 19,
+      "passed": 19,
+      "files": ["src/moderator.test.ts", "src/trending.test.ts", "src/crawlers/obscura/mod.test.ts"]
+    }
   },
   "nextSteps": [
     "评测文章 CRUD（Markdown 编辑器）",
@@ -115,7 +139,7 @@
     "用户收藏/点赞功能",
     "SWE-bench 排行榜（待 API 修复）",
     "AI Ping 排行榜（需研究数据源）",
-    "修复其他 RSS 源（huxiu, jiemian, 163tech）"
+    "其他 RSS 源优化（sina, 163tech）"
   ],
-  "lastUpdated": "2026-05-05"
+  "lastUpdated": "2026-05-07"
 }
