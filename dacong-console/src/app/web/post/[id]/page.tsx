@@ -3,25 +3,9 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  source: string;
-  source_url: string;
-  views: number;
-  likes: number;
-  comments_count: number;
-  created_at: string;
-}
-
-interface Comment {
-  id: string;
-  content: string;
-  created_at: string;
-  user_email: string;
-}
+import { TagsDisplay } from '@/components/TagsDisplay';
+import { TagSelector } from '@/components/TagSelector';
+import type { Tag, Post as PostType, Comment as CommentType } from '@/types/database';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -34,14 +18,17 @@ export default function PostDetailPage() {
   const postId = params?.id as string;
 
   const [post, setPost] = useState<Post | null>(null);
+  const [postTags, setPostTags] = useState<Tag[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
+  const [showTagSelector, setShowTagSelector] = useState(false);
 
   useEffect(() => {
     if (postId) {
       fetchPost(postId);
+      fetchPostTags(postId);
       fetchComments(postId);
     }
   }, [postId]);
@@ -61,7 +48,6 @@ export default function PostDetailPage() {
     } catch (err) {
       console.error('Fetch post error:', err);
       setError('获取帖子失败');
-      // 降级到 mock 数据
       setPost({
         id,
         title: '帖子详情加载失败',
@@ -78,6 +64,32 @@ export default function PostDetailPage() {
     }
   }
 
+  async function fetchPostTags(id: string) {
+    try {
+      const { data } = await supabase
+        .from('post_tags')
+        .select(`
+          id,
+          tag_id,
+          tags (
+            id,
+            name,
+            slug,
+            color
+          )
+        `)
+        .eq('post_id', id);
+
+      const tags = data?.map(pt => {
+        const tag = pt.tags as unknown as Tag;
+        return tag ? { ...tag, post_count: 0 } : null;
+      }).filter((t): t is Tag => t !== null) || [];
+      setPostTags(tags);
+    } catch {
+      setPostTags([]);
+    }
+  }
+
   async function fetchComments(postId: string) {
     try {
       const { data } = await supabase
@@ -88,7 +100,7 @@ export default function PostDetailPage() {
         .limit(20);
       setComments(data || []);
     } catch {
-      // 评论加载失败不影响主内容
+      setComments([]);
     }
   }
 
@@ -97,8 +109,48 @@ export default function PostDetailPage() {
     const newLiked = !liked;
     setLiked(newLiked);
     setPost({ ...post, likes: post.likes + (newLiked ? 1 : -1) });
+  }
 
-    // TODO: 同步到数据库 likes 表
+  async function handleAddTag(tag: Tag) {
+    if (!post) return;
+
+    // 检查是否已添加
+    if (postTags.some(pt => pt.id === tag.id)) {
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('post_tags')
+        .insert({ post_id: post.id, tag_id: tag.id })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setPostTags([...postTags, tag]);
+      setShowTagSelector(false);
+    } catch (err) {
+      console.error('Add tag error:', err);
+    }
+  }
+
+  async function handleRemoveTag(tagId: string) {
+    if (!post) return;
+
+    try {
+      const { error } = await supabase
+        .from('post_tags')
+        .delete()
+        .eq('post_id', post.id)
+        .eq('tag_id', tagId);
+
+      if (error) throw error;
+
+      setPostTags(postTags.filter(t => t.id !== tagId));
+    } catch (err) {
+      console.error('Remove tag error:', err);
+    }
   }
 
   if (loading) {
@@ -149,6 +201,15 @@ export default function PostDetailPage() {
           {post.title}
         </h1>
 
+        {/* 标签展示 */}
+        <div className="mb-4">
+          <TagsDisplay
+            tags={postTags}
+            onRemove={handleRemoveTag}
+            onAddClick={() => setShowTagSelector(true)}
+          />
+        </div>
+
         {/* 元信息 */}
         <div className="flex items-center gap-4 text-sm text-[var(--text-muted)] mb-6">
           <span>发布于 {new Date(post.created_at).toLocaleDateString('zh-CN')}</span>
@@ -184,6 +245,15 @@ export default function PostDetailPage() {
           </button>
         </div>
       </article>
+
+      {/* 标签选择器弹窗 */}
+      {showTagSelector && (
+        <TagSelector
+          selectedTags={postTags}
+          onSelect={handleAddTag}
+          onClose={() => setShowTagSelector(false)}
+        />
+      )}
 
       {/* 评论区域 */}
       <div className="border-t border-[var(--border)]">

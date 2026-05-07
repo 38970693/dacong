@@ -59,6 +59,13 @@ export const useFavoritesStore = create<FavoritesStore>((set, get) => ({
 
   addFavorite: async (userId: string, targetType: TargetType, targetId: string) => {
     if (!userId) return false;
+
+    // 乐观更新本地状态
+    const newFavorite = { id: crypto.randomUUID(), user_id: userId, target_type: targetType, target_id: targetId, created_at: new Date().toISOString() };
+    set(state => ({
+      favorites: [...state.favorites, newFavorite]
+    }));
+
     try {
       const { error } = await supabase
         .from('favorites')
@@ -66,21 +73,35 @@ export const useFavoritesStore = create<FavoritesStore>((set, get) => ({
 
       if (error) {
         console.error('添加收藏失败:', error.message);
+        // 数据库插入失败，回滚本地状态
+        set(state => ({
+          favorites: state.favorites.filter(f => !(f.target_type === targetType && f.target_id === targetId))
+        }));
         return false;
       }
-
-      set(state => ({
-        favorites: [...state.favorites, { id: crypto.randomUUID(), user_id: userId, target_type: targetType, target_id: targetId, created_at: new Date().toISOString() }]
-      }));
       return true;
     } catch (err) {
       console.error('添加收藏出错:', err);
+      // 异常时回滚
+      set(state => ({
+        favorites: state.favorites.filter(f => !(f.target_type === targetType && f.target_id === targetId))
+      }));
       return false;
     }
   },
 
   removeFavorite: async (userId: string, targetType: TargetType, targetId: string) => {
     if (!userId) return false;
+
+    // 保存当前状态用于回滚
+    const previousFavorites = get().favorites;
+    const targetFavorite = previousFavorites.find(f => f.target_type === targetType && f.target_id === targetId);
+
+    // 乐观更新本地状态
+    set(state => ({
+      favorites: state.favorites.filter(f => !(f.target_type === targetType && f.target_id === targetId))
+    }));
+
     try {
       const { error } = await supabase
         .from('favorites')
@@ -91,15 +112,19 @@ export const useFavoritesStore = create<FavoritesStore>((set, get) => ({
 
       if (error) {
         console.error('移除收藏失败:', error.message);
+        // 回滚本地状态
+        if (targetFavorite) {
+          set({ favorites: [...previousFavorites] });
+        }
         return false;
       }
-
-      set(state => ({
-        favorites: state.favorites.filter(f => !(f.target_type === targetType && f.target_id === targetId))
-      }));
       return true;
     } catch (err) {
       console.error('移除收藏出错:', err);
+      // 回滚本地状态
+      if (targetFavorite) {
+        set({ favorites: [...previousFavorites] });
+      }
       return false;
     }
   },

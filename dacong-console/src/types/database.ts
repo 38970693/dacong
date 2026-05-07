@@ -86,6 +86,30 @@ export interface TrendingResponse {
   trending: (Post & { score: number; rank: number })[];
 }
 
+// 评测文章 (新版本)
+export interface ReviewArticle {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  summary: string | null;
+  author_name: string;
+  author_avatar: string | null;
+  cover_image: string | null;
+  tags: string[];
+  tools_mentioned: string[];
+  views: number;
+  likes: number;
+  published: boolean;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// 评测文章创建/更新 DTO
+export type ReviewArticleInput = Omit<ReviewArticle, 'id' | 'views' | 'likes' | 'created_at' | 'updated_at'>;
+export type ReviewArticleUpdate = Partial<Omit<ReviewArticle, 'id' | 'created_at'>>;
+
 // =============================================
 // v2.0 新增类型
 // =============================================
@@ -184,6 +208,8 @@ export interface SearchResult {
   title: string;
   summary: string;
   score: number;
+  source?: string;
+  created_at?: string;
 }
 
 // 搜索响应

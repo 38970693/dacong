@@ -58,28 +58,49 @@ export const useLikesStore = create<LikesStore>((set, get) => ({
 
   like: async (userId: string, targetType: TargetType, targetId: string) => {
     if (!userId) return false;
+
+    // 乐观更新本地状态
+    const newLike = { id: crypto.randomUUID(), user_id: userId, target_type: targetType, target_id: targetId, created_at: new Date().toISOString() };
+    set(state => ({
+      likes: [...state.likes, newLike]
+    }));
+
     try {
       const { error } = await supabase
         .from('likes')
         .insert({ user_id: userId, target_type: targetType, target_id: targetId });
 
       if (error) {
+        // 数据库插入失败，回滚本地状态
         console.error('点赞失败:', error.message);
+        set(state => ({
+          likes: state.likes.filter(l => !(l.target_type === targetType && l.target_id === targetId))
+        }));
         return false;
       }
-
-      set(state => ({
-        likes: [...state.likes, { id: crypto.randomUUID(), user_id: userId, target_type: targetType, target_id: targetId, created_at: new Date().toISOString() }]
-      }));
       return true;
     } catch (err) {
+      // 异常时回滚
       console.error('点赞出错:', err);
+      set(state => ({
+        likes: state.likes.filter(l => !(l.target_type === targetType && l.target_id === targetId))
+      }));
       return false;
     }
   },
 
   unlike: async (userId: string, targetType: TargetType, targetId: string) => {
     if (!userId) return false;
+
+    // 保存当前状态用于回滚
+    const previousLikes = get().likes;
+    const targetLike = previousLikes.find(l => l.target_type === targetType && l.target_id === targetId);
+
+    // 乐观更新本地状态
+    set(state => ({
+      likes: state.likes.filter(l => !(l.target_type === targetType && l.target_id === targetId))
+    }));
+
     try {
       const { error } = await supabase
         .from('likes')
@@ -90,15 +111,19 @@ export const useLikesStore = create<LikesStore>((set, get) => ({
 
       if (error) {
         console.error('取消点赞失败:', error.message);
+        // 回滚本地状态
+        if (targetLike) {
+          set({ likes: [...previousLikes] });
+        }
         return false;
       }
-
-      set(state => ({
-        likes: state.likes.filter(l => !(l.target_type === targetType && l.target_id === targetId))
-      }));
       return true;
     } catch (err) {
       console.error('取消点赞出错:', err);
+      // 回滚本地状态
+      if (targetLike) {
+        set({ likes: [...previousLikes] });
+      }
       return false;
     }
   },

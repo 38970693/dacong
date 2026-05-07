@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import type { Tag } from '@/types/database';
 
 interface TagsFilterProps {
   onTagSelect?: (tag: string | null) => void;
   selectedTag?: string | null;
+  showAll?: boolean;
 }
 
-export function TagsFilter({ onTagSelect, selectedTag }: TagsFilterProps) {
+export function TagsFilter({ onTagSelect, selectedTag, showAll = true }: TagsFilterProps) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,24 +59,26 @@ export function TagsFilter({ onTagSelect, selectedTag }: TagsFilterProps) {
 
   return (
     <div className="flex flex-wrap gap-2">
-      <button
-        onClick={() => onTagSelect?.(null)}
-        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-          !selectedTag
-            ? 'bg-[var(--foreground)] text-white'
-            : 'bg-[var(--background)] text-[var(--text-muted)] hover:text-[var(--foreground)]'
-        }`}
-      >
-        全部
-      </button>
-      {tags.map((tag) => (
+      {showAll && (
         <button
-          key={tag.id}
-          onClick={() => onTagSelect?.(tag.slug)}
+          onClick={() => onTagSelect?.(null)}
           className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+            !selectedTag
+              ? 'bg-[var(--foreground)] text-white'
+              : 'bg-[var(--background)] text-[var(--text-muted)] hover:text-[var(--foreground)]'
+          }`}
+        >
+          全部
+        </button>
+      )}
+      {tags.map((tag) => (
+        <Link
+          key={tag.id}
+          href={`/tags/${tag.slug}`}
+          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all hover:opacity-80 ${
             selectedTag === tag.slug
               ? 'text-white'
-              : 'text-[var(--text-muted)] hover:text-[var(--foreground)]'
+              : 'text-[var(--text-muted)]'
           }`}
           style={{
             backgroundColor: selectedTag === tag.slug ? tag.color : 'var(--background)',
@@ -83,7 +87,7 @@ export function TagsFilter({ onTagSelect, selectedTag }: TagsFilterProps) {
         >
           #{tag.name}
           <span className="ml-1 opacity-60">{tag.post_count}</span>
-        </button>
+        </Link>
       ))}
     </div>
   );
