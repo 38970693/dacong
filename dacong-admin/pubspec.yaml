@@ -36,7 +36,7 @@ dependencies:
   data_table_2: ^2.5.0
 
   # 错误监控
-  sentry_flutter: ^7.18.0
+  sentry_flutter: ^8.14.2
 
 dev_dependencies:
   flutter_test:
