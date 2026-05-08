@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import type { Tag } from '@/types/database';
 
@@ -9,15 +9,21 @@ interface TagCloudProps {
   minPostCount?: number;
 }
 
+function getMockTags(): Tag[] {
+  return [
+    { id: '1', name: 'AI', slug: 'ai', color: '#8B5CF6', post_count: 120, created_at: '' },
+    { id: '2', name: '开发工具', slug: 'devtools', color: '#10B981', post_count: 89, created_at: '' },
+    { id: '3', name: '设计', slug: 'design', color: '#F59E0B', post_count: 67, created_at: '' },
+    { id: '4', name: '效率', slug: 'productivity', color: '#EF4444', post_count: 54, created_at: '' },
+  ];
+}
+
 export function TagCloud({ maxTags = 50, minPostCount = 0 }: TagCloudProps) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchTags();
-  }, []);
-
-  async function fetchTags() {
+  const fetchTags = useCallback(async () => {
+    setLoading(true);
     try {
       const res = await fetch('/api/tags');
       const json = await res.json();
@@ -34,22 +40,11 @@ export function TagCloud({ maxTags = 50, minPostCount = 0 }: TagCloudProps) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [maxTags, minPostCount]);
 
-  function getMockTags(): Tag[] {
-    return [
-      { id: '1', name: 'AI', slug: 'ai', color: '#3B82F6', post_count: 156, created_at: '' },
-      { id: '2', name: '编程', slug: 'programming', color: '#10B981', post_count: 89, created_at: '' },
-      { id: '3', name: '创意写作', slug: 'creative-writing', color: '#EC4899', post_count: 67, created_at: '' },
-      { id: '4', name: '数学推理', slug: 'math', color: '#F59E0B', post_count: 123, created_at: '' },
-      { id: '5', name: '多模态', slug: 'multimodal', color: '#8B5CF6', post_count: 45, created_at: '' },
-      { id: '6', name: 'RAG', slug: 'rag', color: '#6366F1', post_count: 234, created_at: '' },
-      { id: '7', name: '开源', slug: 'open-source', color: '#22C55E', post_count: 178, created_at: '' },
-      { id: '8', name: '中文', slug: 'chinese', color: '#EF4444', post_count: 56, created_at: '' },
-      { id: '9', name: '对比评测', slug: 'benchmark', color: '#F97316', post_count: 98, created_at: '' },
-      { id: '10', name: '大模型', slug: 'llm', color: '#14B8A6', post_count: 167, created_at: '' },
-    ];
-  }
+  useEffect(() => {
+    fetchTags();
+  }, [fetchTags]);
 
   // 计算字体大小（基于 post_count）
   function getFontSize(postCount: number, maxCount: number): number {

@@ -126,7 +126,7 @@ class _NewsPageState extends ConsumerState<NewsPage> {
               ref.read(newsProvider.notifier).loadInitial(source: key == 'all' ? null : key);
             },
             backgroundColor: Colors.grey.shade100,
-            selectedColor: color.withOpacity(0.15),
+            selectedColor: color.withValues(alpha: 0.15),
             checkmarkColor: color,
             labelStyle: TextStyle(
               color: isSelected ? color : Colors.grey.shade600,

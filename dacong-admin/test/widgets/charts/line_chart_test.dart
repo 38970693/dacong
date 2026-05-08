@@ -13,7 +13,7 @@ void main() {
               title: 'Test Line Chart',
               labels: ['1', '2', '3'],
               datasets: [
-                custom.LineChartData(
+                custom.LineChartDataset(
                   label: 'Series 1',
                   spots: [
                     const FlSpot(0, 10),
@@ -39,7 +39,7 @@ void main() {
               title: 'Test Chart',
               labels: ['1', '2'],
               datasets: [
-                custom.LineChartData(
+                custom.LineChartDataset(
                   label: 'Series 1',
                   spots: [
                     const FlSpot(0, 10),
@@ -47,7 +47,7 @@ void main() {
                   ],
                   color: Colors.blue,
                 ),
-                custom.LineChartData(
+                custom.LineChartDataset(
                   label: 'Series 2',
                   spots: [
                     const FlSpot(0, 15),
@@ -91,7 +91,7 @@ void main() {
               labels: ['1'],
               showGrid: true,
               datasets: [
-                custom.LineChartData(
+                custom.LineChartDataset(
                   label: 'Series 1',
                   spots: [const FlSpot(0, 10)],
                   color: Colors.blue,
@@ -116,7 +116,7 @@ void main() {
               minY: 0,
               maxY: 100,
               datasets: [
-                custom.LineChartData(
+                custom.LineChartDataset(
                   label: 'Series 1',
                   spots: [const FlSpot(0, 50)],
                   color: Colors.blue,

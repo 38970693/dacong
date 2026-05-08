@@ -29,8 +29,8 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
 
     // 捕获 Flutter 框架错误
     FlutterError.onError = (details) {
-      // 上报到 Sentry
-      Sentry.captureException(
+      // 上报到 Sentry (检查是否已初始化)
+      SentryConfig.captureException(
         details.exception,
         stackTrace: details.stack,
       );

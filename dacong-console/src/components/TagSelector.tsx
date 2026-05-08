@@ -8,6 +8,7 @@ interface Tag {
   slug: string;
   color: string;
   post_count: number;
+  created_at: string;
 }
 
 interface TagSelectorProps {
@@ -23,11 +24,8 @@ export function TagSelector({ selectedTags, onSelect, onClose }: TagSelectorProp
   const [creatingTag, setCreatingTag] = useState(false);
   const [newTagName, setNewTagName] = useState('');
 
-  useEffect(() => {
-    fetchTags();
-  }, []);
-
-  async function fetchTags() {
+  const fetchTags = useCallback(async () => {
+    setLoading(true);
     try {
       const res = await fetch('/api/tags');
       const json = await res.json();
@@ -39,9 +37,13 @@ export function TagSelector({ selectedTags, onSelect, onClose }: TagSelectorProp
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  async function handleCreateTag() {
+  useEffect(() => {
+    fetchTags();
+  }, [fetchTags]);
+
+  const handleCreateTag = useCallback(async () => {
     if (!newTagName.trim()) return;
 
     setCreatingTag(true);
@@ -54,7 +56,7 @@ export function TagSelector({ selectedTags, onSelect, onClose }: TagSelectorProp
       const json = await res.json();
 
       if (json.success) {
-        setTags([json.data, ...tags]);
+        setTags(prev => [json.data, ...prev]);
         onSelect(json.data);
       } else {
         alert(json.error || '创建标签失败');
@@ -65,7 +67,7 @@ export function TagSelector({ selectedTags, onSelect, onClose }: TagSelectorProp
       setCreatingTag(false);
       setNewTagName('');
     }
-  }
+  }, [newTagName, onSelect]);
 
   const filteredTags = tags.filter(tag =>
     tag.name.toLowerCase().includes(search.toLowerCase())

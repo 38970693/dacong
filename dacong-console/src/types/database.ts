@@ -175,6 +175,7 @@ export interface Comment {
   likes: number;
   created_at: string;
   updated_at: string;
+  user_email?: string;  // 从 profiles join 得到的邮箱
   // 关联数据
   user?: {
     id: string;

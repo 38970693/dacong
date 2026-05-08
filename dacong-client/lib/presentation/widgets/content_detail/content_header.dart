@@ -44,7 +44,7 @@ class ContentHeader extends StatelessWidget {
               Text(
                 content.vendor,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                     ),
               ),
               const SizedBox(height: 16),
@@ -59,7 +59,7 @@ class ContentHeader extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -87,7 +87,7 @@ class ContentHeader extends StatelessWidget {
                   Text(
                     '${content.helpfulCount + content.unhelpfulCount} 人反馈',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                       fontSize: 14,
                     ),
                   ),

@@ -7,10 +7,13 @@ class SentryConfig {
     defaultValue: '',
   );
 
+  static bool _initialized = false;
+  static bool get isInitialized => _initialized;
+
   static Future<void> init(AppRunner appRunner) async {
     if (_dsn.isEmpty) {
       if (kDebugMode) {
-        print('Sentry DSN not configured, skipping initialization');
+        debugPrint('Sentry DSN not configured, skipping initialization');
       }
       await appRunner();
       return;
@@ -28,6 +31,7 @@ class SentryConfig {
 
         // 采样率配置
         options.tracesSampleRate = kDebugMode ? 1.0 : 0.2;
+        // ignore: experimental_member_use
         options.profilesSampleRate = kDebugMode ? 1.0 : 0.1;
 
         // 性能监控
@@ -40,6 +44,7 @@ class SentryConfig {
         // 附件配置
         options.attachScreenshot = true;
         options.screenshotQuality = SentryScreenshotQuality.low;
+        // ignore: experimental_member_use
         options.attachViewHierarchy = true;
 
         // 过滤敏感信息
@@ -68,6 +73,7 @@ class SentryConfig {
       },
       appRunner: appRunner,
     );
+    _initialized = true;
   }
 
   /// 设置用户上下文
@@ -77,6 +83,7 @@ class SentryConfig {
     String? username,
     Map<String, dynamic>? extras,
   }) {
+    if (!_initialized) return;
     Sentry.configureScope((scope) {
       scope.setUser(SentryUser(
         id: id,
@@ -89,6 +96,7 @@ class SentryConfig {
 
   /// 清除用户上下文
   static void clearUser() {
+    if (!_initialized) return;
     Sentry.configureScope((scope) {
       scope.setUser(null);
     });
@@ -96,6 +104,7 @@ class SentryConfig {
 
   /// 设置标签
   static void setTag(String key, String value) {
+    if (!_initialized) return;
     Sentry.configureScope((scope) {
       scope.setTag(key, value);
     });
@@ -103,6 +112,7 @@ class SentryConfig {
 
   /// 设置上下文
   static void setContext(String key, Map<String, dynamic> value) {
+    if (!_initialized) return;
     Sentry.configureScope((scope) {
       scope.setContexts(key, value);
     });
@@ -115,6 +125,7 @@ class SentryConfig {
     SentryLevel? level,
     Map<String, dynamic>? data,
   }) {
+    if (!_initialized) return;
     Sentry.addBreadcrumb(Breadcrumb(
       message: message,
       category: category,
@@ -130,6 +141,10 @@ class SentryConfig {
     String? hint,
     SentryLevel? level,
   }) async {
+    if (!_initialized) {
+      debugPrint('Sentry not initialized, skipping exception capture');
+      return;
+    }
     await Sentry.captureException(
       exception,
       stackTrace: stackTrace,
@@ -148,12 +163,17 @@ class SentryConfig {
     SentryLevel? level,
     Map<String, dynamic>? extras,
   }) async {
+    if (!_initialized) {
+      debugPrint('Sentry not initialized, skipping message capture');
+      return;
+    }
     await Sentry.captureMessage(
       message,
       level: level ?? SentryLevel.info,
       withScope: (scope) {
         if (extras != null) {
           extras.forEach((key, value) {
+            // ignore: deprecated_member_use
             scope.setExtra(key, value);
           });
         }
@@ -167,6 +187,9 @@ class SentryConfig {
     required String operation,
     String? description,
   }) {
+    if (!_initialized) {
+      return NoOpSentrySpan();
+    }
     final transaction = Sentry.startTransaction(
       name,
       operation,
@@ -174,4 +197,16 @@ class SentryConfig {
     );
     return transaction;
   }
+}
+
+/// No-op Sentry span for when Sentry is not initialized
+class NoOpSentrySpan implements ISentrySpan {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => null;
+}
+
+// Extension to make NoOpSentrySpan usage transparent
+extension NoOpSentrySpanExtension on NoOpSentrySpan {
+  /// Returns this instance for method chaining
+  NoOpSentrySpan get self => this;
 }

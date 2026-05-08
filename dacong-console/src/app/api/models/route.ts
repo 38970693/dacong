@@ -27,8 +27,8 @@ export async function GET(request: NextRequest) {
     if (error) throw error;
 
     return NextResponse.json({ success: true, data });
-  } catch (error) {
-    console.error('Models API error:', error);
+  } catch (err) {
+    console.error('Models API error:', err);
     return NextResponse.json({ success: false, error: 'Failed to fetch models' }, { status: 500 });
   }
 }

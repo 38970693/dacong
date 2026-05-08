@@ -65,12 +65,6 @@ export default function AuditLogsPage() {
   const [page, setPage] = useState(0);
   const pageSize = 20;
 
-  useEffect(() => {
-    // TODO: 检查用户是否是管理员
-    // if (user?.role !== 'admin') return;
-    loadLogs();
-  }, [page, filters]);
-
   async function loadLogs() {
     await fetchLogs({
       action: filters.action as AuditAction || undefined,
@@ -82,6 +76,10 @@ export default function AuditLogsPage() {
       offset: page * pageSize
     });
   }
+
+  useEffect(() => {
+    loadLogs();
+  }, [page, filters]);
 
   function handleFilterChange(key: string, value: string) {
     setFilters(prev => ({ ...prev, [key]: value }));

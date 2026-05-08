@@ -72,7 +72,7 @@ class _UserCenterView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.person_outline, size: 80, color: theme.colorScheme.primary.withOpacity(0.5)),
+          Icon(Icons.person_outline, size: 80, color: theme.colorScheme.primary.withValues(alpha: 0.5)),
           const SizedBox(height: 24),
           Text(l10n.notLoggedIn, style: theme.textTheme.titleLarge),
           const SizedBox(height: 8),
@@ -352,6 +352,7 @@ class _UserCenterView extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('中文'),
               value: 'zh',
@@ -363,6 +364,7 @@ class _UserCenterView extends StatelessWidget {
                 }
               },
             ),
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('English'),
               value: 'en',
@@ -388,6 +390,7 @@ class _UserCenterView extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: Text(l10n.lightTheme),
               value: 'light',
@@ -399,6 +402,7 @@ class _UserCenterView extends StatelessWidget {
                 }
               },
             ),
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: Text(l10n.darkTheme),
               value: 'dark',
@@ -410,6 +414,7 @@ class _UserCenterView extends StatelessWidget {
                 }
               },
             ),
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: Text(l10n.systemTheme),
               value: 'system',

@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { TagsDisplay } from '@/components/TagsDisplay';
 import { TagSelector } from '@/components/TagSelector';
@@ -17,39 +17,32 @@ export default function PostDetailPage() {
   const router = useRouter();
   const postId = params?.id as string;
 
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<PostType | null>(null);
   const [postTags, setPostTags] = useState<Tag[]>([]);
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [liked, setLiked] = useState(false);
   const [showTagSelector, setShowTagSelector] = useState(false);
 
-  useEffect(() => {
-    if (postId) {
-      fetchPost(postId);
-      fetchPostTags(postId);
-      fetchComments(postId);
-    }
-  }, [postId]);
-
-  async function fetchPost(id: string) {
+  const fetchPost = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await supabase
+      const { data, error: fetchError } = await supabase
         .from('posts')
-        .select('id, title, content, source, source_url, views, likes, comments_count, created_at')
+        .select('id, raw_post_id, title, content, source, source_url, views, likes, comments_count, created_at, updated_at')
         .eq('id', id)
         .single();
 
-      if (error) throw error;
+      if (fetchError) throw fetchError;
       setPost(data);
     } catch (err) {
       console.error('Fetch post error:', err);
       setError('获取帖子失败');
       setPost({
         id,
+        raw_post_id: null,
         title: '帖子详情加载失败',
         content: '请返回重试',
         source: 'System',
@@ -58,13 +51,14 @@ export default function PostDetailPage() {
         likes: 0,
         comments_count: 0,
         created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       });
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  async function fetchPostTags(id: string) {
+  const fetchPostTags = useCallback(async (id: string) => {
     try {
       const { data } = await supabase
         .from('post_tags')
@@ -75,7 +69,8 @@ export default function PostDetailPage() {
             id,
             name,
             slug,
-            color
+            color,
+            created_at
           )
         `)
         .eq('post_id', id);
@@ -88,70 +83,81 @@ export default function PostDetailPage() {
     } catch {
       setPostTags([]);
     }
-  }
+  }, []);
 
-  async function fetchComments(postId: string) {
+  const fetchComments = useCallback(async (id: string) => {
     try {
       const { data } = await supabase
         .from('reviews')
-        .select('id, content, created_at, user_email')
-        .eq('post_id', postId)
+        .select('id, target_type, target_id, user_id, content, parent_id, likes, created_at, updated_at, profiles(email)')
+        .eq('post_id', id)
         .order('created_at', { ascending: false })
         .limit(20);
-      setComments(data || []);
+      const comments = data?.map(r => ({
+        ...r,
+        user_email: (r.profiles as any)?.email || 'Anonymous'
+      })) || [];
+      setComments(comments);
     } catch {
       setComments([]);
     }
-  }
+  }, []);
 
-  async function handleLike() {
+  useEffect(() => {
+    if (postId) {
+      fetchPost(postId);
+      fetchPostTags(postId);
+      fetchComments(postId);
+    }
+  }, [postId, fetchPost, fetchPostTags, fetchComments]);
+
+  const handleLike = useCallback(() => {
     if (!post) return;
     const newLiked = !liked;
     setLiked(newLiked);
     setPost({ ...post, likes: post.likes + (newLiked ? 1 : -1) });
-  }
+  }, [post, liked]);
 
-  async function handleAddTag(tag: Tag) {
+  const handleAddTag = useCallback(async (tag: Tag) => {
     if (!post) return;
 
-    // 检查是否已添加
     if (postTags.some(pt => pt.id === tag.id)) {
       return;
     }
 
     try {
-      const { data, error } = await supabase
+      const { error: insertError } = await supabase
         .from('post_tags')
         .insert({ post_id: post.id, tag_id: tag.id })
         .select()
         .single();
 
-      if (error) throw error;
+      if (insertError) throw insertError;
 
-      setPostTags([...postTags, tag]);
+      setPostTags(prev => [...prev, tag]);
       setShowTagSelector(false);
     } catch (err) {
       console.error('Add tag error:', err);
     }
-  }
+  }, [post, postTags]);
 
-  async function handleRemoveTag(tagId: string) {
+  const handleRemoveTag = useCallback(async (tagId: string) => {
     if (!post) return;
 
     try {
-      const { error } = await supabase
+      const { error: deleteError } = await supabase
         .from('post_tags')
         .delete()
         .eq('post_id', post.id)
         .eq('tag_id', tagId);
 
-      if (error) throw error;
+      if (deleteError) throw deleteError;
 
-      setPostTags(postTags.filter(t => t.id !== tagId));
+      setPostTags(prev => prev.filter(t => t.id !== tagId));
     } catch (err) {
       console.error('Remove tag error:', err);
     }
-  }
+  }, [post]);
 
   if (loading) {
     return (

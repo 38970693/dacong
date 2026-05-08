@@ -2,22 +2,30 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { createSupabaseClient } from '@/utils/supabase/client';
+import type { Post } from '@/types/database';
 
 // Error boundary component
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode; fallback: React.ReactNode },
-  { hasError: boolean; error: Error | null }
-> {
-  constructor(props: any) {
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  fallback: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  render() {
+  render(): React.ReactNode {
     if (this.state.hasError) {
       return this.props.fallback;
     }
@@ -25,8 +33,15 @@ class ErrorBoundary extends React.Component<
   }
 }
 
+interface DebugPost {
+  id: string;
+  title: string;
+  status: string;
+  created_at: string;
+}
+
 export default function DebugPage() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<DebugPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [debug, setDebug] = useState<string[]>([]);
@@ -38,11 +53,20 @@ export default function DebugPage() {
     console.log('[Debug]', msg);
   }, []);
 
+  // Use requestAnimationFrame to avoid cascading renders
   useEffect(() => {
-    addDebug('useEffect fired');
-    setClientReady(true);
+    const timerId = requestAnimationFrame(() => {
+      addDebug('useEffect fired');
+      setClientReady(true);
+    });
 
-    async function fetch() {
+    return () => cancelAnimationFrame(timerId);
+  }, [addDebug]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchData() {
       try {
         addDebug('Creating client...');
         const supabase = createSupabaseClient();
@@ -59,25 +83,35 @@ export default function DebugPage() {
           .eq('status', 'approved')
           .limit(5);
 
+        if (cancelled) return;
+
         addDebug('Got result - status: ' + result.status);
         addDebug('Error: ' + (result.error ? result.error.message : 'none'));
         addDebug('Data length: ' + (result.data?.length || 0));
 
         if (result.data) {
-          setPosts(result.data);
+          setPosts(result.data as DebugPost[]);
         }
         if (result.error) {
           setError(result.error.message);
         }
-      } catch (e: any) {
-        addDebug('CATCH ERROR: ' + e.message);
-        setError(e.message);
+      } catch (err) {
+        if (cancelled) return;
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        addDebug('CATCH ERROR: ' + errorMessage);
+        setError(errorMessage);
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
-    fetch();
+    fetchData();
+
+    return () => {
+      cancelled = true;
+    };
   }, [addDebug]);
 
   return (

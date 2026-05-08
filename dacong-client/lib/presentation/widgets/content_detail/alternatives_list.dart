@@ -91,8 +91,8 @@ class _AlternativeCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: content.priceInfo.isFree
-                            ? Colors.green.withOpacity(0.1)
-                            : Colors.blue.withOpacity(0.1),
+                            ? Colors.green.withValues(alpha: 0.1)
+                            : Colors.blue.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(

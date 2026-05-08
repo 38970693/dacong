@@ -171,7 +171,7 @@ class NotificationItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: notification.isRead ? null : Colors.blue.withOpacity(0.05),
+          color: notification.isRead ? null : Colors.blue.withValues(alpha: 0.05),
           border: Border(
             bottom: BorderSide(color: Colors.grey[200]!),
           ),
@@ -184,7 +184,7 @@ class NotificationItem extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: _getTypeColor(notification.type).withOpacity(0.1),
+                color: _getTypeColor(notification.type).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(

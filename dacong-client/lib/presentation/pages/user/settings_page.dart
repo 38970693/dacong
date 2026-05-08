@@ -176,6 +176,7 @@ class _SettingsView extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('中文'),
               value: 'zh',
@@ -187,6 +188,7 @@ class _SettingsView extends StatelessWidget {
                 }
               },
             ),
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('English'),
               value: 'en',
@@ -212,6 +214,7 @@ class _SettingsView extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: Text(l10n.lightTheme),
               value: 'light',
@@ -223,6 +226,7 @@ class _SettingsView extends StatelessWidget {
                 }
               },
             ),
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: Text(l10n.darkTheme),
               value: 'dark',
@@ -234,6 +238,7 @@ class _SettingsView extends StatelessWidget {
                 }
               },
             ),
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: Text(l10n.systemTheme),
               value: 'system',

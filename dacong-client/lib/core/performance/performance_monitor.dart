@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import '../config/sentry_config.dart';
+
 /// 性能监控器
 /// 监控页面加载时间、API 请求时间、渲染性能等
 class PerformanceMonitor {
@@ -177,12 +179,14 @@ class PerformanceMonitor {
     double value,
     Map<String, dynamic> tags,
   ) {
+    if (!SentryConfig.isInitialized) return;
+
     try {
       // 创建事务
-      final transaction = Sentry.startTransaction(
-        operation,
-        'performance',
-        bindToScope: false,
+      final transaction = SentryConfig.startTransaction(
+        name: operation,
+        operation: 'performance',
+        description: description,
       );
 
       // 设置性能测量
@@ -201,15 +205,17 @@ class PerformanceMonitor {
 
   /// 报告慢操作
   void _reportSlowOperation(String type, String name, int durationMs) {
+    if (!SentryConfig.isInitialized) return;
+
     try {
-      Sentry.captureMessage(
+      SentryConfig.captureMessage(
         'Slow $type detected: $name',
         level: SentryLevel.warning,
-        withScope: (scope) {
-          scope.setTag('performance_issue', 'slow_operation');
-          scope.setTag('operation_type', type);
-          scope.setTag('operation_name', name);
-          scope.setExtra('duration_ms', durationMs);
+        extras: {
+          'performance_issue': 'slow_operation',
+          'operation_type': type,
+          'operation_name': name,
+          'duration_ms': durationMs,
         },
       );
     } catch (e) {

@@ -171,22 +171,38 @@ class SupabaseAuthDataSource {
 
   /// 映射 Supabase AuthException 到 AuthFailure
   AuthFailure _mapAuthException(AuthException exception) {
+    final message = exception.message.toLowerCase();
+
+    // 检查邮箱未验证的错误
+    if (message.contains('email not confirmed') ||
+        message.contains('email_not_confirmed') ||
+        exception.statusCode == '422') {
+      return const AuthFailure.emailNotVerified();
+    }
+
+    // 检查邮件频率限制
+    if (message.contains('rate limit') ||
+        message.contains('too many requests') ||
+        message.contains('email rate limit')) {
+      return const AuthFailure.emailRateLimit();
+    }
+
     switch (exception.statusCode) {
       case '400':
-        if (exception.message.contains('Invalid login credentials')) {
+        if (message.contains('invalid login credentials')) {
           return const AuthFailure.invalidCredentials();
         }
-        if (exception.message.contains('User already registered')) {
+        if (message.contains('user already registered')) {
           return const AuthFailure.emailAlreadyInUse();
         }
-        if (exception.message.contains('Password')) {
+        if (message.contains('password')) {
           return const AuthFailure.weakPassword();
         }
         return AuthFailure.serverError(exception.message);
       case '404':
         return const AuthFailure.userNotFound();
-      case '422':
-        return const AuthFailure.emailNotVerified();
+      case '429':
+        return const AuthFailure.emailRateLimit();
       default:
         return AuthFailure.serverError(exception.message);
     }

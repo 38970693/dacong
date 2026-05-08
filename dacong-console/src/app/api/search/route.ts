@@ -183,8 +183,8 @@ export async function GET(request: NextRequest) {
         }
       }
     });
-  } catch (error) {
-    console.error('Search API error:', error);
+  } catch (err) {
+    console.error('Search API error:', err);
     return NextResponse.json({ success: false, error: 'Search failed' }, { status: 500 });
   }
 }

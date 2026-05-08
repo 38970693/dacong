@@ -307,7 +307,7 @@ class _PromptCard extends StatelessWidget {
             Row(children: [
               Container(
                 padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
                 child: Icon(icon, color: color, size: 22),
               ),
               const SizedBox(width: 12),
@@ -403,7 +403,7 @@ class _ToolCard extends StatelessWidget {
             Row(children: [
               Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+                decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
                 child: Icon(icon, color: color, size: 26),
               ),
               const SizedBox(width: 12),
@@ -433,7 +433,7 @@ class _ToolCard extends StatelessWidget {
               children: tags.map((t) => Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.08),
+                  color: color.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(t, style: TextStyle(fontSize: 11, color: color)),
