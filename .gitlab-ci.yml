@@ -549,9 +549,9 @@ flutter-build-android:
     - tags
 
 # ═══════════════════════════════════════════════
-# iOS 构建（需要 macOS runner）
-# GitLab.com 免费版不支持 macOS，请配置自托管 runner
-# 或在本地 macOS 机器上手动构建
+# iOS 构建 - 暂时禁用
+# 需要 macOS runner，GitLab.com 免费版不支持
+# 如需启用，改为 when: manual 或配置自托管 macOS runner
 # ═══════════════════════════════════════════════
 flutter-build-ios:
   stage: build
@@ -568,6 +568,7 @@ flutter-build-ios:
     paths:
       - artifacts/dacong-ios.tar.gz
     expire_in: 1 week
+  when: manual
   only:
     - main
     - develop
