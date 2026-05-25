@@ -22,10 +22,14 @@ class ErrorBoundary extends StatefulWidget {
 
 class _ErrorBoundaryState extends State<ErrorBoundary> {
   FlutterErrorDetails? _errorDetails;
+  FlutterErrorHandler? _originalOnError;
 
   @override
   void initState() {
     super.initState();
+
+    // 保存原始的 FlutterError.onError handler
+    _originalOnError = FlutterError.onError;
 
     // 捕获 Flutter 框架错误
     FlutterError.onError = (details) {
@@ -45,6 +49,13 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
       // 打印到控制台
       FlutterError.presentError(details);
     };
+  }
+
+  @override
+  void dispose() {
+    // 恢复原始的 FlutterError.onError handler
+    FlutterError.onError = _originalOnError ?? (details) => FlutterError.presentError(details);
+    super.dispose();
   }
 
   @override

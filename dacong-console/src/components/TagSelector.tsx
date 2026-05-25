@@ -125,7 +125,7 @@ export function TagSelector({ selectedTags, onSelect, onClose }: TagSelectorProp
         </div>
 
         {/* 标签列表 */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 scroll-container p-4">
           {loading ? (
             <div className="flex justify-center py-8">
               <div className="w-6 h-6 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>

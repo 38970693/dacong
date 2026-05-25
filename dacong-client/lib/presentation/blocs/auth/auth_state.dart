@@ -10,5 +10,6 @@ abstract class AuthState with _$AuthState {
   const factory AuthState.authenticated(User user) = _Authenticated;
   const factory AuthState.unauthenticated() = _Unauthenticated;
   const factory AuthState.emailNotVerified() = _EmailNotVerified;
+  const factory AuthState.emailRateLimit() = _EmailRateLimit;
   const factory AuthState.error(String message) = _Error;
 }

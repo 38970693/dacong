@@ -84,9 +84,9 @@ export function PostList() {
   }
 
   return (
-    <div className="min-h-full">
-      {/* 刷新提示条 */}
-      <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm px-5 py-3 border-b border-[var(--border)] flex items-center justify-between">
+    <div className="h-full flex flex-col">
+      {/* 内容计数条 */}
+      <div className="px-5 py-3 flex items-center justify-between bg-[var(--background)] border-b border-[var(--border)] flex-shrink-0">
         <span className="text-sm text-[var(--text-secondary)]">{posts.length} 条内容</span>
         <button
           onClick={refresh}
@@ -96,22 +96,24 @@ export function PostList() {
         </button>
       </div>
 
-      {/* 帖子列表 */}
-      <div className="divide-y divide-[var(--border)]">
-        {posts.map((post, index) => (
-          <div
-            key={post.id}
-            onClick={() => handlePostClick(post.id)}
-            className="p-4 hover:bg-gray-50 transition-colors cursor-pointer active:bg-gray-100"
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <PostCard post={post} onLoginRequired={() => {}} />
-          </div>
-        ))}
+      {/* 帖子列表 - 可滚动区域 */}
+      <div className="scroll-container-flex">
+        <div className="divide-y divide-[var(--border)]">
+          {posts.map((post, index) => (
+            <div
+              key={post.id}
+              onClick={() => handlePostClick(post.id)}
+              className="p-4 hover:bg-gray-50 transition-colors cursor-pointer active:bg-gray-100"
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <PostCard post={post} onLoginRequired={() => {}} />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* 加载更多 */}
-      <div ref={loaderRef} className="p-8 text-center">
+      <div ref={loaderRef} className="p-8 text-center flex-shrink-0">
         {isLoading && (
           <div className="flex items-center justify-center gap-3">
             <div className="loading-spinner" />

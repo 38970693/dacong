@@ -39,7 +39,7 @@ class _DacongLineChartState extends State<DacongLineChart> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.05),
+          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: Padding(
@@ -88,13 +88,13 @@ class _DacongLineChartState extends State<DacongLineChart> {
           verticalInterval: 1,
           getDrawingHorizontalLine: (value) {
             return FlLine(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.2),
+              color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.2),
               strokeWidth: 1,
             );
           },
           getDrawingVerticalLine: (value) {
             return FlLine(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.2),
+              color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.2),
               strokeWidth: 1,
             );
           },
@@ -150,7 +150,7 @@ class _DacongLineChartState extends State<DacongLineChart> {
         borderData: FlBorderData(
           show: true,
           border: Border.all(
-            color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.2),
+            color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.2),
           ),
         ),
         minX: 0,
@@ -177,7 +177,7 @@ class _DacongLineChartState extends State<DacongLineChart> {
             ),
             belowBarData: BarAreaData(
               show: true,
-              color: dataset.color.withOpacity(0.1),
+              color: dataset.color.withValues(alpha: 0.1),
             ),
           );
         }).toList(),

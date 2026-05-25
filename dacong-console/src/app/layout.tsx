@@ -1,21 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
-import { Noto_Sans_SC } from "next/font/google";
 import { AuthProvider } from "@/components/AuthProvider";
 import { SkipLink, LiveRegion } from "@/components/a11y";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-const notoSansSC = Noto_Sans_SC({
-  variable: "--font-noto-sans-sc",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata: Metadata = {
   title: "DaCong - AI 模型排行榜",
@@ -52,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${notoSansSC.variable} min-h-screen bg-[var(--background)]`}
+        className="min-h-screen bg-[var(--background)]"
         /**
          * 支持减弱动效偏好 (WCAG 2.1 AA)
          * 用户在操作系统设置中启用"减弱动画效果"时，自动禁用 CSS 动画

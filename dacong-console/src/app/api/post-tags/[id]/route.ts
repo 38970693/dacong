@@ -1,3 +1,11 @@
+// Static export mode: exclude from static generation
+export const dynamic = 'force-static';
+
+// Static export requires: return placeholder, do not pre-render any static pages
+export async function generateStaticParams() {
+  return [{ id: '__placeholder__' }];
+}
+
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

@@ -1,6 +1,6 @@
 import '../../domain/entities/comment.dart';
 
-/// 评论模型
+/// 评论模型 - 支持 REST API 响应格式
 class CommentModel extends Comment {
   const CommentModel({
     required super.id,
@@ -15,18 +15,39 @@ class CommentModel extends Comment {
     required super.updatedAt,
   });
 
+  /// 从 REST API 响应创建（驼峰命名）
+  factory CommentModel.fromApiResponse(Map<String, dynamic> json) {
+    return CommentModel(
+      id: json['id'] as String,
+      contentId: json['targetId'] as String? ?? json['content_id'] as String? ?? '',
+      userId: json['userId'] as String? ?? json['user_id'] as String? ?? '',
+      parentId: json['parentId'] as String?,
+      content: json['content'] as String,
+      likesCount: json['likes'] as int? ?? json['likes_count'] as int? ?? 0,
+      replyCount: (json['replies'] as List?)?.length ?? json['reply_count'] as int? ?? 0,
+      isLiked: json['isLiked'] as bool? ?? json['is_liked'] as bool? ?? false,
+      createdAt: DateTime.parse(
+        json['createdAt'] as String? ?? json['created_at'] as String? ?? DateTime.now().toIso8601String()
+      ),
+      updatedAt: DateTime.parse(
+        json['updatedAt'] as String? ?? json['updated_at'] as String? ?? DateTime.now().toIso8601String()
+      ),
+    );
+  }
+
+  /// 从 Supabase Edge Function 响应创建（下划线命名）
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
       id: json['id'] as String,
-      contentId: json['content_id'] as String,
-      userId: json['user_id'] as String,
+      contentId: json['content_id'] as String? ?? '',
+      userId: json['user_id'] as String? ?? '',
       parentId: json['parent_id'] as String?,
       content: json['content'] as String,
-      likesCount: json['likes_count'] as int? ?? 0,
+      likesCount: json['likes_count'] as int? ?? json['likes'] as int? ?? 0,
       replyCount: json['reply_count'] as int? ?? 0,
       isLiked: json['is_liked'] as bool? ?? false,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String? ?? DateTime.now().toIso8601String()),
+      updatedAt: DateTime.parse(json['updated_at'] as String? ?? DateTime.now().toIso8601String()),
     );
   }
 

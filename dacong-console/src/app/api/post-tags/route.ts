@@ -1,3 +1,6 @@
+// Static export mode: exclude from static generation
+export const dynamic = 'force-static';
+
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

@@ -49,8 +49,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[var(--background)] flex flex-col max-w-lg mx-auto relative">
-      {/* 顶部导航栏 */}
-      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-xl border-b border-[var(--border)]">
+      {/* 顶部导航栏 - 适配 iOS 安全区域 */}
+      <header className="sticky top-0 z-20 pt-[env(safe-area-inset-top)] bg-white/95 backdrop-blur-xl border-b border-[var(--border)]">
         <div className="px-5 py-3 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ export default function Home() {
       </header>
 
       {/* 主内容区 */}
-      <main className="h-[calc(100vh-140px)] bg-[var(--background)] overflow-y-auto">
+      <main className="flex-1 overflow-y-auto overscroll-y-contain" style={{ height: '100dvh' }}>
         {renderContent()}
       </main>
 

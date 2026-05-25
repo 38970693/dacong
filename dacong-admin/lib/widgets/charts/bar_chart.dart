@@ -36,7 +36,7 @@ class _DacongBarChartState extends State<DacongBarChart> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.05),
+          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: Padding(
@@ -130,7 +130,7 @@ class _DacongBarChartState extends State<DacongBarChart> {
                   borderData: FlBorderData(
                     show: true,
                     border: Border.all(
-                      color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.2),
+                      color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.2),
                     ),
                   ),
                   barGroups: widget.groups.asMap().entries.map((entry) {
@@ -153,8 +153,8 @@ class _DacongBarChartState extends State<DacongBarChart> {
                             show: true,
                             toY: widget.maxY ?? rod.toY * 1.2,
                             color: isDark
-                                ? Colors.white.withOpacity(0.05)
-                                : Colors.grey.withOpacity(0.1),
+                                ? Colors.white.withValues(alpha: 0.05)
+                                : Colors.grey.withValues(alpha: 0.1),
                           ),
                         );
                       }).toList(),
@@ -166,7 +166,7 @@ class _DacongBarChartState extends State<DacongBarChart> {
                     horizontalInterval: 1,
                     getDrawingHorizontalLine: (value) {
                       return FlLine(
-                        color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.2),
+                        color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.2),
                         strokeWidth: 1,
                       );
                     },

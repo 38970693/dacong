@@ -60,9 +60,9 @@ export function Profile({ onLogin }: ProfileProps) {
   const myPosts: { id: string; title: string; likes: number; comments: number }[] = [];
 
   return (
-    <div className="h-full bg-[var(--background)] overflow-y-auto hide-scrollbar pb-20">
+    <div className="scroll-container-flex flex flex-col bg-[var(--background)]">
       {/* 个人信息区 - 渐变背景 */}
-      <div className="bg-gradient-to-b from-white to-[var(--background)] p-6 pt-16">
+      <div className="bg-gradient-to-b from-white to-[var(--background)] p-6 pt-16 flex-shrink-0">
         <div className="flex items-center gap-5">
           <div className="w-20 h-20 rounded-2xl bg-[var(--primary-light)] flex items-center justify-center text-4xl shadow-lg">
             {user.avatar}

@@ -104,7 +104,7 @@ export default function SearchBar({ className = '', placeholder = '搜索 AI 模
 
       {/* 搜索结果下拉 */}
       {isOpen && query.length >= 2 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-[var(--border)] shadow-lg overflow-hidden z-50 max-h-96 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-[var(--border)] shadow-lg z-50 max-h-96 scroll-container">
           {results.length > 0 ? (
             <>
               {/* 搜索信息 */}

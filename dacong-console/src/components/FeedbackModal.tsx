@@ -162,7 +162,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         </div>
 
         {/* 内容区 */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-5">
+        <div className="flex-1 scroll-container p-5 space-y-5">
           {/* 反馈类型选择 */}
           <div>
             <label className="block text-sm font-medium text-[var(--foreground)] mb-3">

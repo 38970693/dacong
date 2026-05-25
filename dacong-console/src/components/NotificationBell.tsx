@@ -160,7 +160,7 @@ export function NotificationBell() {
 
           {/* 通知列表 */}
           <div
-            className="max-h-[400px] overflow-y-auto"
+            className="max-h-[400px] scroll-container"
             role="presentation"
           >
             {notifications.length === 0 ? (

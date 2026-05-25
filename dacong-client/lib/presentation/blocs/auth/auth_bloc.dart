@@ -60,6 +60,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             if (failure is AuthFailure) {
               failure.maybeWhen(
                 emailNotVerified: () => emit(const AuthState.emailNotVerified()),
+                emailRateLimit: () => emit(const AuthState.emailRateLimit()),
                 orElse: () => emit(AuthState.error(_mapFailureToMessage(failure))),
               );
             } else {
@@ -78,7 +79,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         result.fold(
           (failure) => emit(AuthState.error(_mapFailureToMessage(failure))),
-          (session) => emit(AuthState.authenticated(session.user)),
+          (session) {
+            // 检查邮箱是否已验证
+            if (session.user.emailVerified) {
+              emit(AuthState.authenticated(session.user));
+            } else {
+              emit(const AuthState.emailNotVerified());
+            }
+          },
         );
       },
       logoutRequested: () async {

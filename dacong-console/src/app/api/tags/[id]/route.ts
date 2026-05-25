@@ -1,3 +1,11 @@
+// 静态导出模式：排除此路由
+export const dynamic = 'force-static';
+
+// 静态导出模式需要：返回占位符，不预渲染任何静态页面
+export async function generateStaticParams() {
+  return [{ id: '__placeholder__' }];
+}
+
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 

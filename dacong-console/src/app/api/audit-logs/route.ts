@@ -1,5 +1,8 @@
+// Static export mode: exclude from static generation
+export const dynamic = 'force-static';
+
 /**
- * 审计日志 API - 获取和创建审计日志
+ * Audit Logs API - fetch and create audit logs
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';

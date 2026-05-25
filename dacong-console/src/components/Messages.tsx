@@ -52,14 +52,14 @@ export function Messages() {
   };
 
   return (
-    <div className="h-full bg-[var(--background)] overflow-y-auto hide-scrollbar">
+    <div className="h-full flex flex-col bg-[var(--background)]">
       {/* 顶部导航 */}
-      <header className="sticky top-0 z-10 bg-white/95 backdrop-blur-lg px-5 py-4 border-b border-[var(--border)]">
+      <header className="sticky top-0 z-10 bg-white/95 backdrop-blur-lg px-5 py-4 border-b border-[var(--border)] flex-shrink-0">
         <h1 className="text-xl font-bold text-[var(--foreground)]">消息</h1>
       </header>
 
       {/* 消息类型网格 */}
-      <div className="grid grid-cols-4 gap-3 p-5">
+      <div className="grid grid-cols-4 gap-3 p-5 flex-shrink-0">
         {messageTypes.map((type) => (
           <div
             key={type.id}
@@ -84,13 +84,13 @@ export function Messages() {
       </div>
 
       {/* 分隔标题 */}
-      <div className="px-5 py-2 flex items-center gap-3">
+      <div className="px-5 py-2 flex items-center gap-3 flex-shrink-0">
         <span className="text-sm font-semibold text-[var(--foreground)]">最近消息</span>
         <span className="flex-1 h-px bg-[var(--border)]"></span>
       </div>
 
-      {/* 消息列表 */}
-      <div className="px-5 space-y-3 pb-20">
+      {/* 消息列表 - 可滚动区域 */}
+      <div className="scroll-container-flex px-5 space-y-3 pb-20">
         {mockMessages.map((msg) => (
           <div
             key={msg.id}

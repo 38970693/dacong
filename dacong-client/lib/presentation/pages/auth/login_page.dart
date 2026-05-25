@@ -61,6 +61,11 @@ class _LoginPageState extends State<LoginPage> {
                 return _buildEmailNotVerifiedView(context);
               }
 
+              // 邮件频率限制状态
+              if (state.maybeWhen(emailRateLimit: () => true, orElse: () => false)) {
+                return _buildEmailRateLimitView(context);
+              }
+
               final isLoading = state.maybeWhen(
                 loading: () => true,
                 orElse: () => false,
@@ -100,6 +105,44 @@ class _LoginPageState extends State<LoginPage> {
               email.isNotEmpty
                   ? '验证邮件已发送至 $email\n请查收邮件并点击验证链接'
                   : '请先登录以验证邮箱',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              onPressed: () => context.go('/auth/login'),
+              icon: const Icon(Icons.arrow_back),
+              label: const Text('返回登录'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmailRateLimitView(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.hourglass_empty,
+              size: 80,
+              color: Colors.blue,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              '操作过于频繁',
+              style: Theme.of(context).textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '发送邮件过于频繁，请稍后再试\n\n通常等待 1-5 分钟后即可重新操作',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.grey[600],
                   ),

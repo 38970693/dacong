@@ -365,7 +365,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.05),
+          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: ListView.separated(
@@ -374,7 +374,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
         itemCount: content.length,
         separatorBuilder: (context, index) => Divider(
           height: 1,
-          color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.shade200,
+          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.shade200,
         ),
         itemBuilder: (context, index) {
           final item = content[index];
@@ -414,7 +414,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.05),
+          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: ListView.separated(
@@ -423,7 +423,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
         itemCount: keywords.length,
         separatorBuilder: (context, index) => Divider(
           height: 1,
-          color: isDark ? Colors.white.withOpacity(0.1) : Colors.grey.shade200,
+          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.grey.shade200,
         ),
         itemBuilder: (context, index) {
           final item = keywords[index];
@@ -518,7 +518,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.05),
+          color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: InkWell(
@@ -534,7 +534,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(icon, color: color, size: 24),

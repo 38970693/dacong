@@ -1,5 +1,8 @@
+// Static export mode: exclude from static generation
+export const dynamic = 'force-static';
+
 /**
- * 通知 API - 获取、创建和管理用户通知
+ * Notifications API - fetch, create and manage user notifications
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';

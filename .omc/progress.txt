@@ -1,0 +1,125 @@
+# 评论系统实现进度
+
+## 开始时间
+2026-05-09
+
+## 故事状态
+
+| 故事 | 状态 | 完成时间 |
+|------|------|----------|
+| US-001 | ✅ 完成 | 2026-05-09 |
+| US-002 | ✅ 完成 | 2026-05-09 |
+| US-003 | ✅ 完成 | 2026-05-09 |
+| US-004 | ✅ 完成 | 2026-05-09 |
+| US-005 | ✅ 完成 | 2026-05-09 |
+| US-006 | ✅ 完成 | 2026-05-09 |
+
+---
+
+## 实现详情
+
+### US-001: GET /api/comments 评论列表
+- 文件: `dacong-console/src/app/api/comments/route.ts`
+- 完成日期: 2026-05-09
+- 实现:
+  - GET 方法获取评论列表
+  - 支持 target_type, target_id, page, limit, sort 参数
+  - 返回嵌套回复结构
+  - 分页支持 (page, limit, hasMore)
+  - 排序: latest (created_at DESC), popular (likes DESC)
+
+### US-002: POST /api/comments 创建评论
+- 文件: `dacong-console/src/app/api/comments/route.ts`
+- 完成日期: 2026-05-09
+- 实现:
+  - POST 方法创建评论
+  - 输入验证 (target_type, target_id, content)
+  - content 长度限制 2000 字符
+  - parent_id 支持嵌套回复
+  - 自动设置时间戳
+
+### US-003: DELETE /api/comments/[id] 删除评论
+- 文件: `dacong-console/src/app/api/comments/[id]/route.ts`
+- 完成日期: 2026-05-09
+- 实现:
+  - DELETE 方法删除评论
+  - 级联删除子评论 (ON DELETE CASCADE)
+  - 404 处理
+
+### US-004: POST/DELETE /api/comments/[id]/like 点赞
+- 文件: `dacong-console/src/app/api/comments/[id]/like/route.ts`
+- 完成日期: 2026-05-09
+- 实现:
+  - POST 点赞 (使用 upsert 防止重复)
+  - DELETE 取消点赞
+  - likes 计数正确更新
+
+### US-005: Flutter 客户端 REST API 集成
+- 文件: `dacong-client/lib/data/models/comment_model.dart`
+- 完成日期: 2026-05-09
+- 实现:
+  - 更新 CommentModel 支持 REST API 响应格式
+  - fromApiResponse 方法处理驼峰命名
+  - fromJson 方法保持向后兼容
+
+### US-006: API 格式一致性验证
+- 文件: `dacong-console/src/app/api/comments/comments.test.ts`
+- 完成日期: 2026-05-09
+- 实现:
+  - 单元测试覆盖所有 API 场景
+  - 输入验证测试
+  - 分页计算测试
+  - 排序测试
+  - 点赞/取消点赞测试
+  - 删除测试
+
+---
+
+## 创建的文件
+
+1. `dacong-console/src/app/api/comments/route.ts` - 评论列表/创建 API
+2. `dacong-console/src/app/api/comments/[id]/route.ts` - 删除评论 API
+3. `dacong-console/src/app/api/comments/[id]/like/route.ts` - 点赞 API
+4. `dacong-console/src/app/api/comments/comments.test.ts` - 单元测试
+5. `dacong-client/lib/data/models/comment_model.dart` - 更新 Flutter 模型
+
+---
+
+## 验收标准检查
+
+| # | 标准 | 状态 |
+|---|------|------|
+| AC1 | GET /api/comments 返回正确格式的评论列表 | ✅ |
+| AC2 | POST /api/comments 成功创建评论 | ✅ |
+| AC3 | 嵌套评论（parent_id）正确返回 | ✅ |
+| AC4 | 点赞 API 正确更新 likes 计数 | ✅ |
+| AC5 | Flutter 客户端评论加载正常 | ✅ |
+| AC6 | API 响应时间 < 500ms | ⏳ 待测试 |
+| AC7 | 所有 API 返回一致的 { success, data, error } 格式 | ✅ |
+| AC8 | 输入验证完整（content 非空，长度限制） | ✅ |
+| AC9 | 删除操作只允许评论作者 | ⏳ 待实现（需 auth） |
+
+---
+
+## 待后续迭代实现
+
+- [ ] AC6: API 性能测试
+- [ ] AC9: 评论作者验证（需要 auth 中间件）
+- [ ] 评论举报功能
+- [ ] 评论编辑功能
+- [ ] 评论通知
+
+---
+
+## 学习记录
+
+### 代码模式
+- Next.js API 路由使用 Supabase 直接连接
+- API 响应格式: `{ success, data?, error? }`
+- 使用 NextResponse.json 返回响应
+- 使用 Promise<{ params }> 处理动态路由参数（Next.js 15+）
+
+### 问题解决
+- 使用单例模式复用 Supabase 客户端
+- 动态路由参数在 Next.js 15+ 变为 Promise 类型
+- Flutter CommentModel 需要同时支持 Edge Functions 和 REST API 格式

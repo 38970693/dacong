@@ -1,3 +1,16 @@
+// 静态导出模式：排除此路由
+export const dynamic = 'force-static';
+
+// 静态导出模式需要：声明所有可能的参数组合
+export async function generateStaticParams() {
+  return [
+    { platform: 'swebench' },
+    { platform: 'arena' },
+    { platform: 'artificial-analysis' },
+    { platform: 'aiping' },
+  ];
+}
+
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 

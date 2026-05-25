@@ -7,6 +7,11 @@ class SentryConfig {
     defaultValue: '',
   );
 
+  static const String _version = String.fromEnvironment(
+    'APP_VERSION',
+    defaultValue: '0.1.0',
+  );
+
   static bool _initialized = false;
   static bool get isInitialized => _initialized;
 
@@ -26,8 +31,8 @@ class SentryConfig {
         // 环境配置
         options.environment = kDebugMode ? 'development' : 'production';
 
-        // 发布版本
-        options.release = 'dacong-client@0.1.0';
+        // 发布版本 (从环境变量获取，支持 CI/CD 注入)
+        options.release = 'dacong-client@$_version';
 
         // 采样率配置
         options.tracesSampleRate = kDebugMode ? 1.0 : 0.2;
@@ -202,7 +207,16 @@ class SentryConfig {
 /// No-op Sentry span for when Sentry is not initialized
 class NoOpSentrySpan implements ISentrySpan {
   @override
-  dynamic noSuchMethod(Invocation invocation) => null;
+  dynamic noSuchMethod(Invocation invocation) {
+    // 对于返回类型为 ISentrySpan 或 ISentryTransaction 的方法，返回 this 以支持链式调用
+    final returnType = invocation.memberName.toString();
+    if (returnType.contains('finish') ||
+        returnType.contains('startChild') ||
+        returnType.contains('span')) {
+      return this;
+    }
+    return null;
+  }
 }
 
 // Extension to make NoOpSentrySpan usage transparent
