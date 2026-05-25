@@ -384,6 +384,122 @@ test-api:
     - main
     - develop
 
+# Worker 测试 (Vitest)
+test-worker:
+  stage: test
+  image: node:18-alpine
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash nodejs npm
+  script:
+    - cd dacong-worker
+    - npm install
+    - npx vitest run --coverage
+    - |
+      # 计算覆盖率
+      if [ -f coverage/coverage-summary.json ]; then
+        COVERAGE=$(cat coverage/coverage-summary.json | grep -o '"total":{"lines":{"pct":[0-9.]*' | grep -o '[0-9.]*$' | head -1)
+        echo "测试覆盖率: $COVERAGE%"
+        echo "目标覆盖率: 80%"
+
+        # 检查是否达到目标
+        if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+          echo "警告: 覆盖率未达到 80% 目标"
+          exit 1
+        fi
+      fi
+  coverage: '/测试覆盖率: (\d+\.\d+)%/'
+  artifacts:
+    name: "worker-test-coverage"
+    paths:
+      - dacong-worker/coverage/
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: dacong-worker/coverage/cobertura-coverage.xml
+    expire_in: 30 days
+    when: always
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Console 测试 (Vitest)
+test-console:
+  stage: test
+  image: node:18-alpine
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash nodejs npm
+  script:
+    - cd dacong-console
+    - npm install
+    - npx vitest run --coverage
+    - |
+      # 计算覆盖率
+      if [ -f coverage/coverage-summary.json ]; then
+        COVERAGE=$(cat coverage/coverage-summary.json | grep -o '"total":{"lines":{"pct":[0-9.]*' | grep -o '[0-9.]*$' | head -1)
+        echo "测试覆盖率: $COVERAGE%"
+        echo "目标覆盖率: 80%"
+
+        # 检查是否达到目标
+        if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+          echo "警告: 覆盖率未达到 80% 目标"
+          exit 1
+        fi
+      fi
+  coverage: '/测试覆盖率: (\d+\.\d+)%/'
+  artifacts:
+    name: "console-test-coverage"
+    paths:
+      - dacong-console/coverage/
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: dacong-console/coverage/cobertura-coverage.xml
+    expire_in: 30 days
+    when: always
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Spider 测试 (pytest)
+test-spider:
+  stage: test
+  image: python:3.11-slim
+  tags:
+    - docker
+  before_script:
+    - pip install --no-cache-dir -r dacong-spider/requirements.txt
+  script:
+    - cd dacong-spider
+    - pytest tests/ --cov=schedulers --cov-report=term --cov-report=html --cov-report=xml --cov-fail-under=80
+    - |
+      # 计算覆盖率
+      if [ -f coverage/index.html ]; then
+        COVERAGE=$(grep -o 'Total.*[0-9]\+%' coverage/index.html | grep -o '[0-9]*%' | head -1 | tr -d '%')
+        echo "测试覆盖率: $COVERAGE%"
+        echo "目标覆盖率: 80%"
+      fi
+  coverage: '/测试覆盖率: (\d+\.\d+)%/'
+  artifacts:
+    name: "spider-test-coverage"
+    paths:
+      - dacong-spider/coverage/
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: dacong-spider/coverage/cobertura.xml
+    expire_in: 30 days
+    when: always
+  only:
+    - merge_requests
+    - main
+    - develop
+
 # ═══════════════════════════════════════════════
 # Web 构建
 # ═══════════════════════════════════════════════
