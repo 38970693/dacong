@@ -32,17 +32,11 @@ from core.interfaces import (
 from core.factory import (
     SpiderFactory,
     SpiderRegistry,
-    create_default_registry,
 )
 
 from core.storage import (
     SupabaseStorage,
     InMemoryStorage,
-)
-
-from schedulers.scheduler import (
-    SpiderScheduler,
-    create_default_scheduler,
 )
 
 __all__ = [
@@ -64,11 +58,7 @@ __all__ = [
     # 工厂
     "SpiderFactory",
     "SpiderRegistry",
-    "create_default_registry",
     # 存储
     "SupabaseStorage",
     "InMemoryStorage",
-    # 调度器
-    "SpiderScheduler",
-    "create_default_scheduler",
 ]

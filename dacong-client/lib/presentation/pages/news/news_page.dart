@@ -100,6 +100,7 @@ class _NewsPageState extends ConsumerState<NewsPage> {
     // 大众化来源：综合 / AI资讯 / 产品动态 / 创业投资
     final sources = [
       ('all', '全部', Colors.blue),
+      ('arxiv', 'arXiv', Colors.green),
       ('36kr', '36氪', Colors.orange),
       ('ithome', 'IT之家', Colors.purple),
       ('geekpark', '极客公园', Colors.teal),

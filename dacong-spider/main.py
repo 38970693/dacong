@@ -9,9 +9,8 @@ import logging
 import sys
 from typing import Optional
 
-from core.factory import create_default_registry
 from core.sentry_config import init_sentry, set_tag, capture_exception, report_spider_error
-from schedulers.scheduler import create_default_scheduler
+from schedulers.jobs import build_scheduler
 
 
 def setup_logging(debug: bool = False):
@@ -55,72 +54,90 @@ def setup_sentry(debug: bool = False):
 
 
 async def run_single_spider(spider_name: str):
-    """运行单个爬虫"""
+    """运行单个爬虫（兼容 registry.py 中的两套架构）"""
     logger = logging.getLogger(__name__)
 
     try:
-        # 创建爬虫注册表
-        registry = create_default_registry()
+        from spiders.registry import get_spider, list_spiders
+        from core.fetcher import Fetcher
+        from core.writer import Writer
+        from spiders.rankings_base import BaseRankingsSpider
+    except ImportError as e:
+        logger.error(f"导入爬虫注册表失败: {e}")
+        return False
 
-        # 检查爬虫是否存在
-        if spider_name not in registry.list_names():
-            logger.error(f"爬虫 '{spider_name}' 不存在")
-            logger.info(f"可用的爬虫: {', '.join(registry.list_names())}")
-            return False
+    if spider_name not in list_spiders():
+        logger.error(f"爬虫 '{spider_name}' 不存在")
+        logger.info(f"可用的爬虫: {', '.join(list_spiders())}")
+        return False
 
-        # 获取爬虫实例
-        spider = registry.get(spider_name)
+    try:
+        spider = get_spider(spider_name)
         logger.info(f"开始运行爬虫: {spider_name}")
-
-        # 设置爬虫标签
         set_tag("spider_name", spider_name)
 
-        # 运行爬虫
-        await spider.run()
+        # 架构 A（排行榜）：自带 supabase client，无参 run()
+        # 架构 B（SpiderBase）：需传入 fetcher + writer
+        if isinstance(spider, BaseRankingsSpider):
+            result = await spider.run()
+        else:
+            result = await spider.run(Fetcher(), Writer())
 
-        logger.info(f"爬虫 {spider_name} 运行完成")
-        return True
+        logger.info(
+            f"爬虫 {spider_name} 运行完成: "
+            f"success={result.success} fetched={result.items_fetched} "
+            f"written={result.items_written}"
+        )
+        return result.success
 
     except Exception as e:
         logger.exception(f"运行爬虫 {spider_name} 时出错: {e}")
         report_spider_error(spider_name, e)
         return False
-    finally:
-        # 清理资源
-        await registry.factory.cleanup()
 
 
 async def run_all_spiders():
-    """运行所有启用的爬虫（一次性）"""
+    """运行所有已注册的爬虫（一次性）"""
     logger = logging.getLogger(__name__)
 
     try:
-        # 创建爬虫注册表
-        registry = create_default_registry()
-        spiders = registry.list_names()
-
-        logger.info(f"开始运行所有爬虫: {', '.join(spiders)}")
-
-        # 并发运行所有爬虫
-        tasks = [registry.get(name).run() for name in spiders]
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-
-        # 统计结果
-        success_count = sum(1 for r in results if not isinstance(r, Exception))
-        logger.info(f"所有爬虫运行完成: 成功 {success_count}/{len(spiders)}")
-
-        return success_count == len(spiders)
-
-    except Exception as e:
-        logger.exception(f"运行所有爬虫时出错: {e}")
+        from spiders.registry import get_spider, list_spiders
+        from core.fetcher import Fetcher
+        from core.writer import Writer
+        from spiders.rankings_base import BaseRankingsSpider
+    except ImportError as e:
+        logger.error(f"导入爬虫注册表失败: {e}")
         return False
-    finally:
-        # 清理资源
-        await registry.factory.cleanup()
+
+    names = list_spiders()
+    logger.info(f"开始运行所有爬虫: {', '.join(names)}")
+
+    success = 0
+    for name in names:
+        try:
+            spider = get_spider(name)
+            if isinstance(spider, BaseRankingsSpider):
+                result = await spider.run()
+            else:
+                result = await spider.run(Fetcher(), Writer())
+            if result.success:
+                success += 1
+            else:
+                logger.error(f"爬虫 {name} 失败: {result.errors}")
+        except Exception as e:
+            logger.exception(f"爬虫 {name} 异常: {e}")
+
+    logger.info(f"所有爬虫运行完成: 成功 {success}/{len(names)}")
+    return success == len(names)
 
 
 async def start_scheduler():
-    """启动调度器（持续运行）"""
+    """启动调度器（持续运行）
+
+    统一走 spiders/registry + schedulers/jobs.build_scheduler
+    （与 run-crawler-daily 生产调度器同一套，不再使用老的
+    core.factory 注册表 / schedulers.scheduler）。
+    """
     logger = logging.getLogger(__name__)
 
     logger.info("=" * 60)
@@ -128,26 +145,27 @@ async def start_scheduler():
     logger.info("=" * 60)
 
     try:
-        # 创建爬虫注册表
-        registry = create_default_registry()
-        logger.info(f"已注册爬虫: {', '.join(registry.list_names())}")
+        # 基于新注册表构建调度器（按 config.SPIDERS 配置注册定时任务）
+        scheduler = build_scheduler()
+        if not scheduler.get_jobs():
+            logger.error("没有注册任何调度任务，请检查 config.SPIDERS 配置")
+            return
 
-        # 创建调度器
-        scheduler = create_default_scheduler(registry)
-        logger.info(f"已配置 {len(scheduler.list_jobs())} 个调度任务")
+        logger.info(f"已注册 {len(scheduler.get_jobs())} 个调度任务")
+        scheduler.start()
+        logger.info("调度器已启动，按 Ctrl+C 退出")
 
-        # 启动调度器
-        await scheduler.start()
+        # 保持运行
+        try:
+            while True:
+                await asyncio.sleep(3600)  # 每小时检查一次
+        except (KeyboardInterrupt, SystemExit):
+            logger.info("收到中断信号，正在关闭...")
 
-    except KeyboardInterrupt:
-        logger.info("收到中断信号，正在关闭...")
     except Exception as e:
         logger.exception(f"调度器异常: {e}")
         sys.exit(1)
     finally:
-        # 清理资源
-        logger.info("正在清理资源...")
-        await registry.factory.cleanup()
         logger.info("系统已关闭")
 
 
@@ -210,24 +228,18 @@ def parse_args():
 
 async def list_spiders():
     """列出所有可用的爬虫"""
-    from config import config
+    from spiders.registry import list_spiders as reg_list
 
-    registry = create_default_registry()
-    spiders = registry.list_names()
+    names = reg_list()
 
     print("\n[Spider List]")
     print("=" * 60)
 
-    for name in spiders:
-        spider_config = config.get_spider_config(name)
-        status = "[enabled]" if spider_config.get("enabled", False) else "[disabled]"
-        interval = spider_config.get("interval_hours", "N/A")
-        print(f"  {name:20s} {status:12s} interval: {interval}h")
+    for name in names:
+        print(f"  {name}")
 
     print("=" * 60)
-    print(f"Total: {len(spiders)} spiders\n")
-
-    await registry.factory.cleanup()
+    print(f"Total: {len(names)} spiders\n")
 
 
 def validate_config():

@@ -100,6 +100,8 @@ class NewsCard extends StatelessWidget {
       'HN'  => (Colors.orange, 'HN'),
       'GH'  => (Colors.black87, 'GitHub'),
       'RSS' => (Colors.purple, 'RSS'),
+      'rss' => (Colors.purple, 'RSS'),
+      'arxiv' => (Colors.green, 'arXiv'),
       'PH'  => (Colors.red, 'PH'),
       'DEV' => (Colors.blueGrey, 'DEV'),
       _     => (Colors.grey, source),

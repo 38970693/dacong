@@ -48,17 +48,11 @@ def get_processor_for_spider(spider_class: Type[ISpider]) -> IDataProcessor:
 # 注册所有处理器
 def _register_all_processors():
     """注册所有内置处理器"""
-    from spiders.github_spider import GitHubSpider, GitHubDataProcessor
-    from spiders.huggingface_spider import HuggingFaceSpider, HuggingFaceDataProcessor
     from spiders.openrouter_spider import OpenRouterSpider, OpenRouterDataProcessor
     from spiders.reddit_spider import RedditSpider, RedditDataProcessor
-    from spiders.hackernews_spider import HackerNewsSpider, HackerNewsDataProcessor
 
-    register_processor(GitHubSpider, GitHubDataProcessor)
-    register_processor(HuggingFaceSpider, HuggingFaceDataProcessor)
     register_processor(OpenRouterSpider, OpenRouterDataProcessor)
     register_processor(RedditSpider, RedditDataProcessor)
-    register_processor(HackerNewsSpider, HackerNewsDataProcessor)
 
 
 # 自动注册

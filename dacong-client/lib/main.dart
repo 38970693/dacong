@@ -17,6 +17,9 @@ import 'presentation/pages/auth/login_page.dart';
 import 'presentation/pages/auth/register_page.dart';
 import 'presentation/pages/auth/reset_password_page.dart';
 import 'presentation/pages/user/profile_edit_page.dart';
+import 'presentation/pages/ranking/ranking_page.dart';
+import 'presentation/pages/model_detail/model_detail_page.dart';
+import 'presentation/pages/model_compare/model_compare_page.dart';
 
 void main() async {
   // 初始化 Sentry 并运行应用
@@ -121,6 +124,25 @@ final _router = GoRouter(
     GoRoute(
       path: '/user/profile/edit',
       builder: (context, state) => const ProfileEditPage(),
+    ),
+    // 数据底座：模型排行 / 模型详情 / 能力对比
+    GoRoute(
+      path: '/ranking',
+      builder: (context, state) => const RankingPage(),
+    ),
+    GoRoute(
+      path: '/model/:id',
+      builder: (context, state) =>
+          ModelDetailPage(modelId: state.pathParameters['id']!),
+    ),
+    GoRoute(
+      path: '/compare',
+      builder: (context, state) => ModelComparePage(
+        initialIds: (state.uri.queryParameters['ids'] ?? '')
+            .split(',')
+            .where((id) => id.isNotEmpty)
+            .toList(),
+      ),
     ),
   ],
 );

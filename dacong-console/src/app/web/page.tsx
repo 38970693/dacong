@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
 import { usePostsStore } from '@/stores';
 import { PostCard } from '@/components/PostCard';
 
@@ -69,6 +70,21 @@ export default function HomePage() {
           正在刷新...
         </div>
       )}
+
+      {/* AI 动态入口 */}
+      <Link
+        href="/web/dynamics"
+        className="flex items-center gap-3 mx-4 my-3 px-4 py-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--primary)] transition-colors"
+      >
+        <span className="text-lg">📈</span>
+        <span className="flex-1 min-w-0">
+          <span className="block text-sm font-semibold text-[var(--foreground)]">AI 动态</span>
+          <span className="block text-xs text-[var(--text-muted)] truncate">
+            资讯流 · 飙升榜 · 模型脉搏
+          </span>
+        </span>
+        <span className="text-[var(--text-muted)]">›</span>
+      </Link>
 
       {/* 帖子列表 */}
       <div className="divide-y divide-[var(--border)]">

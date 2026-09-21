@@ -20,7 +20,7 @@ from datetime import datetime
 
 # 导入爬虫
 from spiders.huggingface_leaderboard import HuggingFaceLeaderboardSpider
-from spiders.artificial_analysis_spider import fetch_aa_data, extract_models
+from spiders.artificial_analysis import ArtificialAnalysisSpider
 from spiders.aiping import AIPingSpider
 
 # 导入存储
@@ -147,41 +147,29 @@ async def run_lmarena(save_db: bool = False) -> dict:
 
 
 async def run_artificial_analysis(save_db: bool = False) -> dict:
-    """从 Artificial Analysis 获取性能数据"""
+    """
+    从 Artificial Analysis 获取性能数据（新架构爬虫）
+
+    注意：新的 ArtificialAnalysisSpider 内部自行抓取并写入 Supabase，
+    因此不再生成独立的 artificial_analysis_rankings.json。
+    """
     print("\n" + "=" * 60)
     print("🚀 [2/3] 正在抓取 Artificial Analysis 数据...")
     print("=" * 60)
 
     try:
-        data = await fetch_aa_data()
-        models = extract_models(data)
+        spider = ArtificialAnalysisSpider()
+        result = await spider.run()
 
-        print(f"   ✓ 获取到 {len(models)} 个模型")
-
-        # 保存到 JSON
-        output_dir = Path(__file__).parent / "data"
-        output_dir.mkdir(exist_ok=True)
-        output_file = output_dir / "artificial_analysis_rankings.json"
-        with open(output_file, "w", encoding="utf-8") as f:
-            json.dump(models, f, indent=2, ensure_ascii=False)
-
-        print(f"   💾 JSON 已保存: {output_file}")
-
-        # 保存到 Supabase
-        db_saved = 0
-        db_skipped = 0
-        if save_db:
-            print("   📦 正在写入 Supabase...")
-            db_saved, db_skipped = await save_to_supabase(models, MetricSource.ARTIFICIAL_ANALYSIS, DataType.MODEL)
-            print(f"   ✓ 已写入 {db_saved} 条（跳过 {db_skipped} 条未变化数据）")
+        print(f"   ✓ 抓取 {result.items_fetched} 条，写入 {result.items_written} 条")
 
         return {
             "source": "Artificial Analysis",
-            "status": "success",
-            "total": len(models),
-            "json_saved": len(models),
-            "db_saved": db_saved,
-            "db_skipped": db_skipped,
+            "status": "success" if result.success else "error",
+            "total": result.items_fetched,
+            "json_saved": 0,
+            "db_saved": result.items_written,
+            "db_skipped": 0,
         }
 
     except Exception as e:

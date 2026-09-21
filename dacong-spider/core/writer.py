@@ -8,7 +8,6 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from supabase import create_client, Client
-from supabase.lib.client_options import ClientOptions
 
 from config import SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, DEBUG_MODE
 from models.metrics import RawMetric, RepositoryMetric, HotNewsItem
@@ -31,7 +30,6 @@ class Writer:
             self._client = create_client(
                 SUPABASE_URL,
                 SUPABASE_SERVICE_ROLE_KEY,
-                options=ClientOptions(autoRefreshToken=False),
             )
             logger.info("[Writer] Supabase 客户端初始化完成")
         return self._client
@@ -85,7 +83,7 @@ class Writer:
             existing = self.client.table("repository_metrics").select(
                 "id", count="exact"
             ).match({
-                "full_name": repo.full_name,
+                "repo_name": repo.full_name,
             }).gte("fetched_at", cutoff).execute()
 
             if existing.count and existing.count > 0:

@@ -61,6 +61,23 @@ dacong/
 - **移动优先**: 深色主题，适配手机端浏览
 - **实时更新**: 定时调度爬虫（5分钟）+ 榜单计算（1分钟）
 
+## AI 动态
+
+2026-09 起产品聚焦为「AI 动态聚合与洞察平台」——持续呈现 AI 领域的变化，而非一次性快照。
+三个带时间维度的视图，统一入口 `/web/dynamics`：
+
+| 视图 | 回答的问题 | 排序依据 |
+|------|-----------|---------|
+| 资讯流 | 今天 AI 圈发生了什么 | 时间 / 热度 |
+| 飙升榜 | 哪个仓库**正在**火 | `velocity`（stars/day 斜率） |
+| 模型脉搏 | 哪个模型**在变强** | `eval_date` 历史曲线 |
+
+不做咨询对话、专家市场、支付、RAG / 语义检索，不引入任何 LLM API Key。
+
+- 执行路线图：[docs/AI_DYNAMICS_ROADMAP.md](docs/AI_DYNAMICS_ROADMAP.md)
+- 定位决策：[AI_DYNAMICS_REPOSITION_PLAN.md](AI_DYNAMICS_REPOSITION_PLAN.md)
+- 数据底座方案：[DATA_FOUNDATION_PLAN.md](DATA_FOUNDATION_PLAN.md)
+
 ## 快速启动
 
 ### 前端开发

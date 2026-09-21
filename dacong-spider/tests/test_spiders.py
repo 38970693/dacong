@@ -1,434 +1,255 @@
 """
-单元测试 - 爬虫
+单元测试 - 爬虫（registry 新架构）
 
-测试策略：
-1. Mock HTTP 客户端
-2. 测试数据处理逻辑
-3. 验证执行流程
-4. 测试错误处理
-5. 测试去重逻辑
+新架构下爬虫只需实现 SpiderBase.do_fetch(fetcher, writer)，
+HTTP 与数据库都由注入的协作者负责，因此测试策略是：
+  1. 解析逻辑：直接喂 HTML 字符串，断言结构化输出
+  2. 执行流程：用 MockFetcher / MockWriter 替身，断言 SpiderResult 与写入内容
+  3. 错误路径：Fetcher 返回 None，断言不抛异常且记入 errors
+
+不依赖网络、不依赖数据库。
 """
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
-from datetime import datetime, timezone
 
-from core.interfaces import MetricSource, DataType
-from core.storage import InMemoryStorage
-from core.implementations import ContentHashDeduplicator, SpiderLogger
-from spiders.github_spider import GitHubSpider, GitHubDataProcessor
-from spiders.huggingface_spider import HuggingFaceDataProcessor
+from spiders.github_trending import GitHubTrendingSpider
+from spiders.huggingface import HuggingFaceSpider
+from tests.mocks import FakeResponse, MockFetcher, MockWriter
 
 
 # ══════════════════════════════════════════════════════════
-# Mock HTTP 客户端
+# 样本页面
 # ══════════════════════════════════════════════════════════
 
-class MockHttpClient:
-    """Mock HTTP 客户端"""
-
-    def __init__(self, responses: dict):
-        self.responses = responses
-
-    async def get(self, url: str, headers=None):
-        return self.responses.get(url)
-
-    async def get_json(self, url: str, headers=None):
-        return self.responses.get(url)
-
-    async def close(self):
-        pass
-
-
-# ══════════════════════════════════════════════════════════
-# 测试 GitHub 数据处理器
-# ══════════════════════════════════════════════════════════
-
-def test_github_processor():
-    """测试 GitHub 数据处理器 - 完整数据"""
-    processor = GitHubDataProcessor()
-
-    # 模拟 GitHub API 响应
-    raw_data = {
-        "full_name": "test/repo",
-        "name": "repo",
-        "description": "A test repository",
-        "html_url": "https://github.com/test/repo",
-        "stargazers_count": 100,
-        "forks_count": 20,
-        "watchers_count": 80,
-        "language": "Python",
-        "topics": ["ai", "ml"],
-        "created_at": "2024-01-01T00:00:00Z",
-        "updated_at": "2024-04-01T00:00:00Z",
-        "owner": {"login": "test"},
-        "fork": False,
-        "open_issues_count": 5,
-        "default_branch": "main",
-        "license": {"name": "MIT"}
-    }
-
-    # 处理数据
-    result = processor.process(raw_data)
-
-    # 验证结果
-    assert result is not None
-    assert result.source == MetricSource.GITHUB
-    assert result.data_type == DataType.REPOSITORY
-    assert result.source_id == "test/repo"
-    assert result.title == "repo"
-    assert result.description == "A test repository"
-    assert result.url == "https://github.com/test/repo"
-    assert result.metadata["stars"] == 100
-    assert result.metadata["forks"] == 20
-    assert result.metadata["watchers"] == 80
-    assert result.metadata["language"] == "Python"
-    assert result.metadata["topics"] == ["ai", "ml"]
-    assert result.metadata["owner"] == "test"
-    assert result.metadata["is_fork"] is False
-    assert result.metadata["open_issues"] == 5
-    assert result.metadata["default_branch"] == "main"
-    assert result.metadata["license"] == "MIT"
-    assert result.content_hash is not None
+def trending_html(repo: str = "owner/repo", description: str = "LLM inference server",
+                  language: str = "Python", stars: str = "1,234",
+                  forks: str = "56") -> str:
+    """构造最小可用的 github.com/trending 页面片段"""
+    return f"""
+    <html><body>
+      <article class="Box-row">
+        <h2><a href="/{repo}">{repo}</a></h2>
+        <p>{description}</p>
+        <span itemprop="programmingLanguage">{language}</span>
+        <a href="/{repo}/stargazers">{stars}</a>
+        <a href="/{repo}/members">{forks}</a>
+      </article>
+    </body></html>
+    """
 
 
-def test_github_processor_missing_description():
-    """测试 GitHub 数据处理器 - 缺少描述"""
-    processor = GitHubDataProcessor()
-
-    raw_data = {
-        "full_name": "test/repo",
-        "name": "repo",
-        "html_url": "https://github.com/test/repo",
-        "stargazers_count": 100,
-        "forks_count": 20
-    }
-
-    result = processor.process(raw_data)
-
-    assert result is not None
-    assert result.description == ""
-
-
-def test_github_processor_invalid_data():
-    """测试 GitHub 数据处理器 - 无效数据"""
-    processor = GitHubDataProcessor()
-
-    # 缺少必填字段
-    invalid_data = {
-        "name": "repo",
-        "description": "Test"
-    }
-
-    result = processor.process(invalid_data)
-    assert result is None
-
-
-def test_github_processor_content_hash():
-    """测试 GitHub 数据处理器 - 内容哈希生成"""
-    processor = GitHubDataProcessor()
-
-    data1 = {
-        "full_name": "test/repo",
-        "name": "repo",
-        "html_url": "https://github.com/test/repo",
-        "stargazers_count": 100
-    }
-
-    data2 = {
-        "full_name": "test/repo",
-        "name": "repo",
-        "html_url": "https://github.com/test/repo",
-        "stargazers_count": 200  # 不同的 stars
-    }
-
-    hash1 = processor.generate_content_hash(data1)
-    hash2 = processor.generate_content_hash(data2)
-
-    # 内容不同，哈希应该不同
-    assert hash1 != hash2
-    assert len(hash1) == 32  # MD5 哈希长度
-    assert len(hash2) == 32
+def hf_models_html(path: str = "meta-llama/Llama-2-7b", name: str = "Llama 2 7B",
+                   downloads: str = "1.2m", likes: str = "5,000") -> str:
+    """构造最小可用的 huggingface.co/models 页面片段"""
+    return f"""
+    <html><body>
+      <article id="model-card">
+        <a href="/models/{path}">{path}</a>
+        <h4>{name}</h4>
+        <span class="text-secondary">{downloads}</span>
+        <span class="like">{likes}</span>
+      </article>
+    </body></html>
+    """
 
 
 # ══════════════════════════════════════════════════════════
-# 测试 HuggingFace 数据处理器
+# Fixtures
 # ══════════════════════════════════════════════════════════
 
-def test_huggingface_processor():
-    """测试 HuggingFace 数据处理器"""
-    processor = HuggingFaceDataProcessor()
+@pytest.fixture
+def github_spider(monkeypatch) -> GitHubTrendingSpider:
+    """GitHub 爬虫：不爬语言子页、不调 GitHub API 补全（避免网络与 sleep）"""
 
-    # 模拟 HuggingFace API 响应
-    raw_data = {
-        "modelId": "meta-llama/Llama-2-7b",
-        "author": "meta-llama",
-        "downloads": 1000000,
-        "likes": 5000,
-        "tags": ["text-generation", "llama"],
-        "pipeline_tag": "text-generation",
-        "library_name": "transformers"
-    }
+    async def _no_enrich(self, repos, cache):
+        return None
 
-    # 处理数据
-    result = processor.process(raw_data)
+    monkeypatch.setattr(GitHubTrendingSpider, "languages", property(lambda self: []))
+    monkeypatch.setattr(GitHubTrendingSpider, "_enrich_total_stars", _no_enrich)
+    return GitHubTrendingSpider()
 
-    # 验证结果
-    assert result is not None
-    assert result.source == MetricSource.HUGGINGFACE
-    assert result.data_type == DataType.MODEL
-    assert result.source_id == "meta-llama/Llama-2-7b"
-    assert result.title == "Llama-2-7b"
-    assert result.url == "https://huggingface.co/meta-llama/Llama-2-7b"
-    assert result.metadata["downloads"] == 1000000
+
+@pytest.fixture
+def hf_spider(monkeypatch) -> HuggingFaceSpider:
+    """HuggingFace 爬虫：只跑一个 pipeline tag，避免多次 sleep"""
+    monkeypatch.setattr(
+        "spiders.huggingface.SPIDERS",
+        {"huggingface": {"tags": ["text-generation"]}},
+    )
+    return HuggingFaceSpider()
 
 
 # ══════════════════════════════════════════════════════════
-# 测试爬虫执行流程
+# GitHub - 页面解析
 # ══════════════════════════════════════════════════════════
 
-@pytest.mark.asyncio
-async def test_github_spider_run():
-    """测试 GitHub 爬虫执行流程"""
-    # Mock HTTP 响应
-    mock_responses = {
-        "https://api.github.com/search/repositories?q=topic:artificial-intelligence&sort=stars&order=desc&per_page=30&page=1": {
-            "total_count": 1,
-            "items": [
-                {
-                    "full_name": "test/ai-repo",
-                    "name": "ai-repo",
-                    "description": "AI repository",
-                    "html_url": "https://github.com/test/ai-repo",
-                    "stargazers_count": 1000,
-                    "forks_count": 100,
-                    "watchers_count": 800,
-                    "language": "Python",
-                    "topics": ["ai"],
-                    "created_at": "2024-01-01T00:00:00Z",
-                    "updated_at": "2024-04-01T00:00:00Z",
-                    "owner": {"login": "test"},
-                    "fork": False,
-                    "open_issues_count": 10,
-                    "default_branch": "main"
-                }
-            ]
-        }
-    }
-
-    # 创建 Mock 组件
-    http_client = MockHttpClient(mock_responses)
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("test")
-
-    # 创建爬虫
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger
+def test_parse_trending_page_extracts_fields(github_spider):
+    """解析出仓库全名、描述、语言、今日星、fork、URL"""
+    ai_repos, all_repos = github_spider._parse_trending_page(
+        trending_html(stars="1,234", forks="56")
     )
 
-    # 执行爬虫
-    result = await spider.run()
+    assert len(all_repos) == 1
+    repo = all_repos[0]
+    assert repo["full_name"] == "owner/repo"
+    assert repo["owner"] == "owner"
+    assert repo["repo"] == "repo"
+    assert repo["description"] == "LLM inference server"
+    assert repo["language"] == "Python"
+    assert repo["stars_today"] == 1234
+    assert repo["forks"] == 56
+    assert repo["url"] == "https://github.com/owner/repo"
 
-    # 验证结果
-    assert result.success is True
-    assert result.items_fetched > 0
-    assert result.items_written > 0
-    assert storage.count() > 0
 
-
-@pytest.mark.asyncio
-async def test_github_spider_deduplication():
-    """测试 GitHub 爬虫去重逻辑"""
-    mock_responses = {
-        "https://api.github.com/search/repositories?q=topic:artificial-intelligence&sort=stars&order=desc&per_page=30&page=1": {
-            "total_count": 2,
-            "items": [
-                {
-                    "full_name": "test/repo1",
-                    "name": "repo1",
-                    "html_url": "https://github.com/test/repo1",
-                    "stargazers_count": 100
-                },
-                {
-                    "full_name": "test/repo1",  # 重复
-                    "name": "repo1",
-                    "html_url": "https://github.com/test/repo1",
-                    "stargazers_count": 100
-                }
-            ]
-        }
-    }
-
-    http_client = MockHttpClient(mock_responses)
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("test")
-
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger
+def test_parse_trending_page_splits_ai_repos(github_spider):
+    """描述含 AI 关键词的仓库进入 ai_repos，否则只进 all_repos"""
+    ai_repos, all_repos = github_spider._parse_trending_page(
+        trending_html(description="LLM inference server")
     )
+    assert len(ai_repos) == 1
 
-    result = await spider.run()
-
-    # 应该只写入 1 条数据（去重后）
-    assert result.success is True
-    assert storage.count() == 1
-
-
-@pytest.mark.asyncio
-async def test_github_spider_api_error():
-    """测试 GitHub 爬虫 API 错误处理"""
-    # Mock 返回 None（模拟 API 失败）
-    mock_responses = {}
-
-    http_client = MockHttpClient(mock_responses)
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("test")
-
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger
+    ai_repos, all_repos = github_spider._parse_trending_page(
+        trending_html(description="A cli tool for logs", language="Go")
     )
+    assert len(ai_repos) == 0
+    assert len(all_repos) == 1
 
-    result = await spider.run()
 
-    # API 失败但不应该抛出异常
+def test_parse_trending_page_skips_malformed_article(github_spider):
+    """缺少 h2 a（拿不到仓库名）的条目被跳过，而不是抛异常"""
+    html = "<html><body><article class='Box-row'><p>no link</p></article></body></html>"
+    ai_repos, all_repos = github_spider._parse_trending_page(html)
+    assert ai_repos == [] and all_repos == []
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("1,234", 1234),
+    ("2.3k", 2300),
+    ("1.5m", 1500000),
+    ("12 stars today", 12),
+    ("0", 0),
+])
+def test_parse_stars(github_spider, text, expected):
+    """星标字符串支持千分位、k/m 后缀与 stars today 后缀"""
+    assert github_spider._parse_stars(text) == expected
+
+
+def test_parse_stars_invalid_returns_zero(github_spider):
+    with pytest.raises(ValueError):
+        github_spider._parse_stars("not-a-number")
+
+
+# ══════════════════════════════════════════════════════════
+# GitHub - 执行流程（MockFetcher + MockWriter）
+# ══════════════════════════════════════════════════════════
+
+async def test_github_do_fetch_success(github_spider):
+    """正常流程：抓取 → 解析 → 写入，SpiderResult 计数正确"""
+    fetcher = MockFetcher(default=FakeResponse(trending_html()))
+    writer = MockWriter()
+
+    result = await github_spider.do_fetch(fetcher, writer)
+
     assert result.success is True
+    assert result.items_fetched == 2  # 1 条 AI + 1 条全量（同一仓库计入两次）
+    assert result.items_written == 2
+    assert len(writer.repo_metrics) == 1
+    assert len(writer.model_metrics) == 1
+
+
+async def test_github_do_fetch_failure_is_not_raised(github_spider):
+    """首屏请求失败：success=False、记录 errors，但不抛异常"""
+    fetcher = MockFetcher(default=None)
+    writer = MockWriter()
+
+    result = await github_spider.do_fetch(fetcher, writer)
+
+    assert result.success is False
     assert result.items_fetched == 0
     assert result.items_written == 0
+    assert any("失败" in e for e in result.errors)
 
 
-@pytest.mark.asyncio
-async def test_github_spider_pagination():
-    """测试 GitHub 爬虫分页功能"""
-    mock_responses = {
-        "https://api.github.com/search/repositories?q=topic:artificial-intelligence&sort=stars&order=desc&per_page=30&page=1": {
-            "total_count": 60,
-            "items": [
-                {
-                    "full_name": f"test/repo-page1-{i}",
-                    "name": f"repo-page1-{i}",
-                    "html_url": f"https://github.com/test/repo-page1-{i}",
-                    "stargazers_count": 100 + i
-                }
-                for i in range(30)
-            ]
-        },
-        "https://api.github.com/search/repositories?q=topic:artificial-intelligence&sort=stars&order=desc&per_page=30&page=2": {
-            "total_count": 60,
-            "items": [
-                {
-                    "full_name": f"test/repo-page2-{i}",
-                    "name": f"repo-page2-{i}",
-                    "html_url": f"https://github.com/test/repo-page2-{i}",
-                    "stargazers_count": 200 + i
-                }
-                for i in range(30)
-            ]
-        }
-    }
+async def test_github_do_fetch_deduplicates_same_repo(github_spider):
+    """同一仓库在页面重复出现，repository_metrics 只写一条"""
+    html = trending_html() + trending_html()
+    fetcher = MockFetcher(default=FakeResponse(html))
+    writer = MockWriter()
 
-    http_client = MockHttpClient(mock_responses)
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("test")
+    result = await github_spider.do_fetch(fetcher, writer)
 
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger
-    )
-
-    result = await spider.run()
-
-    # 应该获取到两页数据
     assert result.success is True
-    assert result.items_fetched >= 60  # 至少 60 条（可能有其他主题的数据）
+    assert len(writer.repo_metrics) == 1  # 去重后唯一
+    assert result.items_written == 2      # AI + 全量各写一次成功，第二次被去重
 
 
-@pytest.mark.asyncio
-async def test_github_spider_content_update():
-    """测试 GitHub 爬虫内容更新检测"""
-    # 第一次爬取
-    mock_responses_v1 = {
-        "https://api.github.com/search/repositories?q=topic:artificial-intelligence&sort=stars&order=desc&per_page=30&page=1": {
-            "total_count": 1,
-            "items": [
-                {
-                    "full_name": "test/repo",
-                    "name": "repo",
-                    "html_url": "https://github.com/test/repo",
-                    "stargazers_count": 100
-                }
-            ]
-        }
-    }
+async def test_github_do_fetch_content_update(github_spider):
+    """同一仓库 star 变化后再爬取：写入器按业务键覆盖，不产生新记录"""
+    writer = MockWriter()
 
-    http_client = MockHttpClient(mock_responses_v1)
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("test")
-
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger
+    result1 = await github_spider.do_fetch(
+        MockFetcher(default=FakeResponse(trending_html(stars="100"))), writer
+    )
+    result2 = await github_spider.do_fetch(
+        MockFetcher(default=FakeResponse(trending_html(stars="200"))), writer
     )
 
-    result1 = await spider.run()
-    assert storage.count() == 1
+    assert result1.items_written == 2
+    assert result2.items_written == 0  # 24h 内重复，全部跳过
+    assert len(writer.repo_metrics) == 1
 
-    # 第二次爬取（内容变化）
-    mock_responses_v2 = {
-        "https://api.github.com/search/repositories?q=topic:artificial-intelligence&sort=stars&order=desc&per_page=30&page=1": {
-            "total_count": 1,
-            "items": [
-                {
-                    "full_name": "test/repo",
-                    "name": "repo",
-                    "html_url": "https://github.com/test/repo",
-                    "stargazers_count": 200  # stars 增加
-                }
-            ]
-        }
-    }
 
-    http_client2 = MockHttpClient(mock_responses_v2)
-    spider2 = GitHubSpider(
-        http_client=http_client2,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger
-    )
+# ══════════════════════════════════════════════════════════
+# HuggingFace - 页面解析
+# ══════════════════════════════════════════════════════════
 
-    result2 = await spider2.run()
+def test_hf_parse_models_page_extracts_fields(hf_spider):
+    """解析出模型路径、名称、下载量、点赞数、URL"""
+    models = hf_spider._parse_models_page(hf_models_html())
 
-    # 应该检测到内容变化并更新
-    assert result2.success is True
-    assert result2.items_written > 0
-    assert storage.count() == 1  # 仍然是 1 条（更新而非新增）
+    assert len(models) == 1
+    m = models[0]
+    assert m["path"] == "meta-llama/Llama-2-7b"
+    assert m["name"] == "Llama 2 7B"
+    assert m["downloads"] == 1200000
+    assert m["likes"] == 5000
+    assert m["url"] == "https://huggingface.co/meta-llama/Llama-2-7b"
+
+
+def test_hf_parse_models_page_keeps_full_path(hf_spider):
+    """
+    路径必须以 /models/ 前缀整体剥离，而不是按字符集剥离。
+
+    曾因 lstrip("/models/") 把 "meta-llama/..." 削成 "ta-llama/..."。
+    """
+    models = hf_spider._parse_models_page(hf_models_html(path="mistralai/Mistral-7B"))
+    assert models[0]["path"] == "mistralai/Mistral-7B"
+
+
+def test_hf_parse_models_page_skips_cards_without_link(hf_spider):
+    html = "<html><body><article><h4>orphan</h4></article></body></html>"
+    assert hf_spider._parse_models_page(html) == []
+
+
+async def test_hf_do_fetch_success(hf_spider):
+    """正常流程：抓取 → 解析 → 写入一条模型指标"""
+    fetcher = MockFetcher(default=FakeResponse(hf_models_html()))
+    writer = MockWriter()
+
+    result = await hf_spider.do_fetch(fetcher, writer)
+
+    assert result.success is True
+    assert result.items_fetched == 1
+    assert result.items_written == 1
+    assert len(writer.model_metrics) == 1
+
+
+async def test_hf_do_fetch_failure_is_not_raised(hf_spider):
+    """请求失败：success=False、记录 errors，但不抛异常"""
+    result = await hf_spider.do_fetch(MockFetcher(default=None), MockWriter())
+
+    assert result.success is False
+    assert result.items_written == 0
+    assert any("失败" in e for e in result.errors)
 
 
 if __name__ == "__main__":

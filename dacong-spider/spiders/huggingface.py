@@ -89,7 +89,7 @@ class HuggingFaceSpider(SpiderBase):
             link = card.select_one("a[href^='/models/']")
             if not link:
                 continue
-            path = link.get("href", "").lstrip("/models/")
+            path = link.get("href", "").removeprefix("/models/")
             if not path:
                 continue
 

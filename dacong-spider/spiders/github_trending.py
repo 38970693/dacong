@@ -10,9 +10,10 @@ import logging
 import re
 from datetime import datetime, timezone
 
+import httpx
 from bs4 import BeautifulSoup
 
-from config import SPIDERS, HUGGINGFACE_AI_KEYWORDS
+from config import SPIDERS, HUGGINGFACE_AI_KEYWORDS, REQUEST_TIMEOUT, USER_AGENT
 from core.base import SpiderBase
 from core.fetcher import Fetcher
 from core.writer import Writer
@@ -25,6 +26,41 @@ logger = logging.getLogger(__name__)
 
 # AI 相关关键词（用于过滤 GitHub Trending）
 AI_KEYWORDS = HUGGINGFACE_AI_KEYWORDS
+
+# GitHub REST API（用于补全精确 stargazers_count）
+GITHUB_API_BASE = "https://api.github.com"
+# 带 token 时限额 5000 次/小时，两次请求之间的礼貌间隔
+GITHUB_API_DELAY = 0.1
+
+
+# ── rising stars 评分（纯函数）─────────────────────────────
+# 说明：这是 M1 飙升榜评分的参考实现，与 Supabase Edge Function
+# `compute-rising-stars` 中的 TS 版本保持一致，改动需同步两边。
+
+def compute_velocity(points: list[tuple[float, int]]) -> float:
+    """
+    对 (天数, 累计 star 数) 序列做最小二乘线性拟合，返回斜率（stars/day）。
+    不足 2 个点或 x 无变化时返回 0.0。
+    """
+    n = len(points)
+    if n < 2:
+        return 0.0
+
+    sum_x = sum(x for x, _ in points)
+    sum_y = sum(y for _, y in points)
+    sum_xy = sum(x * y for x, y in points)
+    sum_xx = sum(x * x for x, _ in points)
+
+    denominator = n * sum_xx - sum_x * sum_x
+    if denominator == 0:
+        return 0.0
+
+    return (n * sum_xy - sum_x * sum_y) / denominator
+
+
+def compute_rank_score(stars_1d: int, stars_7d: int, velocity: float) -> float:
+    """综合排序分：0.5*stars_7d + 0.3*velocity + 0.2*stars_1d"""
+    return 0.5 * stars_7d + 0.3 * velocity + 0.2 * stars_1d
 
 
 class GitHubTrendingSpider(SpiderBase):
@@ -165,6 +201,58 @@ class GitHubTrendingSpider(SpiderBase):
         text = re.sub(r"\s*(today|stars?)\s*", "", text, flags=re.IGNORECASE).strip()
         return int(float(text))
 
+    async def _enrich_total_stars(self, repos: list[dict], cache: dict[str, int]) -> None:
+        """
+        用 GitHub API `GET /repos/{owner}/{repo}` 补全精确 stargazers_count，
+        原地覆盖 repo["total_stars"]（Trending 页面只有今日增量，不是总星数）。
+
+        未配置 GITHUB_TOKEN 时直接跳过：匿名限额仅 60 次/小时，
+        一轮 Trending 就会耗尽，反而拖垮整个爬取流程。
+        """
+        token = SPIDERS.get("github", {}).get("token", "")
+        if not token:
+            logger.info("[GitHub] 未配置 GITHUB_TOKEN，跳过精确 star 数补全")
+            return
+
+        headers = {
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "User-Agent": USER_AGENT,
+        }
+
+        async with httpx.AsyncClient(
+            timeout=httpx.Timeout(REQUEST_TIMEOUT), headers=headers
+        ) as client:
+            for repo in repos:
+                full_name = repo["full_name"]
+
+                if full_name in cache:
+                    repo["total_stars"] = cache[full_name]
+                    continue
+
+                try:
+                    resp = await client.get(f"{GITHUB_API_BASE}/repos/{full_name}")
+                except httpx.HTTPError as e:
+                    logger.warning(f"[GitHub] API 请求失败 {full_name}: {e}")
+                    continue
+
+                if resp.status_code != 200:
+                    logger.warning(
+                        f"[GitHub] API HTTP {resp.status_code} {full_name}，保留页面解析值"
+                    )
+                    # 限额耗尽时后续请求也会失败，直接放弃本批补全
+                    if resp.status_code in (403, 429):
+                        logger.warning("[GitHub] 触发 API 限额，停止本批 star 补全")
+                        return
+                    continue
+
+                stars = resp.json().get("stargazers_count")
+                if isinstance(stars, int):
+                    cache[full_name] = stars
+                    repo["total_stars"] = stars
+
+                await asyncio.sleep(GITHUB_API_DELAY)
+
     async def do_fetch(self, fetcher: Fetcher, writer: Writer) -> SpiderResult:
         """
         执行 GitHub Trending 爬取
@@ -173,6 +261,8 @@ class GitHubTrendingSpider(SpiderBase):
         errors: list[str] = []
         total_fetched = 0
         total_written = 0
+        # 跨语言页面复用同一份 star 结果，避免重复调用 GitHub API
+        stars_cache: dict[str, int] = {}
 
         # 1. 爬取消语言过滤的首页（AI 相关全量）
         base_url = "https://github.com/trending"
@@ -187,6 +277,8 @@ class GitHubTrendingSpider(SpiderBase):
             )
 
         ai_repos, all_repos = self._parse_trending_page(resp.text)
+        # ai_repos 与 all_repos 共享同一批 dict 对象，补全一次即可
+        await self._enrich_total_stars(all_repos, stars_cache)
         total_fetched += len(ai_repos) + len(all_repos)
         logger.info(f"[GitHub] 全量 {len(all_repos)} 条，AI 相关 {len(ai_repos)} 条")
 
@@ -208,6 +300,7 @@ class GitHubTrendingSpider(SpiderBase):
                 continue
 
             ai_lang, all_lang = self._parse_trending_page(resp.text, lang)
+            await self._enrich_total_stars(all_lang, stars_cache)
             total_fetched += len(ai_lang) + len(all_lang)
 
             written = await self._write_ai_metrics(writer, ai_lang)

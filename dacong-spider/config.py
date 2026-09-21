@@ -33,6 +33,7 @@ class SpiderConfig(BaseSettings):
 
     # ── OpenRouter API ──────────────────────────────
     openrouter_api_key: str = Field(default="", description="OpenRouter API Key")
+    x_bearer_token: str = Field(default="", description="X (Twitter) API v2 Bearer Token（付费；留空则本爬虫直接跳过）")
 
     # ── Claude API ──────────────────────────────────
     anthropic_api_key: str = Field(default="", description="Anthropic API Key for content generation")
@@ -43,6 +44,13 @@ class SpiderConfig(BaseSettings):
     spider_hackernews_enabled: bool = Field(default=True, description="启用 HackerNews 爬虫")
     spider_openrouter_enabled: bool = Field(default=True, description="启用 OpenRouter 爬虫")
     spider_reddit_enabled: bool = Field(default=True, description="启用 Reddit 爬虫")
+    spider_x_enabled: bool = Field(default=True, description="启用 X (Twitter) 爬虫（无 X_BEARER_TOKEN 时自动跳过）")
+    x_kol_accounts: str = Field(default="", description="X 关注的 AI 大佬账号，逗号分隔，留空用默认列表")
+    x_keywords: str = Field(default="", description="X 关键词搜索，逗号分隔，留空用默认列表")
+    x_mirrors: str = Field(default="", description="Nitter 镜像域名，逗号分隔；留空则无 token 时直接跳过（2026-09 实测：仅存的 nitter.tiekoetter.com 已禁用 RSS，故默认留空）")
+    spider_bluesky_enabled: bool = Field(default=True, description="启用 Bluesky 爬虫（免费，无需 token）")
+    bsky_kol_accounts: str = Field(default="", description="Bluesky 关注账号，逗号分隔，留空用默认列表")
+    bsky_keywords: str = Field(default="", description="Bluesky 关键词搜索，逗号分隔，留空用默认列表")
 
     # ── 调度配置 ──────────────────────────────────
     github_interval_hours: int = Field(default=1, ge=1, description="GitHub 爬虫间隔（小时）")
@@ -50,6 +58,8 @@ class SpiderConfig(BaseSettings):
     hackernews_interval_hours: int = Field(default=1, ge=1, description="HackerNews 爬虫间隔（小时）")
     openrouter_interval_hours: int = Field(default=24, ge=1, description="OpenRouter 爬虫间隔（小时）")
     reddit_interval_hours: int = Field(default=24, ge=1, description="Reddit 爬虫间隔（小时）")
+    x_interval_minutes: int = Field(default=30, ge=1, description="X 爬虫间隔（分钟）")
+    bsky_interval_minutes: int = Field(default=30, ge=1, description="Bluesky 爬虫间隔（分钟）")
 
     # ── HTTP 配置 ──────────────────────────────────
     request_timeout: int = Field(default=30, ge=1, description="HTTP 请求超时（秒）")
@@ -127,6 +137,20 @@ class SpiderConfig(BaseSettings):
                 "client_id": self.reddit_client_id,
                 "client_secret": self.reddit_client_secret,
                 "user_agent": self.reddit_user_agent
+            },
+            "x": {
+                "enabled": self.spider_x_enabled,
+                "interval_minutes": self.x_interval_minutes,
+                "bearer_token": self.x_bearer_token,
+                "kol_accounts": self.x_kol_accounts,
+                "keywords": self.x_keywords,
+                "mirrors": self.x_mirrors
+            },
+            "bluesky": {
+                "enabled": self.spider_bluesky_enabled,
+                "interval_minutes": self.bsky_interval_minutes,
+                "kol_accounts": self.bsky_kol_accounts,
+                "keywords": self.bsky_keywords
             }
         }
         return config_map.get(spider_name, {"enabled": False})
@@ -179,4 +203,6 @@ SPIDERS = {
     "hackernews": config.get_spider_config("hackernews"),
     "openrouter": config.get_spider_config("openrouter"),
     "reddit": config.get_spider_config("reddit"),
+    "x": config.get_spider_config("x"),
+    "bluesky": config.get_spider_config("bluesky"),
 }

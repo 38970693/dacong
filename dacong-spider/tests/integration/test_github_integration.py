@@ -1,255 +1,134 @@
 """
-GitHub 爬虫集成测试
+GitHub 爬虫集成测试（registry 新架构）
 
-测试策略：
-1. 测试完整的爬取流程（HTTP -> 处理 -> 存储）
-2. 测试数据库写入
-3. 测试去重逻辑
-4. 使用真实的 HTTP 客户端（可选 Mock）
+与单元测试的区别：这里用**真实的 Fetcher** 打 github.com/trending，
+验证「真实页面结构 → 解析 → 写入」整条链路没有断。写入侧仍用 MockWriter，
+避免污染数据库。
+
+真实网络测试默认跳过，需要显式开启：
+    TEST_USE_REAL_API=true  pytest tests/integration -m integration
+数据库测试另需：
+    TEST_USE_REAL_DB=true
 """
-import pytest
 import os
-from datetime import datetime, timezone
 
-from core.interfaces import MetricSource, DataType
-from core.implementations import HttpClient, ContentHashDeduplicator, SpiderLogger
-from core.storage import InMemoryStorage, SupabaseStorage
-from spiders.github_spider import GitHubSpider, GitHubDataProcessor
-from config import config
+import pytest
 
+from core.fetcher import Fetcher
+from core.writer import Writer
+from spiders.github_trending import GitHubTrendingSpider
+from tests.mocks import MockFetcher, MockWriter
 
-# ══════════════════════════════════════════════════════════
-# 测试配置
-# ══════════════════════════════════════════════════════════
 
 USE_REAL_API = os.getenv("TEST_USE_REAL_API", "false").lower() == "true"
 USE_REAL_DB = os.getenv("TEST_USE_REAL_DB", "false").lower() == "true"
 
-
-# ══════════════════════════════════════════════════════════
-# 集成测试 - 使用内存存储
-# ══════════════════════════════════════════════════════════
-
-@pytest.mark.asyncio
-@pytest.mark.integration
-async def test_github_spider_full_flow_memory():
-    """测试 GitHub 爬虫完整流程（内存存储）"""
-    # 创建真实组件
-    http_client = HttpClient()
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("github_integration_test")
-
-    # 创建爬虫（使用真实 API token）
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger,
-        api_token=config.github_token
-    )
-
-    try:
-        # 执行爬虫
-        result = await spider.run()
-
-        # 验证结果
-        assert result.success is True, f"爬虫执行失败: {result.errors}"
-        assert result.items_fetched > 0, "未抓取到任何数据"
-        assert result.items_written > 0, "未写入任何数据"
-        assert storage.count() > 0, "存储中没有数据"
-
-        # 验证数据质量
-        for key, data in storage.data.items():
-            assert data.source == MetricSource.GITHUB
-            assert data.data_type == DataType.REPOSITORY
-            assert data.source_id, "source_id 不能为空"
-            assert data.title, "title 不能为空"
-            assert data.url.startswith("https://github.com/"), "URL 格式错误"
-            assert data.content_hash, "content_hash 不能为空"
-            assert len(data.content_hash) == 32, "content_hash 长度错误"
-            assert data.metadata.get("stars") is not None, "缺少 stars 元数据"
-
-        print(f"\n✅ 集成测试通过:")
-        print(f"   - 抓取: {result.items_fetched} 条")
-        print(f"   - 写入: {result.items_written} 条")
-        print(f"   - 耗时: {result.duration_seconds:.2f}s")
-
-    finally:
-        await http_client.close()
+pytestmark = [
+    pytest.mark.integration,
+    pytest.mark.skipif(
+        not USE_REAL_API,
+        reason="需要真实网络，设置 TEST_USE_REAL_API=true 开启",
+    ),
+]
 
 
-@pytest.mark.asyncio
-@pytest.mark.integration
-async def test_github_spider_deduplication_flow():
-    """测试 GitHub 爬虫去重流程"""
-    http_client = HttpClient()
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("github_dedup_test")
+@pytest.fixture
+def github_spider(monkeypatch) -> GitHubTrendingSpider:
+    """只爬首页，不爬 6 个语言子页（避免 9 秒以上的礼貌 sleep）"""
 
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger,
-        api_token=config.github_token
-    )
+    async def _no_enrich(self, repos, cache):
+        return None
+
+    monkeypatch.setattr(GitHubTrendingSpider, "languages", property(lambda self: []))
+    monkeypatch.setattr(GitHubTrendingSpider, "_enrich_total_stars", _no_enrich)
+    return GitHubTrendingSpider()
+
+
+async def test_github_spider_full_flow(github_spider):
+    """真实页面 → 解析 → 写入，数据字段合法"""
+    fetcher = Fetcher()
+    writer = MockWriter()
 
     try:
-        # 第一次运行
-        result1 = await spider.run()
-        count1 = storage.count()
-
-        assert result1.success is True
-        assert count1 > 0
-
-        # 第二次运行（应该检测到重复）
-        result2 = await spider.run()
-        count2 = storage.count()
-
-        # 数据量应该相同或略有增加（如果有新数据）
-        assert count2 >= count1
-        # 第二次写入的数量应该很少（大部分是重复的）
-        assert result2.items_written <= result2.items_fetched
-
-        print(f"\n✅ 去重测试通过:")
-        print(f"   - 第一次: 抓取 {result1.items_fetched}, 写入 {result1.items_written}")
-        print(f"   - 第二次: 抓取 {result2.items_fetched}, 写入 {result2.items_written}")
-        print(f"   - 去重率: {(1 - result2.items_written / result2.items_fetched) * 100:.1f}%")
-
+        result = await github_spider.do_fetch(fetcher, writer)
     finally:
-        await http_client.close()
+        await fetcher.close()
+
+    assert result.success is True, f"爬取失败: {result.errors}"
+    assert result.items_fetched > 0, "未抓取到任何数据"
+    assert len(writer.repo_metrics) > 0, "未写入任何仓库"
+
+    for repo in writer.repo_metrics:
+        assert "/" in repo.full_name, "full_name 必须是 owner/repo"
+        assert repo.url.startswith("https://github.com/"), "URL 格式错误"
+        assert isinstance(repo.total_stars, int)
+
+    print(f"\n抓取 {result.items_fetched} 条，写入 {result.items_written} 条，"
+          f"耗时 {result.duration_seconds:.2f}s")
 
 
-# ══════════════════════════════════════════════════════════
-# 集成测试 - 使用真实数据库（可选）
-# ══════════════════════════════════════════════════════════
+async def test_github_spider_deduplication_flow(github_spider):
+    """连续两次爬取：第二次因 24h 去重几乎不再写入"""
+    writer = MockWriter()
 
-@pytest.mark.asyncio
-@pytest.mark.integration
+    try:
+        fetcher = Fetcher()
+        result1 = await github_spider.do_fetch(fetcher, writer)
+        await fetcher.close()
+
+        fetcher = Fetcher()
+        result2 = await github_spider.do_fetch(fetcher, writer)
+        await fetcher.close()
+    finally:
+        pass
+
+    assert result1.success is True
+    assert result2.items_written <= result1.items_written, "第二次不应比首次写入更多"
+
+    print(f"\n首次写入 {result1.items_written}，第二次写入 {result2.items_written}")
+
+
 @pytest.mark.skipif(not USE_REAL_DB, reason="需要设置 TEST_USE_REAL_DB=true")
-async def test_github_spider_full_flow_supabase():
-    """测试 GitHub 爬虫完整流程（Supabase 存储）"""
-    http_client = HttpClient()
-    storage = SupabaseStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("github_supabase_test")
-
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger,
-        api_token=config.github_token
-    )
+async def test_github_spider_full_flow_supabase(github_spider):
+    """写入真实 Supabase（需配置环境变量）"""
+    fetcher = Fetcher()
+    writer = Writer()
 
     try:
-        result = await spider.run()
-
-        assert result.success is True
-        assert result.items_fetched > 0
-        assert result.items_written >= 0  # 可能全部是重复数据
-
-        print(f"\n✅ Supabase 集成测试通过:")
-        print(f"   - 抓取: {result.items_fetched} 条")
-        print(f"   - 写入: {result.items_written} 条")
-        print(f"   - 耗时: {result.duration_seconds:.2f}s")
-
+        result = await github_spider.do_fetch(fetcher, writer)
     finally:
-        await http_client.close()
+        await fetcher.close()
+
+    assert result.success is True
+    assert result.items_fetched > 0
+    assert result.items_written >= 0  # 可能全部命中 24h 去重
+
+    print(f"\n抓取 {result.items_fetched} 条，写入 {result.items_written} 条")
 
 
-# ══════════════════════════════════════════════════════════
-# 性能测试
-# ══════════════════════════════════════════════════════════
-
-@pytest.mark.asyncio
-@pytest.mark.integration
 @pytest.mark.performance
-async def test_github_spider_performance():
-    """测试 GitHub 爬虫性能"""
-    http_client = HttpClient()
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("github_perf_test")
-
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger,
-        api_token=config.github_token
-    )
+async def test_github_spider_performance(github_spider):
+    """单页爬取应在 60 秒内完成"""
+    fetcher = Fetcher()
+    writer = MockWriter()
 
     try:
-        result = await spider.run()
-
-        # 性能要求（放宽到 120 秒，因为 GitHub API 有 rate limit）
-        assert result.duration_seconds < 120, f"爬取时间超过 120 秒: {result.duration_seconds:.2f}s"
-        assert result.items_fetched > 50, "抓取数据量太少"
-
-        # 计算吞吐量
-        throughput = result.items_fetched / result.duration_seconds if result.duration_seconds > 0 else 0
-        print(f"\n✅ 性能测试通过:")
-        print(f"   - 总耗时: {result.duration_seconds:.2f}s")
-        print(f"   - 吞吐量: {throughput:.2f} items/s")
-
+        result = await github_spider.do_fetch(fetcher, writer)
     finally:
-        await http_client.close()
+        await fetcher.close()
+
+    assert result.duration_seconds < 60, f"耗时过长: {result.duration_seconds:.2f}s"
+    assert result.items_fetched > 0
 
 
-# ══════════════════════════════════════════════════════════
-# 错误恢复测试
-# ══════════════════════════════════════════════════════════
+async def test_github_spider_error_recovery(github_spider):
+    """网络不可用时 run() 不抛异常，返回 success=False 的 SpiderResult"""
+    result = await github_spider.run(MockFetcher(default=None), MockWriter())
 
-@pytest.mark.asyncio
-@pytest.mark.integration
-async def test_github_spider_error_recovery():
-    """测试 GitHub 爬虫错误恢复"""
-    # 使用无效的 token
-    http_client = HttpClient()
-    storage = InMemoryStorage()
-    processor = GitHubDataProcessor()
-    deduplicator = ContentHashDeduplicator()
-    logger = SpiderLogger("github_error_test")
-
-    spider = GitHubSpider(
-        http_client=http_client,
-        data_processor=processor,
-        storage=storage,
-        deduplicator=deduplicator,
-        logger=logger,
-        api_token="invalid_token_12345"
-    )
-
-    try:
-        result = await spider.run()
-
-        # 即使 token 无效，爬虫也不应该崩溃
-        # GitHub API 在没有 token 时有更低的 rate limit，但仍然可以工作
-        assert result is not None
-        # 可能成功（使用匿名访问）或失败（rate limit）
-        print(f"\n✅ 错误恢复测试通过:")
-        print(f"   - 状态: {'成功' if result.success else '失败'}")
-        print(f"   - 抓取: {result.items_fetched} 条")
-
-    finally:
-        await http_client.close()
+    assert result is not None
+    assert result.success is False
+    assert result.errors, "失败原因应记录到 errors"
 
 
 if __name__ == "__main__":
-    pytest.main([
-        __file__,
-        "-v",
-        "-m", "integration",
-        "--tb=short"
-    ])
+    pytest.main([__file__, "-v", "-m", "integration", "--tb=short"])

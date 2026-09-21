@@ -66,14 +66,18 @@ class RepositoryMetric:
     fetched_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_dict(self) -> dict:
+        # 注意：字段名必须匹配 repository_metrics 表实际列名
+        # （历史 bug：曾输出 full_name/url/total_stars，导致写入被 except 吞掉）
+        owner = self.full_name.split("/")[0] if "/" in self.full_name else ""
         return {
-            "full_name": self.full_name,
-            "description": self.description,
-            "language": self.language,
-            "stars_today": self.stars_today,
-            "total_stars": self.total_stars,
+            "repo_name": self.full_name,
+            "repo_url": self.url,
+            "stars": self.total_stars,
             "forks": self.forks,
-            "url": self.url,
+            "language": self.language,
+            "description": self.description,
+            "author": owner,
+            "source": "github",
             "fetched_at": self.fetched_at.isoformat(),
         }
 

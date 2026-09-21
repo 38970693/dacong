@@ -53,6 +53,12 @@ from spiders.arena import ArenaSpider
 from spiders.artificial_analysis import ArtificialAnalysisSpider
 from spiders.aiping import AIPingSpider
 
+# AI 资讯扩展爬虫
+from spiders.arxiv_spider import ArxivSpider
+from spiders.ai_news_rss import AINewsRssSpider
+from spiders.x_trends import XTrendsSpider
+from spiders.bluesky import BlueskySpider
+
 # 显式注册（装饰器已在类定义时执行）
 register_spider("github", GitHubTrendingSpider)
 register_spider("huggingface", HuggingFaceSpider)
@@ -63,3 +69,9 @@ register_spider("swebench", SWEBenchSpider)
 register_spider("arena", ArenaSpider)
 register_spider("artificial_analysis", ArtificialAnalysisSpider)
 register_spider("aiping", AIPingSpider)
+
+# AI 资讯扩展爬虫注册（M4）
+register_spider("arxiv", ArxivSpider)
+register_spider("ai_news_rss", AINewsRssSpider)
+register_spider("x", XTrendsSpider)
+register_spider("bluesky", BlueskySpider)

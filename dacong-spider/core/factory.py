@@ -86,16 +86,6 @@ class SpiderFactory:
             **kwargs
         )
 
-    def create_github_spider(self):
-        """创建 GitHub 爬虫"""
-        from spiders.github_spider import GitHubSpider
-        return self.create_spider(GitHubSpider)
-
-    def create_huggingface_spider(self):
-        """创建 HuggingFace 爬虫"""
-        from spiders.huggingface_spider import HuggingFaceSpider
-        return self.create_spider(HuggingFaceSpider)
-
     def create_openrouter_spider(self):
         """创建 OpenRouter 爬虫"""
         from spiders.openrouter_spider import OpenRouterSpider
@@ -105,11 +95,6 @@ class SpiderFactory:
         """创建 Reddit 爬虫"""
         from spiders.reddit_spider import RedditSpider
         return self.create_spider(RedditSpider)
-
-    def create_hackernews_spider(self):
-        """创建 Hacker News 爬虫"""
-        from spiders.hackernews_spider import HackerNewsSpider
-        return self.create_spider(HackerNewsSpider)
 
     async def cleanup(self):
         """清理资源"""
@@ -164,28 +149,3 @@ class SpiderRegistry:
     def list_names(self) -> list[str]:
         """列出所有注册的爬虫名称"""
         return list(self._registry.keys())
-
-
-def create_default_registry() -> SpiderRegistry:
-    """
-    创建默认的爬虫注册表
-
-    包含所有内置爬虫
-    """
-    from spiders.github_spider import GitHubSpider
-    from spiders.huggingface_spider import HuggingFaceSpider
-    from spiders.openrouter_spider import OpenRouterSpider
-    from spiders.reddit_spider import RedditSpider
-    from spiders.hackernews_spider import HackerNewsSpider
-
-    factory = SpiderFactory()
-    registry = SpiderRegistry(factory)
-
-    # 注册所有爬虫
-    registry.register("github", GitHubSpider)
-    registry.register("huggingface", HuggingFaceSpider)
-    registry.register("openrouter", OpenRouterSpider)
-    registry.register("reddit", RedditSpider)
-    registry.register("hackernews", HackerNewsSpider)
-
-    return registry

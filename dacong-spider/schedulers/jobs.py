@@ -134,6 +134,24 @@ def build_scheduler() -> AsyncIOScheduler:
     )
     logger.info("[Scheduler] ✅ 每日全量汇总任务已注册（03:00 UTC）")
 
+    # ── M1 飙升榜计算（compute-rising-stars）────────────────
+    # 该计算跑在 Supabase Edge Function 里，不由本调度器执行。
+    # 需人工配置每日 02:00 UTC 触发一次（早于 03:00 全量汇总，
+    # 用的是前一日已落库的 repository_metrics 时间序列）：
+    #
+    #   方式一（推荐）：Supabase Dashboard → Database → Cron
+    #     select cron.schedule(
+    #       'compute-rising-stars-daily', '0 2 * * *',
+    #       $$ select net.http_post(
+    #            url := '<SUPABASE_URL>/functions/v1/compute-rising-stars',
+    #            headers := '{"Authorization": "Bearer <SERVICE_ROLE_KEY>"}'::jsonb
+    #          ) $$
+    #     );
+    #
+    #   方式二：外部 cron / CI 定时 curl 同一个 URL。
+    #
+    # 如需改由本调度器托管，在此 add_job 一个 http_post 任务即可。
+
     return scheduler
 
 

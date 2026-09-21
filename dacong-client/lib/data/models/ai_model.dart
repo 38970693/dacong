@@ -77,7 +77,8 @@ class AIModel {
       hasFreeTier: json['has_free_tier'] as bool? ?? false,
       pricePer1MInput: json['price_per_1m_input'] as String?,
       pricePer1MOutput: json['price_per_1m_output'] as String?,
-      contextWindow: json['context_window'] as String?,
+      // M3 起 models.context_window 为 INTEGER，这里兼容数字与字符串两种取值
+      contextWindow: json['context_window']?.toString(),
       weeklyDownloads: json['weekly_downloads'] as int?,
       monthlyDownloads: json['monthly_downloads'] as int?,
     );
