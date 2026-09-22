@@ -1,18 +1,16 @@
 """
 AI 新闻 RSS Spider（可选、保持小）
-抓取几个主流 AI 媒体 RSS，写入 hot_news_raw（source='rss', is_ai_related=True）。
+抓取几个主流 AI 媒体 RSS，保留媒体名写入 hot_news_raw。
 """
 import asyncio
 import logging
-from datetime import datetime, timedelta, timezone
-
 from bs4 import BeautifulSoup
 
 from config import SPIDERS
 from core.base import SpiderBase
 from core.fetcher import Fetcher
 from core.writer import Writer
-from models.metrics import SpiderResult
+from models.metrics import HotNewsItem, SpiderResult
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +67,7 @@ def parse_rss_feed(xml: str) -> list[dict]:
 class AINewsRssSpider(SpiderBase):
     """
     AI 媒体 RSS Spider
-    抓取多个 RSS 源，写入 hot_news_raw（source='rss', is_ai_related=True）
+    抓取多个 RSS 源，写入 hot_news_raw（source=媒体标签，is_ai_related=True）
     """
 
     @property
@@ -103,7 +101,7 @@ class AINewsRssSpider(SpiderBase):
             total_fetched += len(entries)
             logger.info(f"[AINewsRSS] {label}: {len(entries)} 条")
 
-            total_written += self._write_news(writer, entries)
+            total_written += self._write_news(writer, entries, label)
 
             await asyncio.sleep(2.0)
 
@@ -115,32 +113,20 @@ class AINewsRssSpider(SpiderBase):
             errors=errors,
         )
 
-    def _write_news(self, writer: Writer, entries: list[dict]) -> int:
+    def _write_news(self, writer: Writer, entries: list[dict], source: str) -> int:
         written = 0
-        cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
 
         for e in entries:
+            news = HotNewsItem(
+                source=source,
+                title=e["title"],
+                url=e["url"],
+                summary=e["summary"],
+                is_ai_related=True,
+            )
             try:
-                existing = writer.client.table("hot_news_raw").select(
-                    "id", count="exact"
-                ).match({
-                    "title": e["title"],
-                    "source": "rss",
-                }).gte("fetched_at", cutoff).execute()
-
-                if existing.count and existing.count > 0:
-                    continue
-
-                writer.client.table("hot_news_raw").insert({
-                    "source": "rss",
-                    "title": e["title"],
-                    "url": e["url"],
-                    "summary": e["summary"],
-                    "author": "",
-                    "score": 0,
-                    "is_ai_related": True,
-                }).execute()
-                written += 1
+                if writer.upsert_hot_news(news):
+                    written += 1
             except Exception as ex:
                 logger.error(f"[AINewsRSS] 写入失败: {ex}")
 

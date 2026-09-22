@@ -93,6 +93,7 @@ class HotNewsItem:
     summary: str = ""
     author: str = ""
     score: int = 0
+    is_ai_related: bool = False
     fetched_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_dict(self) -> dict:
@@ -103,6 +104,7 @@ class HotNewsItem:
             "summary": self.summary,
             "author": self.author,
             "score": self.score,
+            "is_ai_related": self.is_ai_related,
             "fetched_at": self.fetched_at.isoformat(),
         }
 

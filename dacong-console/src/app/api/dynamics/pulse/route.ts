@@ -1,5 +1,4 @@
-// Static export mode: exclude from static generation
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 // AI 动态 - 模型脉搏数据源
 // 读取 model_evaluations（按 eval_date 留历史），关联 models 拿模型名
@@ -77,12 +76,12 @@ export async function GET(request: NextRequest) {
       success: true,
       data: { series, models, benchmarks },
       meta: { total: series.length, days },
-    });
+    }, { headers: { 'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=120' } });
   } catch (err) {
     console.error('[dynamics/pulse]', err);
     return NextResponse.json(
       { success: false, data: { series: [], models: [], benchmarks: [] }, error: 'Failed to fetch evaluations' },
-      { status: 200 },
+      { status: 503 },
     );
   }
 }

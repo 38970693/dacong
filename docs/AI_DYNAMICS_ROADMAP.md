@@ -1,6 +1,7 @@
 # DaCong AI 动态改造：产品规划与路线图
 
-> 状态：**进行中** ｜ 最后更新：2026-09-14
+> 状态：**历史路线图** ｜ 最后更新：2026-09-22
+> 当前实施结果与上线步骤以 [AI_DYNAMICS_REBUILD.md](AI_DYNAMICS_REBUILD.md) 为准。
 > 本文是 `AI_DYNAMICS_REPOSITION_PLAN.md`（定位决策）的**执行版**，把定位落成可验收的任务。
 > 定位决策以那份文档为准，本文只回答「做什么、按什么顺序做、做到什么算完」。
 
@@ -219,8 +220,7 @@ X 爬虫按配置自动切换通道，**不需要改代码**：
 图表用**手写 SVG**（`Sparkline` / `TrendLine`），不引入 recharts 等新依赖。
 雷达图降级为「最新分数横向条形 + 历史折线」，信息等价且更易读。
 
-> ⚠️ console 是静态导出模式（`output: export`）：新增 API route 必须加
-> `export const dynamic = 'force-static';`，否则请求直接 500。这是本项目最容易踩的坑。
+> 2026-09-22 已切换为 Vercel SSR。动态 API 使用 `force-dynamic`，避免构建时冻结数据。
 
 
 | # | 任务 | 验收标准 |

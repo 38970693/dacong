@@ -8,7 +8,7 @@
 
 1. **登录 Supabase Dashboard**
    - 访问：https://supabase.com/dashboard
-   - 使用你的账号登录（密码：Fan03Zhou24）
+   - 使用有项目权限的账号登录；凭据只保存在密码管理器中，不写入仓库
 
 2. **选择项目**
    - 项目 ref: `twrxnqrisplmetbceyqm`

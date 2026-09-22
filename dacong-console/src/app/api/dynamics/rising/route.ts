@@ -1,5 +1,4 @@
-// Static export mode: exclude from static generation
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 // AI 动态 - 飙升榜数据源
 // 读取 compute-rising-stars 生成的最新快照（rising_stars_rankings），按涨速排序
@@ -53,12 +52,12 @@ export async function GET(request: NextRequest) {
       success: true,
       data: data ?? [],
       meta: { snapshot_date: latest.snapshot_date, sort: sortBy, total: data?.length ?? 0 },
-    });
+    }, { headers: { 'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=60' } });
   } catch (err) {
     console.error('[dynamics/rising]', err);
     return NextResponse.json(
       { success: false, data: [], error: 'Failed to fetch rising stars' },
-      { status: 200 },
+      { status: 503 },
     );
   }
 }

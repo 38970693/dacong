@@ -115,6 +115,14 @@ tests/smoke/results/
 .idea/
 *.iml
 
+### Local agent tooling
+.agents/
+.workbuddy/
+.workbuddy-ai/
+
+### Generated crawler captures
+dacong-spider/data/dryrun_captured.json
+
 # Vim
 *.swp
 *.swo
