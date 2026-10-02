@@ -1,4 +1,4 @@
--- 配置 Edge Function Secret ANTHROPIC_API_KEY 并验证翻译后执行。
+-- 配置 AI_NEWS_TRANSLATION_PROVIDER=mymemory（免 Key）或 ANTHROPIC_API_KEY 并验证翻译后执行。
 -- 复用 deploy-cron-ai-news.sql 已配置的 Vault 凭据。
 SELECT cron.unschedule(jobid) FROM cron.job WHERE jobname = 'translate-ai-news-quarter-hourly';
 SELECT cron.schedule(
