@@ -1,7 +1,7 @@
 # DaCong AI 动态改造实施文档
 
-> 状态：代码实施完成，等待生产基础设施恢复
-> 更新日期：2026-09-22
+> 状态：生产部署完成；GitHub 自动采集等待仓库权限
+> 更新日期：2026-10-02
 
 ## 1. 改造目标
 
@@ -85,15 +85,19 @@ Next.js 已切换为 Vercel SSR，动态 API 不再在构建时冻结为静态 J
 
 ## 6. 调度与部署
 
-1. 在 Supabase 控制台恢复项目；
-2. 执行 `supabase db push --workdir dacong-api`；
-3. 部署 `process-ai-news` 与 `generate-daily-digest`；
-4. 在 Vault 创建 `project_url`、`service_role_key`，执行 `dacong-api/supabase/deploy-cron-ai-news.sql`；
-5. 在 Vercel 配置 `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_ANON_KEY`、`SUPABASE_SERVICE_ROLE_KEY`；
-6. 部署 `dacong-console`，检查动态列表、详情、日报和后台；
-7. 手动调用一次处理函数和日报函数，验证首批生产数据。
+本次已恢复 Supabase 项目 `prszkdbdgffbdqclbgol`，保留原有数据，并完成以下配置：
 
-当前生产发布尚未执行：Supabase 项目处于暂停状态，且本机 Vercel CLI 登录凭据已失效。代码、迁移和调度文件已经准备完成，恢复这两项后即可按上述步骤发布。
+1. 按 `dacong-api/supabase/deploy-ai-dynamics-production.sql` 中的顺序，在同一事务中对齐历史表结构并应用动态、日报和权限迁移；迁移登记为 `ai_dynamics_bootstrap_20261002`。历史库的迁移记录不完整，不直接执行全部遗留迁移。
+2. 部署 `process-ai-news` 与 `generate-daily-digest`；配置 Edge Function Secret `AI_NEWS_SERVICE_ROLE_KEY`，使函数使用当前有效的服务端凭据。
+3. 配置 Vault 的 `project_url`、`service_role_key`，启用每 15 分钟处理任务及每日 UTC 00:00（北京时间 08:00）日报任务。
+4. 在 Vercel 配置 `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_ANON_KEY`、`SUPABASE_URL`、`SUPABASE_SERVICE_ROLE_KEY`；项目 Root Directory 为 `dacong-console`，Framework 为 Next.js。
+5. 完成生产构建与部署，入口为 [AI 动态](https://dacong-weld.vercel.app/web/dynamics) 和 [每日摘要](https://dacong-weld.vercel.app/web/digests)。
+
+首次运行发布 10 条动态、隔离 1 条内容，生成 2026-10-02 日报（8 条精选）。采集来源在本机部分存在连接失败或 HTTP 429，首批内容来自成功采集的 RSS 来源。
+
+上游自动采集工作流 `.github/workflows/ai-news-update.yml` 已编写，每两小时采集并调用处理函数；前端发布工作流已改为 Vercel。当前 GitHub token 无法访问仓库推送和 Actions Secrets，相关提交仍保留在本地，工作流尚未启用。需要仓库 Contents、Workflows 的读写权限及 Secrets 读写权限，并配置 `SUPABASE_URL`、`SUPABASE_SERVICE_ROLE_KEY`、`VERCEL_TOKEN`、`VERCEL_ORG_ID`、`VERCEL_PROJECT_ID`。Supabase 已启用的处理与日报调度独立于 GitHub 工作流运行。
+
+后台需要应用用户在 `profiles` 中具备管理员角色；本次未将任何已有用户自动提升为管理员。凭据仅配置在平台环境变量、Secrets 和 Vault 中，不写入本文件。
 
 ## 7. 验收标准
 
@@ -104,3 +108,7 @@ Next.js 已切换为 Vercel SSR，动态 API 不再在构建时冻结为静态 J
 - 同一事件的多个来源聚合为一条动态；
 - 每日摘要重复执行结果稳定且不会产生重复记录；
 - 生产环境完成迁移、函数、调度、页面及首批数据冒烟验证。
+
+本次验证：Edge Function 规则测试 7 项通过，相关爬虫测试 35 项通过，相关 Web 测试 41 项通过，局部 ESLint 与 Next.js 本地及 Vercel 生产构建通过。全量测试仍有原有失败：爬虫 3 项依赖未配置的 LLM API Key，Web 10 项性能测试依赖本地运行服务、1 项评论分页断言与实现不一致。构建还提示旧榜单缺少部分表或列，这不阻断本次动态与日报发布。
+
+生产冒烟验证通过：动态页面、日报页面、列表/详情/日报 API 返回 HTTP 200；公开列表为 10 条已发布内容，日报为 8 条已发布内容；未登录请求管理 API 返回 HTTP 401。重复执行处理函数新增条目为 0，日报仍为 8 条。Supabase 状态为 `ACTIVE_HEALTHY`，两个 cron 任务均处于启用状态。
