@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AINewsItem, CATEGORY_LABELS, NewsCategory, TIER_LABELS } from '@/types/dynamics';
+import { NewsTranslation } from './NewsTranslation';
 
 const CATEGORIES: Array<{ value: '' | NewsCategory; label: string }> = [
   { value: '', label: '全部' },
@@ -77,10 +78,9 @@ export function NewsFeed() {
                   {primary && <span>{primary.source}</span>}
                   <span>{timeAgo(item.published_at)}</span>
                 </div>
-                <h2 className="font-semibold leading-snug text-[var(--foreground)]">{item.title}</h2>
-                {item.summary && <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)] line-clamp-3">{item.summary}</p>}
-                <p className="mt-2 text-[10px] text-[var(--text-muted)]">规则整理 · 质量分 {item.quality_score}</p>
               </Link>
+              <NewsTranslation item={item} href={`/web/dynamics/${item.id}`} />
+              <p className="mt-2 text-[10px] text-[var(--text-muted)]">规则整理 · 质量分 {item.quality_score}</p>
             </li>
           );
         })}

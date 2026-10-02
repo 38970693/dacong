@@ -13,6 +13,8 @@ export interface AINewsItem {
   id: string;
   title: string;
   summary: string;
+  title_zh?: string | null;
+  summary_zh?: string | null;
   language: 'zh' | 'en' | 'other';
   category: NewsCategory;
   source_tier: SourceTier;

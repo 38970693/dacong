@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import { AINewsItem, CATEGORY_LABELS, DailyDigest } from '@/types/dynamics';
+import { NewsTranslation } from '@/components/dynamics/NewsTranslation';
 
 type DigestDetail = DailyDigest & { items: Array<{ rank: number; category: string; ai_news_items: AINewsItem }> };
 
@@ -31,9 +32,8 @@ export default function DigestDetailPage({ params }: { params: Promise<{ date: s
           <li key={item.id} className="py-4">
             <Link href={`/web/dynamics/${item.id}`}>
               <p className="text-xs text-[var(--text-muted)]">#{rank} · {CATEGORY_LABELS[item.category]}</p>
-              <h2 className="mt-1 font-semibold">{item.title}</h2>
-              <p className="mt-2 text-sm text-[var(--text-secondary)]">{item.summary}</p>
             </Link>
+            <div className="mt-1"><NewsTranslation item={item} href={`/web/dynamics/${item.id}`} /></div>
           </li>
         ))}
       </ol>

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import { AINewsItem, CATEGORY_LABELS, TIER_LABELS } from '@/types/dynamics';
+import { NewsTranslation } from '@/components/dynamics/NewsTranslation';
 
 export default function DynamicsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -28,8 +29,7 @@ export default function DynamicsDetailPage({ params }: { params: Promise<{ id: s
       <div className="mt-6 flex flex-wrap gap-2 text-xs text-[var(--text-muted)]">
         <span>{CATEGORY_LABELS[item.category]}</span><span>·</span><span>{TIER_LABELS[item.source_tier]}</span>
       </div>
-      <h1 className="mt-3 text-2xl font-bold leading-tight text-[var(--foreground)]">{item.title}</h1>
-      <p className="mt-5 leading-7 text-[var(--text-secondary)]">{item.summary}</p>
+      <NewsTranslation key={item.id} item={item} detail />
       <h2 className="mt-8 font-semibold">来源</h2>
       <ul className="mt-3 space-y-3">
         {item.ai_news_sources.map((source) => (
