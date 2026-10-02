@@ -4,9 +4,9 @@ import { SkipLink, LiveRegion } from "@/components/a11y";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DaCong - AI 模型排行榜",
-  description: "DaCong 汇聚全球顶尖 AI 模型，提供实时排行、社区讨论和最新资讯，让你在 AI 时代保持领先。",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dacong.netlify.app'),
+  title: "DaCong - AI 动态与每日摘要",
+  description: "聚合模型发布、AI Agent、开发工具、开源项目与研究进展，保留原文出处，提供每日精选和中英文切换。",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dacong-weld.vercel.app'),
   openGraph: {
     type: "website",
     locale: "zh_CN",

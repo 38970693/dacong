@@ -35,7 +35,7 @@ export interface DailyDigest {
 
 export const CATEGORY_LABELS: Record<NewsCategory, string> = {
   model: '模型进展',
-  developer_tool: '开发工具',
+  developer_tool: 'Agent / 开发工具',
   open_source: '开源项目',
   research: '研究进展',
   industry: '行业动态',

@@ -1,6 +1,6 @@
 # DaCong AI 动态改造实施文档
 
-> 状态：生产部署完成；GitHub 自动采集等待仓库权限
+> 状态：生产部署、RSS 自动采集、处理与日报调度完成；GitHub 推送等待仓库权限
 > 更新日期：2026-10-02
 
 ## 1. 改造目标
@@ -19,8 +19,9 @@ DaCong 聚焦服务开发者和 AI 从业者，核心产品由分散榜单收敛
 ```mermaid
 flowchart LR
     A[Python 爬虫] --> B[hot_news_raw 原始层]
+    L[collect-ai-news 每两小时 RSS 采集] --> B
     B --> C[process-ai-news 每 15 分钟]
-    C --> D{质量分 >= 65}
+    C --> D{具有 AI 信号且时间有效，质量分 >= 65}
     D -->|是| E[ai_news_items published]
     D -->|否| F[ai_news_items quarantined]
     E --> G[Next.js SSR API]
@@ -61,12 +62,13 @@ flowchart LR
 - 新鲜度：最高 15；
 - 字段完整度：最高 15。
 
-达到 65 分自动发布，否则进入隔离区。管理员可以发布、撤回或恢复内容。
+标题与摘要须具有明确 AI 信号，发布时间不能在未来，并达到 65 分才自动发布，否则进入隔离区。来源标记 `is_ai_related=true` 本身不足以通过筛选。管理员可以发布、撤回或恢复内容。
 
 ### 4.3 摘要与去重
 
 - 中文摘要最多 150 字，其他语言最多 240 字，优先在完整句子处截断；
 - 事件键由“标准化标题 + UTC 日期”计算；
+- 有效的原始发布时间优先于采集时间；原始日期缺失或无效时回退到采集时间；
 - 72 小时内标题 Dice 相似度达到 0.88 时合并来源；
 - 已撤回事件即使再次采集也保持撤回状态；
 - 每日摘要最多 10 条，同一分类最多 3 条，按重要度、质量分和发布时间确定性排序。
@@ -75,7 +77,7 @@ flowchart LR
 
 | 路径 | 功能 |
 |---|---|
-| `/web/dynamics` | 精选/最新切换、分类筛选、飙升榜、模型脉搏 |
+| `/web/dynamics` | 精选/最新切换、分类与 7/30 天筛选、飙升榜、模型脉搏 |
 | `/web/dynamics/[id]` | 动态详情与多来源链接 |
 | `/web/digests` | 每日摘要列表 |
 | `/web/digests/[date]` | 指定日期摘要 |
@@ -88,14 +90,14 @@ Next.js 已切换为 Vercel SSR，动态 API 不再在构建时冻结为静态 J
 本次已恢复 Supabase 项目 `prszkdbdgffbdqclbgol`，保留原有数据，并完成以下配置：
 
 1. 按 `dacong-api/supabase/deploy-ai-dynamics-production.sql` 中的顺序，在同一事务中对齐历史表结构并应用动态、日报和权限迁移；迁移登记为 `ai_dynamics_bootstrap_20261002`。历史库的迁移记录不完整，不直接执行全部遗留迁移。
-2. 部署 `process-ai-news` 与 `generate-daily-digest`；配置 Edge Function Secret `AI_NEWS_SERVICE_ROLE_KEY`，使函数使用当前有效的服务端凭据。
-3. 配置 Vault 的 `project_url`、`service_role_key`，启用每 15 分钟处理任务及每日 UTC 00:00（北京时间 08:00）日报任务。
+2. 部署 `collect-ai-news`、`process-ai-news` 与 `generate-daily-digest`；配置 Edge Function Secret `AI_NEWS_SERVICE_ROLE_KEY`，使函数使用当前有效的服务端凭据。
+3. 配置 Vault 的 `project_url`、`service_role_key`，启用每两小时的第 17 分钟采集任务、每 15 分钟处理任务及每日 UTC 00:00（北京时间 08:00）日报任务；HTTP 调用超时设为 60 秒。
 4. 在 Vercel 配置 `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_ANON_KEY`、`SUPABASE_URL`、`SUPABASE_SERVICE_ROLE_KEY`；项目 Root Directory 为 `dacong-console`，Framework 为 Next.js。
 5. 完成生产构建与部署，入口为 [AI 动态](https://dacong-weld.vercel.app/web/dynamics) 和 [每日摘要](https://dacong-weld.vercel.app/web/digests)。
 
-首次运行发布 10 条动态、隔离 1 条内容，生成 2026-10-02 日报（8 条精选）。采集来源在本机部分存在连接失败或 HTTP 429，首批内容来自成功采集的 RSS 来源。
+首次运行发布 10 条动态、隔离 1 条内容。2026-10-02 按网络动态扩充 RSS 并复核原始日期和相关性后，当前发布 63 条、隔离 31 条；该日日报重新生成后为 4 条过去 24 小时的精选。6 个 RSS 来源采集成功，VentureBeat 返回 HTTP 429。详见 [热点与体验调整记录](AI_DYNAMICS_HOTSPOT_UPDATE.md)。
 
-上游自动采集工作流 `.github/workflows/ai-news-update.yml` 已编写，每两小时采集并调用处理函数；前端发布工作流已改为 Vercel。当前 GitHub token 无法访问仓库推送和 Actions Secrets，相关提交仍保留在本地，工作流尚未启用。需要仓库 Contents、Workflows 的读写权限及 Secrets 读写权限，并配置 `SUPABASE_URL`、`SUPABASE_SERVICE_ROLE_KEY`、`VERCEL_TOKEN`、`VERCEL_ORG_ID`、`VERCEL_PROJECT_ID`。Supabase 已启用的处理与日报调度独立于 GitHub 工作流运行。
+RSS 自动采集已改由 Supabase Edge Function 与 pg_cron 独立运行，不依赖 GitHub。GitHub 工作流 `.github/workflows/ai-news-update.yml` 保留用于 Python 采集与扩展来源；前端发布工作流已改为 Vercel。当前 GitHub token 无法访问仓库推送和 Actions Secrets，相关提交仍保留在本地，GitHub 工作流尚未启用。启用时需要仓库 Contents、Workflows 及 Secrets 读写权限，并配置 `SUPABASE_URL`、`SUPABASE_SERVICE_ROLE_KEY`、`VERCEL_TOKEN`、`VERCEL_ORG_ID`、`VERCEL_PROJECT_ID`。
 
 后台需要应用用户在 `profiles` 中具备管理员角色；本次未将任何已有用户自动提升为管理员。凭据仅配置在平台环境变量、Secrets 和 Vault 中，不写入本文件。
 

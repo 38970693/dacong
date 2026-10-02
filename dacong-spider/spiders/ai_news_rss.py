@@ -4,6 +4,8 @@ AI 新闻 RSS Spider（可选、保持小）
 """
 import asyncio
 import logging
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from bs4 import BeautifulSoup
 
 from config import SPIDERS
@@ -16,6 +18,9 @@ logger = logging.getLogger(__name__)
 
 # 默认抓取的主流 AI 媒体 RSS（可在 config 的 SPIDERS['ai_news_rss']['feeds'] 覆盖）
 DEFAULT_FEEDS: list[tuple[str, str]] = [
+    ("OpenAI", "https://openai.com/news/rss.xml"),
+    ("HuggingFace", "https://huggingface.co/blog/feed.xml"),
+    ("GitHub", "https://github.blog/ai-and-ml/feed/"),
     ("TheSequence", "https://thesequence.substack.com/feed"),
     ("VentureBeat_AI", "https://venturebeat.com/category/ai/feed/"),
     ("Google_AI", "https://blog.google/technology/ai/rss/"),
@@ -33,25 +38,25 @@ def parse_rss_feed(xml: str) -> list[dict]:
     soup = BeautifulSoup(xml, "xml")
     items: list[dict] = []
 
-    for item in soup.find_all("item"):
+    for item in soup.find_all(["item", "entry"]):
         title_el = item.find("title")
         title = " ".join(title_el.get_text(strip=True).split()) if title_el else ""
         if not title:
             continue
 
-        link_el = item.find("link")
-        url = link_el.get_text(strip=True) if link_el else ""
+        link_el = item.find("link", attrs={"rel": "alternate"}) or item.find("link", attrs={"href": True}) or item.find("link")
+        url = (link_el.get("href") or link_el.get_text(strip=True)) if link_el else ""
         if not url:
             continue
 
-        desc_el = item.find("description")
+        desc_el = item.find("description") or item.find("summary") or item.find("content")
         summary = ""
         if desc_el:
-            summary = " ".join(desc_el.get_text(strip=True).split())
+            summary = " ".join(BeautifulSoup(desc_el.get_text(" ", strip=True), "html.parser").get_text(" ", strip=True).split())
             if len(summary) > SUMMARY_MAX_LEN:
                 summary = summary[:SUMMARY_MAX_LEN].rstrip() + "…"
 
-        pub_el = item.find("pubDate")
+        pub_el = item.find("pubDate") or item.find("published") or item.find("updated")
         published = pub_el.get_text(strip=True) if pub_el else ""
 
         items.append({
@@ -62,6 +67,19 @@ def parse_rss_feed(xml: str) -> list[dict]:
         })
 
     return items
+
+
+def publication_date(value: str):
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        try:
+            parsed = parsedate_to_datetime(value)
+        except (ValueError, TypeError):
+            return None
+    return parsed.replace(tzinfo=timezone.utc) if parsed.tzinfo is None else parsed.astimezone(timezone.utc)
 
 
 class AINewsRssSpider(SpiderBase):
@@ -123,6 +141,7 @@ class AINewsRssSpider(SpiderBase):
                 url=e["url"],
                 summary=e["summary"],
                 is_ai_related=True,
+                source_published_at=publication_date(e.get("published", "")),
             )
             try:
                 if writer.upsert_hot_news(news):

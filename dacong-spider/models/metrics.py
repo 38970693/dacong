@@ -95,6 +95,7 @@ class HotNewsItem:
     score: int = 0
     is_ai_related: bool = False
     fetched_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    source_published_at: Optional[datetime] = None
 
     def to_dict(self) -> dict:
         return {
@@ -106,6 +107,7 @@ class HotNewsItem:
             "score": self.score,
             "is_ai_related": self.is_ai_related,
             "fetched_at": self.fetched_at.isoformat(),
+            "source_published_at": self.source_published_at.isoformat() if self.source_published_at else None,
         }
 
 

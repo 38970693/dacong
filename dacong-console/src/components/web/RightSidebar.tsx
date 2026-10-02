@@ -1,104 +1,63 @@
 'use client';
 
-const trendingTopics = [
-  { rank: 1, title: 'Claude 3 发布', count: '12.3k' },
-  { rank: 2, title: 'GPT-5 预测', count: '8.7k' },
-  { rank: 3, title: 'Llama 3 开源', count: '6.2k' },
-  { rank: 4, title: 'Gemini API', count: '4.1k' },
-  { rank: 5, title: 'AI 编程大火', count: '3.5k' },
-];
-
-const hotModels = [
-  { name: 'GPT-4 Turbo', score: 9.8, comments: '12k' },
-  { name: 'Claude 3', score: 9.6, comments: '8k' },
-  { name: 'Gemini Pro', score: 9.4, comments: '6k' },
-];
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { AINewsItem } from '@/types/dynamics';
 
 export function RightSidebar() {
+  const [items, setItems] = useState<AINewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/dynamics/news?sort=selected&days=7&limit=30', { signal: controller.signal, cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Load failed');
+        const body = await response.json();
+        setItems(body.data ?? []);
+      })
+      .catch(() => { if (!controller.signal.aborted) setFailed(true); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
+  }, []);
+  const sources = new Map<string, number>();
+  for (const item of items) {
+    for (const source of new Set(item.ai_news_sources?.map((entry) => entry.source) ?? [])) {
+      sources.set(source, (sources.get(source) ?? 0) + 1);
+    }
+  }
   return (
     <aside className="w-80 shrink-0 p-4 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto hidden xl:block">
-      {/* 热门话题 */}
-      <div className="bg-white rounded-2xl border border-[var(--border)] p-5 mb-4">
-        <h3 className="font-semibold text-[var(--foreground)] mb-4 flex items-center gap-2">
-          <span>🔥</span>
-          <span>热门话题</span>
-        </h3>
-        <div className="space-y-4">
-          {trendingTopics.map((topic) => (
-            <div key={topic.rank} className="flex items-start gap-3">
-              <span
-                className={`text-lg font-bold w-6 ${
-                  topic.rank <= 2 ? 'text-[var(--primary)]' : 'text-[var(--text-muted)]'
-                }`}
-              >
-                {topic.rank}
-              </span>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-[var(--foreground)]">{topic.title}</p>
-                <p className="text-xs text-[var(--text-muted)]">{topic.count} 讨论</p>
-              </div>
-            </div>
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-5 mb-4">
+        <h3 className="font-semibold mb-4">🔥 近 7 日精选</h3>
+        {loading && <p className="text-sm text-[var(--text-muted)]">加载中…</p>}
+        {failed && <p className="text-sm text-[var(--text-muted)]">暂时无法加载精选动态</p>}
+        {!loading && !failed && !items.length && <p className="text-sm text-[var(--text-muted)]">近 7 天暂无精选动态</p>}
+        <ol className="space-y-4">
+          {items.slice(0, 5).map((item, index) => (
+            <li key={item.id} className="flex gap-3">
+              <span className="font-bold text-[var(--primary)]">{index + 1}</span>
+              <Link href={`/web/dynamics/${item.id}`} className="text-sm hover:text-[var(--primary)]">
+                <p className="font-medium line-clamp-2">{item.title}</p>
+                <p className="mt-1 text-xs text-[var(--text-muted)]">{item.ai_news_sources?.[0]?.source} · {item.published_at?.slice(0, 10)}</p>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
-
-      {/* 热门模型 */}
-      <div className="bg-white rounded-2xl border border-[var(--border)] p-5 mb-4">
-        <h3 className="font-semibold text-[var(--foreground)] mb-4 flex items-center gap-2">
-          <span>🏆</span>
-          <span>热门模型</span>
-        </h3>
-        <div className="space-y-4">
-          {hotModels.map((model, idx) => (
-            <div key={model.name} className="flex items-start gap-3">
-              <span
-                className={`text-lg font-bold w-6 ${
-                  idx === 0 ? 'text-[var(--primary)]' : 'text-[var(--text-muted)]'
-                }`}
-              >
-                #
-              </span>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-[var(--foreground)]">{model.name}</p>
-                <p className="text-xs text-[var(--text-muted)]">
-                  评分 {model.score} · {model.comments} 评论
-                </p>
-              </div>
-            </div>
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-5 mb-4">
+        <h3 className="font-semibold mb-3">资讯来源</h3>
+        <p className="text-xs text-[var(--text-muted)] mb-3">按当前近 7 天精选列表统计，最多 30 条</p>
+        <ul className="space-y-2 text-sm">
+          {[...sources].sort((a, b) => b[1] - a[1]).map(([source, count]) => (
+            <li key={source} className="flex justify-between gap-2"><span>{source}</span><span className="text-[var(--text-muted)]">{count} 条</span></li>
           ))}
-        </div>
-        <button className="w-full mt-4 py-2 text-sm text-[var(--primary)] font-medium hover:bg-[var(--primary-light)] rounded-lg transition-colors">
-          查看完整排行榜 →
-        </button>
+        </ul>
       </div>
-
-      {/* 推荐关注 */}
-      <div className="bg-white rounded-2xl border border-[var(--border)] p-5">
-        <h3 className="font-semibold text-[var(--foreground)] mb-4 flex items-center gap-2">
-          <span>👥</span>
-          <span>推荐关注</span>
-        </h3>
-        <div className="space-y-4">
-          {[
-            { name: 'AI 前沿', avatar: '🤖', desc: '每日 AI 资讯' },
-            { name: '技术大咖', avatar: '👨‍💻', desc: '分享技术干货' },
-            { name: 'AI 研究员', avatar: '🔬', desc: '前沿技术分析' },
-          ].map((user) => (
-            <div key={user.name} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[var(--primary-light)] flex items-center justify-center text-xl">
-                {user.avatar}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-[var(--foreground)]">{user.name}</p>
-                <p className="text-xs text-[var(--text-muted)]">{user.desc}</p>
-              </div>
-              <button className="px-3 py-1.5 text-xs font-medium text-[var(--primary)] border border-[var(--primary)] rounded-full hover:bg-[var(--primary)] hover:text-white transition-colors">
-                关注
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      <Link href="/web/digests" className="block rounded-2xl border border-[var(--border)] p-5 hover:border-[var(--primary)]">
+        <h3 className="font-semibold">📋 每日 AI 摘要 →</h3>
+        <p className="mt-2 text-sm text-[var(--text-muted)]">每天北京时间 08:00，阅读过去 24 小时的精选动态。</p>
+      </Link>
     </aside>
   );
 }

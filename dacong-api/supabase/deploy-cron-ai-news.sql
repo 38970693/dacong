@@ -8,7 +8,23 @@ CREATE EXTENSION IF NOT EXISTS pg_net;
 
 SELECT cron.unschedule(jobid)
 FROM cron.job
-WHERE jobname IN ('process-ai-news-quarter-hourly', 'generate-ai-digest-daily');
+WHERE jobname IN ('collect-ai-news-two-hourly', 'process-ai-news-quarter-hourly', 'generate-ai-digest-daily');
+
+SELECT cron.schedule(
+  'collect-ai-news-two-hourly',
+  '17 */2 * * *',
+  $$
+  SELECT net.http_post(
+    url := (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'project_url') || '/functions/v1/collect-ai-news',
+    headers := jsonb_build_object(
+      'Content-Type', 'application/json',
+      'Authorization', 'Bearer ' || (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'service_role_key')
+    ),
+    body := '{}'::jsonb,
+    timeout_milliseconds := 60000
+  );
+  $$
+);
 
 SELECT cron.schedule(
   'process-ai-news-quarter-hourly',
@@ -20,7 +36,8 @@ SELECT cron.schedule(
       'Content-Type', 'application/json',
       'Authorization', 'Bearer ' || (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'service_role_key')
     ),
-    body := '{}'::jsonb
+    body := '{}'::jsonb,
+    timeout_milliseconds := 60000
   );
   $$
 );
@@ -34,7 +51,8 @@ SELECT cron.schedule(
       'Content-Type', 'application/json',
       'Authorization', 'Bearer ' || (SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name = 'service_role_key')
     ),
-    body := '{}'::jsonb
+    body := '{}'::jsonb,
+    timeout_milliseconds := 60000
   );
   $$
 );

@@ -14,6 +14,7 @@ export interface RawNews {
   summary?: string | null;
   score?: number | null;
   fetched_at?: string | null;
+  source_published_at?: string | null;
   is_ai_related?: boolean | null;
 }
 
@@ -47,6 +48,9 @@ const CATEGORY_KEYWORDS: Record<NewsCategory, string[]> = {
     "coding",
     "developer",
     "copilot",
+    "codex",
+    "mcp",
+    "harness",
     "开发",
     "编程",
     "智能体",
@@ -72,7 +76,12 @@ const CATEGORY_KEYWORDS: Record<NewsCategory, string[]> = {
   ],
 };
 
-const AI_KEYWORDS = [...new Set(Object.values(CATEGORY_KEYWORDS).flat())];
+const AI_SIGNALS = [
+  /\b(?:ai|artificial intelligence|machine learning|deep learning|llms?)\b/i,
+  /\b(?:gpt(?:-?\d)?|chatgpt|openai|anthropic|claude|gemini|llama|qwen|deepseek|kimi|mistral|codex|copilot|hugging\s?face)\b/i,
+  /\b(?:neural networks?|diffusion models?|language models?|computer vision|coding agents?|ai agents?|mcp)\b/i,
+  /人工智能|大语言模型|大模型|机器学习|深度学习|神经网络|智能体/,
+];
 
 export function cleanText(value: string | null | undefined): string {
   return (value ?? "")
@@ -186,9 +195,8 @@ export async function curateNews(
   const body = cleanText(raw.summary);
   const language = detectLanguage(`${title} ${body}`);
   const combined = `${title} ${body}`.toLowerCase();
-  const keywordMatches =
-    AI_KEYWORDS.filter((keyword) => combined.includes(keyword)).length;
-  const relevance = raw.is_ai_related === true
+  const keywordMatches = AI_SIGNALS.filter((signal) => signal.test(combined)).length;
+  const relevance = keywordMatches && raw.is_ai_related === true
     ? 30
     : Math.min(30, keywordMatches * 10);
   const tierScore = tier === "official"
@@ -196,15 +204,17 @@ export async function curateNews(
     : tier === "professional"
     ? 30
     : 20;
-  const publishedAt = raw.fetched_at ?? null;
+  const publishedAt = [raw.source_published_at, raw.fetched_at].find((value) =>
+    value && Number.isFinite(Date.parse(value))
+  ) ?? null;
   const ageHours = publishedAt
     ? (Date.now() - new Date(publishedAt).getTime()) / 3_600_000
     : Infinity;
-  const freshness = ageHours <= 24
+  const freshness = ageHours >= 0 && ageHours <= 24
     ? 15
-    : ageHours <= 72
+    : ageHours >= 0 && ageHours <= 72
     ? 10
-    : ageHours <= 168
+    : ageHours >= 0 && ageHours <= 168
     ? 5
     : 0;
   const completeness = (title ? 4 : 0) + (body ? 4 : 0) + (raw.url ? 4 : 0) +
@@ -227,7 +237,7 @@ export async function curateNews(
       100,
       Math.round(quality * 0.75 + Math.min(Number(raw.score ?? 0), 100) * 0.25),
     ),
-    status: title && raw.url && quality >= 65 ? "published" : "quarantined",
+    status: title && raw.url && keywordMatches > 0 && ageHours >= 0 && quality >= 65 ? "published" : "quarantined",
     published_at: publishedAt,
   };
 }

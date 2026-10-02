@@ -77,3 +77,39 @@ Deno.test("similar titles have a high similarity score", () => {
     0.88,
   );
 });
+
+Deno.test("generic business and surveillance news is not AI even when the feed marks it", async () => {
+  for (const title of ["Company funding and policy update", "Research along the virtual border wall", "Chair company releases a new product"]) {
+    const result = await curateNews({ id: title, source: "MIT_Tech_AI", title,
+      summary: "Research into surveillance towers along the border.", url: "https://example.com/story",
+      is_ai_related: true, fetched_at: new Date().toISOString() }, "professional");
+    assertEquals(result.status, "quarantined");
+  }
+});
+
+Deno.test("AI coding agents and MCP are developer tools", async () => {
+  const result = await curateNews({ id: "agent", source: "OpenAI",
+    title: "AI coding agents get MCP tools", summary: "A developer SDK for agent workflows.",
+    url: "https://example.com/agents", fetched_at: new Date().toISOString() }, "official");
+  assertEquals(result.status, "published");
+  assertEquals(result.category, "developer_tool");
+});
+
+Deno.test("publication date overrides collection time for freshness and deduplication", async () => {
+  const originalDate = "2020-01-01T00:00:00Z";
+  const raw = { id: "old", source: "OpenAI", title: "GPT model release", summary: "AI model update.",
+    url: "https://example.com/old", source_published_at: originalDate,
+    fetched_at: new Date().toISOString() };
+  const result = await curateNews(raw, "official");
+  assertEquals(result.published_at, originalDate);
+  assertEquals(result.quality_score, 75);
+  const repeated = await curateNews({ ...raw, fetched_at: "2030-01-01T00:00:00Z" }, "official");
+  assertEquals(result.event_key, repeated.event_key);
+});
+
+Deno.test("future publication dates are quarantined", async () => {
+  const result = await curateNews({ id: "future", source: "OpenAI",
+    title: "OpenAI AI model release", summary: "GPT model update.", url: "https://example.com/future",
+    source_published_at: new Date(Date.now() + 86_400_000).toISOString(), is_ai_related: true }, "official");
+  assertEquals(result.status, "quarantined");
+});

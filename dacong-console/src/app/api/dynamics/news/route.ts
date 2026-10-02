@@ -13,6 +13,10 @@ export async function GET(request: NextRequest) {
     const category = params.get('category');
     const source = params.get('source');
     const cursor = params.get('cursor');
+    const days = params.get('days') ?? '7';
+    if (!['7', '30', 'all'].includes(days)) {
+      return NextResponse.json({ success: false, error: '时间范围无效' }, { status: 400 });
+    }
     const supabase = getSupabaseAdmin();
 
     let sourceIds: string[] | null = null;
@@ -30,6 +34,7 @@ export async function GET(request: NextRequest) {
       .from('ai_news_items')
       .select('*,ai_news_sources(source,url,original_title,source_published_at,is_primary)')
       .eq('status', 'published');
+    if (days !== 'all') query = query.gte('published_at', new Date(Date.now() - Number(days) * 86_400_000).toISOString());
     if (category && CATEGORIES.has(category)) query = query.eq('category', category);
     if (sourceIds) query = query.in('id', sourceIds);
     if (cursor) {
@@ -60,6 +65,7 @@ export async function GET(request: NextRequest) {
       meta: {
         total: rows.length,
         sort,
+        days,
         nextCursor: rows.length === limit
           ? sort === 'selected'
             ? `${rows.at(-1)?.importance_score}|${rows.at(-1)?.published_at}`

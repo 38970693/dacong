@@ -42,7 +42,7 @@ serve(async (req) => {
   );
   const { data: rawRows, error: rawError } = await supabase
     .from("hot_news_raw")
-    .select("id,source,title,url,summary,score,fetched_at,is_ai_related")
+    .select("id,source,title,url,summary,score,fetched_at,source_published_at,is_ai_related")
     .order("fetched_at", { ascending: false })
     .limit(250);
   if (rawError) {
@@ -115,7 +115,7 @@ serve(async (req) => {
           source: raw.source,
           url: raw.url,
           original_title: raw.title,
-          source_published_at: raw.fetched_at,
+          source_published_at: curated.published_at,
           is_primary: !similar,
         }, { onConflict: "raw_news_id", ignoreDuplicates: true });
       if (sourceError) throw sourceError;

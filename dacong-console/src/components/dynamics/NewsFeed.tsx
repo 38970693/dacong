@@ -23,12 +23,14 @@ export function NewsFeed() {
   const [error, setError] = useState('');
   const [sort, setSort] = useState<'selected' | 'latest'>('selected');
   const [category, setCategory] = useState<'' | NewsCategory>('');
+  const [days, setDays] = useState('7');
 
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
     setError('');
-    const query = new URLSearchParams({ sort, limit: '30' });
+    setItems([]);
+    const query = new URLSearchParams({ sort, days, limit: '30' });
     if (category) query.set('category', category);
     fetch(`/api/dynamics/news?${query}`, { signal: controller.signal, cache: 'no-store' })
       .then(async (response) => {
@@ -39,9 +41,9 @@ export function NewsFeed() {
       .catch((reason) => {
         if (reason.name !== 'AbortError') setError(reason.message || '加载失败');
       })
-      .finally(() => setLoading(false));
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [sort, category]);
+  }, [sort, category, days]);
 
   return (
     <div>
@@ -53,13 +55,17 @@ export function NewsFeed() {
           </button>
         ))}
       </div>
-      <div className="flex gap-2 px-4 py-3">
+      <div className="flex items-center gap-2 px-4 py-3">
         {(['selected', 'latest'] as const).map((value) => (
           <button key={value} onClick={() => setSort(value)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium ${sort === value ? 'bg-[var(--primary)] text-white' : 'border border-[var(--border)] text-[var(--text-secondary)]'}`}>
             {value === 'selected' ? '✨ 精选' : '🕒 最新'}
           </button>
         ))}
+        <select aria-label="动态时间范围" value={days} onChange={(event) => setDays(event.target.value)}
+          className="ml-auto rounded-lg border border-[var(--border)] bg-[var(--background)] px-2 py-1.5 text-xs text-[var(--text-secondary)]">
+          <option value="7">近 7 天</option><option value="30">近 30 天</option><option value="all">全部时间</option>
+        </select>
       </div>
 
       {loading && <div className="px-4 py-10 text-center text-sm text-[var(--text-muted)]">加载中…</div>}
@@ -80,7 +86,10 @@ export function NewsFeed() {
                 </div>
               </Link>
               <NewsTranslation item={item} href={`/web/dynamics/${item.id}`} />
-              <p className="mt-2 text-[10px] text-[var(--text-muted)]">规则整理 · 质量分 {item.quality_score}</p>
+              <div className="mt-2 flex items-center gap-3 text-xs text-[var(--text-muted)]">
+                {primary && <a href={primary.url} target="_blank" rel="noopener noreferrer" className="text-[var(--primary)] hover:underline">阅读原文 ↗</a>}
+                {item.ai_news_sources?.length > 1 && <span>{item.ai_news_sources.length} 个来源</span>}
+              </div>
             </li>
           );
         })}

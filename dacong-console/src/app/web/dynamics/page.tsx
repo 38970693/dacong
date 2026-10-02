@@ -8,7 +8,7 @@ import { ModelPulse } from '@/components/dynamics/ModelPulse';
 type ViewType = 'news' | 'rising' | 'pulse';
 
 const VIEWS: Array<{ key: ViewType; label: string; desc: string }> = [
-  { key: 'news', label: '📰 资讯流', desc: '今天 AI 圈发生了什么' },
+  { key: 'news', label: '📰 资讯流', desc: '关注模型发布、Agent 与 AI 编程、开源和研究进展' },
   { key: 'rising', label: '🚀 飙升榜', desc: '哪个仓库正在火' },
   { key: 'pulse', label: '📈 模型脉搏', desc: '哪个模型在变强' },
 ];
