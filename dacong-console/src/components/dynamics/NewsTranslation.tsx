@@ -9,8 +9,9 @@ export function NewsTranslation({ item, href, detail = false }: {
   href?: string;
   detail?: boolean;
 }) {
-  const [translated, setTranslated] = useState(false);
-  const canTranslate = !!item.title_zh?.trim() && (!item.summary.trim() || !!item.summary_zh?.trim());
+  const [showOriginal, setShowOriginal] = useState(false);
+  const canTranslate = item.language !== 'zh' && !!item.title_zh?.trim() && (!item.summary.trim() || !!item.summary_zh?.trim());
+  const translated = canTranslate && !showOriginal;
   const title = translated ? item.title_zh : item.title;
   const summary = translated ? item.summary_zh || item.summary : item.summary;
   const content = (
@@ -27,7 +28,7 @@ export function NewsTranslation({ item, href, detail = false }: {
     <div>
       {href ? <Link href={href} className="block">{content}</Link> : content}
       {item.language !== 'zh' && <div className="mt-2 flex flex-wrap items-center gap-2">
-        <button type="button" onClick={() => setTranslated(!translated)} disabled={!canTranslate}
+        <button type="button" onClick={() => setShowOriginal((previous) => !previous)} disabled={!canTranslate}
           aria-pressed={translated}
           className="min-h-10 rounded-lg border border-[var(--border)] px-3 text-xs text-[var(--primary)] hover:bg-[var(--primary-light)] disabled:cursor-not-allowed disabled:text-[var(--text-muted)] disabled:hover:bg-transparent">
           {translated ? '查看原文' : '翻译成中文'}

@@ -38,7 +38,7 @@ export function RightSidebar() {
             <li key={item.id} className="flex gap-3">
               <span className="font-bold text-[var(--primary)]">{index + 1}</span>
               <Link href={`/web/dynamics/${item.id}`} className="text-sm hover:text-[var(--primary)]">
-                <p className="font-medium line-clamp-2">{item.title}</p>
+                <p className="font-medium line-clamp-2">{item.title_zh?.trim() || item.title}</p>
                 <p className="mt-1 text-xs text-[var(--text-muted)]">{item.ai_news_sources?.[0]?.source} · {item.published_at?.slice(0, 10)}</p>
               </Link>
             </li>
