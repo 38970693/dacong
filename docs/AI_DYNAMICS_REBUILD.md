@@ -90,7 +90,7 @@ Next.js 已切换为 Vercel SSR，动态 API 不再在构建时冻结为静态 J
 本次已恢复 Supabase 项目 `prszkdbdgffbdqclbgol`，保留原有数据，并完成以下配置：
 
 1. 按 `dacong-api/supabase/deploy-ai-dynamics-production.sql` 中的顺序，在同一事务中对齐历史表结构并应用动态、日报和权限迁移；迁移登记为 `ai_dynamics_bootstrap_20261002`。历史库的迁移记录不完整，不直接执行全部遗留迁移。
-2. 部署 `collect-ai-news`、`process-ai-news` 与 `generate-daily-digest`；配置 Edge Function Secret `AI_NEWS_SERVICE_ROLE_KEY`，使函数使用当前有效的服务端凭据。
+2. 部署 `collect-ai-news`、`process-ai-news` 与 `generate-daily-digest`；配置 Edge Function Secret `AI_NEWS_SERVICE_ROLE_KEY`，使函数使用当前有效的服务端凭据。采集函数现已包含 Anthropic 官方新闻页适配。
 3. 配置 Vault 的 `project_url`、`service_role_key`，启用每两小时的第 17 分钟采集任务、每 15 分钟处理任务及每日 UTC 00:00（北京时间 08:00）日报任务；HTTP 调用超时设为 60 秒。
 4. 在 Vercel 配置 `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_ANON_KEY`、`SUPABASE_URL`、`SUPABASE_SERVICE_ROLE_KEY`；项目 Root Directory 为 `dacong-console`，Framework 为 Next.js。
 5. 完成生产构建与部署，入口为 [AI 动态](https://dacong-weld.vercel.app/web/dynamics) 和 [每日摘要](https://dacong-weld.vercel.app/web/digests)。
@@ -121,8 +121,8 @@ RSS 自动采集已改由 Supabase Edge Function 与 pg_cron 独立运行，不�
 
 迁移 `20261002_00006_ai_news_chinese.sql` 增加可空的 `title_zh`、`summary_zh` 字段；原始内容、语言标记和去重字段不变。首批 10 条公开动态及 1 条隔离内容的译文已补齐。译文随公开 API 返回，点击切换无需额外网络请求；没有完整译文的条目保持原文显示。
 
-当前未配置翻译 API，因此新采集资讯尚不会自动生成译文。新增译文写入上述两个字段后，页面即可显示切换按钮。
+`translate-ai-news` 自动翻译函数已部署，每批可为 5 条已发布英文资讯生成并缓存中文标题和摘要。当前未配置有效的翻译 API Key，真实翻译与调度仍未启用；已有译文不受影响。官方来源接入、翻译配置与验证结果详见 [官方动态采集与自动翻译](AI_NEWS_TRANSLATION.md)。
 
 ## 9. Android 同步
 
-Android 1.1.0 改为加载同一生产站点的原生 WebView 客户端，共享 AI 动态、日报和原文/中文切换功能。构建、导航处理和安装验证说明见 [Android AI 动态同步](ANDROID_AI_DYNAMICS.md)。
+Android 1.1.1 使用加载同一生产站点的原生 WebView 客户端，共享 AI 动态、日报和原文/中文切换功能。构建、导航处理和安装验证说明见 [Android AI 动态同步](ANDROID_AI_DYNAMICS.md)。
