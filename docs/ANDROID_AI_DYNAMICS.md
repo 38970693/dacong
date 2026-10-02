@@ -4,14 +4,16 @@
 
 ## 功能与入口
 
-当前 Android 工程为 `dacong-console/android`，应用 ID 保持 `com.dacong.app`，版本升级为 `1.1.0`（versionCode 2）。旧 Flutter 客户端继续保持归档状态。
+当前 Android 工程为 `dacong-console/android`，应用 ID 保持 `com.dacong.app`，版本升级为 `1.1.1`（versionCode 3）。旧 Flutter 客户端继续保持归档状态。
 
 Android 首页直接加载 `https://dacong-weld.vercel.app/web/dynamics`，复用已部署的移动端页面和 API，包括：
 
-- AI 动态分类、精选/最新列表、详情与来源链接；
+- AI 动态分类、精选/最新列表、近 7/30 天及全部时间筛选、详情与来源链接；
 - 每日摘要列表与详情；
 - 英文标题和摘要默认展示，逐条“翻译成中文”/“查看原文”切换；
 - 动态、日报、收藏、我的底部导航。
+
+此版对应 2026-10-02 最新 Web 调整，包括真实近 7 日精选、来源统计、原始发布日期与更严格的 AI 内容筛选。RSS 每两小时自动采集，动态每 15 分钟处理，日报每天北京时间 08:00 生成。
 
 已有译文的内容支持切换。新增内容自动翻译仍受 Web 端相同的翻译服务配置限制。
 
@@ -35,6 +37,8 @@ cd dacong-console/android
 ```
 
 产物：`dacong-console/android/app/build/outputs/apk/debug/app-debug.apk`。
+
+此次生成的便于分发的副本：`dacong-console/android/app/build/outputs/apk/debug/dacong-ai-news-1.1.1.apk`。
 
 该 APK 使用 Android 开发签名，供安装测试。正式分发需使用原应用的发布签名，才能覆盖安装对应的旧正式版本。本次不生成新的发布密钥。
 
