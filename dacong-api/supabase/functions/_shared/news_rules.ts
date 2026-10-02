@@ -7,7 +7,7 @@ export type NewsCategory =
 export type SourceTier = "official" | "professional" | "community";
 
 export interface RawNews {
-  id: string;
+  id: string | number;
   source: string;
   title: string;
   url: string;

@@ -116,6 +116,7 @@ tests/smoke/results/
 *.iml
 
 ### Local agent tooling
+.vercel/
 .agents/
 .workbuddy/
 .workbuddy-ai/

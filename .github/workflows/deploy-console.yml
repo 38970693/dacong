@@ -1,14 +1,17 @@
-name: Deploy Console to Netlify
+name: Deploy Console to Vercel
 
 on:
   push:
     branches: [main]
     paths:
       - 'dacong-console/**'
+      - '.github/workflows/deploy-console.yml'
+      - '.vercelignore'
+  workflow_dispatch:
 
 jobs:
   deploy:
-    name: Deploy to Netlify
+    name: Deploy to Vercel
     runs-on: ubuntu-latest
 
     steps:
@@ -26,17 +29,12 @@ jobs:
         run: npm ci
         working-directory: dacong-console
 
-      - name: Build
-        run: npm run build
-        working-directory: dacong-console
+      - name: Install Vercel CLI
+        run: npm install --global vercel
 
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3.0
-        with:
-          publish-dir: dacong-console/out
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
+      - name: Deploy to Vercel
+        run: vercel deploy --prod --yes --token "$VERCEL_TOKEN"
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

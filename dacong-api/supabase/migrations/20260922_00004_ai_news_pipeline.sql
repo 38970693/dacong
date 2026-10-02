@@ -26,10 +26,18 @@ CREATE TABLE IF NOT EXISTS public.ai_news_items (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- 线上旧表使用 UUID，仓库基线使用 BIGINT；沿用原始层的主键类型。
+DO $$
+DECLARE raw_id_type TEXT;
+BEGIN
+  SELECT format_type(atttypid, atttypmod) INTO raw_id_type
+  FROM pg_attribute
+  WHERE attrelid = 'public.hot_news_raw'::regclass AND attname = 'id';
+  EXECUTE format($ddl$
 CREATE TABLE IF NOT EXISTS public.ai_news_sources (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   news_item_id UUID NOT NULL REFERENCES public.ai_news_items(id) ON DELETE CASCADE,
-  raw_news_id UUID NOT NULL REFERENCES public.hot_news_raw(id) ON DELETE CASCADE,
+  raw_news_id %s NOT NULL REFERENCES public.hot_news_raw(id) ON DELETE CASCADE,
   source TEXT NOT NULL,
   url TEXT NOT NULL,
   original_title TEXT NOT NULL,
@@ -39,6 +47,9 @@ CREATE TABLE IF NOT EXISTS public.ai_news_sources (
   UNIQUE(raw_news_id),
   UNIQUE(news_item_id, url)
 );
+$ddl$, raw_id_type);
+END;
+$$;
 
 CREATE TABLE IF NOT EXISTS public.daily_digests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

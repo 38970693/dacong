@@ -20,8 +20,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ dat
     if (!digest) return NextResponse.json({ success: false, error: '日报不存在' }, { status: 404 });
     const { data: items, error: itemsError } = await supabase
       .from('daily_digest_items')
-      .select('rank,category,ai_news_items(*,ai_news_sources(source,url,source_published_at,is_primary))')
+      .select('rank,category,ai_news_items!inner(*,ai_news_sources(source,url,source_published_at,is_primary))')
       .eq('digest_id', digest.id)
+      .eq('ai_news_items.status', 'published')
       .order('rank');
     if (itemsError) throw itemsError;
     return NextResponse.json({ success: true, data: { ...digest, items: items ?? [] } });

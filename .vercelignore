@@ -1,0 +1,8 @@
+*
+!dacong-console/
+!dacong-console/**
+dacong-console/node_modules/**
+dacong-console/.next/**
+dacong-console/android/**
+dacong-console/out/**
+dacong-console/.env*

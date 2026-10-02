@@ -18,7 +18,8 @@ serve(async (req) => {
   }
 
   const url = Deno.env.get("SUPABASE_URL") ?? "";
-  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  const serviceKey = Deno.env.get("AI_NEWS_SERVICE_ROLE_KEY") ??
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   if (!url || !serviceKey) {
     return Response.json({ error: "Server is not configured" }, {
       status: 500,
