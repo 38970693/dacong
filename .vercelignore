@@ -7,7 +7,7 @@
 .workbuddy/
 .workbuddy-ai/
 ai-scraper/
-config/
+/config/
 dacong-admin/
 dacong-api/
 dacong-client/
@@ -19,8 +19,8 @@ logs/
 monitoring/
 scripts/
 security-reports/
-supabase/
-tests/
+/supabase/
+/tests/
 **/.env*
 **/*.apk
 **/*.aab
