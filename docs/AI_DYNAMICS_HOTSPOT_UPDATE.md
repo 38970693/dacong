@@ -50,7 +50,9 @@ Supabase 中已经启用以下任务，RSS 主链路独立于 GitHub 工作流�
 - Deno：相关性、日期、去重、RSS/Atom 与日报规则，共 15 项测试通过；两个 Edge Function 类型检查通过。
 - Python：RSS、arXiv、GitHub、Hugging Face、Bluesky 与 X 的相关测试，共 55 项通过。
 - Web：修改文件的 ESLint 通过，Next.js 生产构建通过。
+- Vercel 生产部署成功；线上 API 返回近 7 天 24 条、近 30 天 63 条，开发工具分类 16 条。已确认时间筛选、最新排序、无效时间参数 400、隔离详情 404、匿名后台访问 401，以及原文链接和已有中文译文保留。
 - Supabase：函数调用与三项调度已验证；原始发布时间迁移已应用。
+- 使用 Vault 凭据经 `pg_net` 调用采集函数，返回 HTTP 200，无超时；再次运行没有重复写入或重复发布。
 - Android 1.1.0 使用在线 WebView，页面调整自动同步，无须为此次内容调整重新打包。
 
 ## 尚可继续改善
@@ -59,5 +61,6 @@ Supabase 中已经启用以下任务，RSS 主链路独立于 GitHub 工作流�
 2. **补足未提供 RSS 的官方来源**：例如 Anthropic 新闻页需要单独的 HTML 采集适配；本轮调查参考了它的官方发布，但没有宣称已经接入自动采集。
 3. **开源飙升榜与模型评测的新鲜度**：这些扩展数据仍由原有 Python 采集负责，不能把 RSS 更新视为所有榜单都已更新。
 4. **仓库与发布流程**：GitHub 凭据权限不足，提交在本地；当前生产部署直接通过 Vercel 完成。后续补足仓库权限即可启用已有工作流。
+5. **遗留排行榜表结构**：构建仍报告 `aiping_rankings`、`swebench_rankings` 缺表及旧 `elo_score` 查询不匹配；这些历史问题未阻断本次构建与动态 API，但相关榜单仍需另行对齐数据源和结构。
 
 生产入口：[AI 动态](https://dacong-weld.vercel.app/web/dynamics)。
