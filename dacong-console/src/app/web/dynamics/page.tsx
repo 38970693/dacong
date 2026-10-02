@@ -18,18 +18,18 @@ export default function DynamicsPage() {
   const current = VIEWS.find((v) => v.key === view)!;
 
   return (
-    <div className="pb-16 md:pb-0">
+    <div className="min-w-0">
       <div className="sticky top-14 md:top-16 z-10 bg-[var(--background)]/95 backdrop-blur-sm px-4 md:px-5 py-3 md:py-4 border-b border-[var(--border)]">
         <h1 className="text-lg font-bold text-[var(--foreground)]">AI 动态</h1>
         <p className="text-xs text-[var(--text-muted)]">{current.desc}</p>
       </div>
 
-      <div className="flex gap-2 px-4 md:px-5 py-3 border-b border-[var(--border)]">
+      <div className="flex gap-2 overflow-x-auto px-4 md:px-5 py-3 border-b border-[var(--border)]">
         {VIEWS.map((v) => (
           <button
             key={v.key}
             onClick={() => setView(v.key)}
-            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+            className={`shrink-0 whitespace-nowrap px-3 sm:px-4 py-2 rounded-full text-sm font-semibold transition-all ${
               view === v.key
                 ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/30'
                 : 'border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--primary)] hover:text-[var(--primary)]'

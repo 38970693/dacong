@@ -14,7 +14,7 @@ export function NewsTranslation({ item, href, detail = false }: {
   const title = translated ? item.title_zh : item.title;
   const summary = translated ? item.summary_zh : item.summary;
   const content = (
-    <div lang={translated ? 'zh-CN' : item.language === 'en' ? 'en' : undefined}>
+    <div className="min-w-0 [overflow-wrap:anywhere]" lang={translated ? 'zh-CN' : item.language === 'en' ? 'en' : undefined}>
       {detail
         ? <h1 className="mt-3 text-2xl font-bold leading-tight text-[var(--foreground)]">{title}</h1>
         : <h2 className="font-semibold leading-snug text-[var(--foreground)]">{title}</h2>}

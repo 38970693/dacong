@@ -54,7 +54,7 @@ export function RisingList() {
 
   return (
     <div>
-      <div className="flex items-center gap-2 px-4 py-3 text-xs text-[var(--text-muted)]">
+      <div className="flex flex-wrap items-center gap-2 px-4 py-3 text-xs text-[var(--text-muted)]">
         <span>按涨速 velocity 排序</span>
         {snapshot && <span className="ml-auto">快照 {snapshot}</span>}
       </div>
@@ -90,7 +90,7 @@ export function RisingList() {
                   {r.description}
                 </p>
               )}
-              <div className="mt-1.5 flex items-center gap-3 text-[11px] text-[var(--text-secondary)]">
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[var(--text-secondary)]">
                 {r.language && <span>{r.language}</span>}
                 <span>★ {(r.total_stars ?? 0).toLocaleString()}</span>
                 <span className="text-[var(--success, #22c55e)]">

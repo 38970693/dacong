@@ -34,7 +34,7 @@ export default function DynamicsDetailPage({ params }: { params: Promise<{ id: s
       <ul className="mt-3 space-y-3">
         {item.ai_news_sources.map((source) => (
           <li key={source.url} className="rounded-xl border border-[var(--border)] p-3">
-            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm text-[var(--primary)] hover:underline">
+            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm [overflow-wrap:anywhere] text-[var(--primary)] hover:underline">
               {source.source}：{source.original_title || item.title} ↗
             </a>
           </li>

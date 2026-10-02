@@ -50,20 +50,20 @@ export function NewsFeed() {
       <div className="flex gap-2 px-4 py-3 overflow-x-auto border-b border-[var(--border)]">
         {CATEGORIES.map((item) => (
           <button key={item.value || 'all'} onClick={() => setCategory(item.value)}
-            className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap ${category === item.value ? 'bg-[var(--primary)] text-white' : 'border border-[var(--border)] text-[var(--text-secondary)]'}`}>
+            className={`shrink-0 min-h-10 px-3 py-1.5 rounded-full text-xs whitespace-nowrap ${category === item.value ? 'bg-[var(--primary)] text-white' : 'border border-[var(--border)] text-[var(--text-secondary)]'}`}>
             {item.label}
           </button>
         ))}
       </div>
-      <div className="flex items-center gap-2 px-4 py-3">
+      <div className="flex flex-wrap items-center gap-2 px-4 py-3">
         {(['selected', 'latest'] as const).map((value) => (
           <button key={value} onClick={() => setSort(value)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium ${sort === value ? 'bg-[var(--primary)] text-white' : 'border border-[var(--border)] text-[var(--text-secondary)]'}`}>
+            className={`shrink-0 min-h-10 whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium ${sort === value ? 'bg-[var(--primary)] text-white' : 'border border-[var(--border)] text-[var(--text-secondary)]'}`}>
             {value === 'selected' ? '✨ 精选' : '🕒 最新'}
           </button>
         ))}
         <select aria-label="动态时间范围" value={days} onChange={(event) => setDays(event.target.value)}
-          className="ml-auto rounded-lg border border-[var(--border)] bg-[var(--background)] px-2 py-1.5 text-xs text-[var(--text-secondary)]">
+          className="ml-auto max-w-full min-h-10 rounded-lg border border-[var(--border)] bg-[var(--background)] px-2 py-1.5 text-xs text-[var(--text-secondary)]">
           <option value="7">近 7 天</option><option value="30">近 30 天</option><option value="all">全部时间</option>
         </select>
       </div>
