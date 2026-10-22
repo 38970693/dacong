@@ -25,8 +25,8 @@ export function splitTranslationText(text: string): string[] {
 
 export async function translateNewsWithMyMemory(
   news: TranslationInput[], request: typeof fetch = fetch,
+  signal: AbortSignal = AbortSignal.timeout(40_000),
 ): Promise<NewsTranslation[]> {
-  const signal = AbortSignal.timeout(40_000);
   const translate = async (text: string): Promise<string> => {
     const parts: string[] = [];
     for (const chunk of splitTranslationText(text)) {
