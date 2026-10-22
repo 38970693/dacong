@@ -1,4 +1,5 @@
 .git/
+.codegraph/
 .agent-bridge/
 .agents/
 .claude/
