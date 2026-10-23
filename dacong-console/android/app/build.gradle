@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+def publicNewsConfig = new Properties()
+def publicNewsEnv = rootProject.file('../.env.local')
+if (publicNewsEnv.exists()) publicNewsEnv.withInputStream { publicNewsConfig.load(it) }
+def newsApiUrl = System.getenv('NEXT_PUBLIC_SUPABASE_URL') ?: publicNewsConfig.getProperty('NEXT_PUBLIC_SUPABASE_URL', '')
+def newsPublicKey = System.getenv('NEXT_PUBLIC_SUPABASE_ANON_KEY') ?: publicNewsConfig.getProperty('NEXT_PUBLIC_SUPABASE_ANON_KEY', '')
+if (!newsApiUrl.startsWith('https://') || !newsPublicKey) throw new GradleException('Missing public news API configuration')
+
 android {
     namespace = "com.dacong.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +14,10 @@ android {
         applicationId "com.dacong.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "1.1.2"
+        versionCode 5
+        versionName "1.1.3"
+        buildConfigField 'String', 'NEWS_API_URL', groovy.json.JsonOutput.toJson(newsApiUrl)
+        buildConfigField 'String', 'NEWS_PUBLIC_KEY', groovy.json.JsonOutput.toJson(newsPublicKey)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -22,6 +31,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures { buildConfig true }
     // 在线客户端不打包旧的 Next.js 静态导出资源。
     sourceSets.main.assets.srcDirs = []
 }

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DaCong 简版资讯</title>
+<style>
+  *{box-sizing:border-box}body{margin:0;background:#fff;color:#0f172a;font:16px/1.6 sans-serif;overflow-wrap:anywhere}
+  header{padding:18px 16px;border-bottom:1px solid #e2e8f0}h1{font-size:21px;margin:0}header p{font-size:13px;color:#64748b}
+  button,a{min-height:44px;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;color:#b45309;font-size:14px}
+  nav{display:flex;flex-wrap:wrap;gap:8px}a{text-decoration:none;display:inline-block}article{padding:18px 16px;border-bottom:1px solid #e2e8f0}
+  h2{font-size:18px;margin:0 0 8px}p{margin:8px 0}small,#status{color:#64748b;font-size:13px}#status{padding:16px}
+  #status.error{color:#b91c1c}button:disabled{opacity:.5}
+</style>
+<header>
+  <h1>DaCong · AI 动态</h1>
+  <p>简版直接读取最新 30 条已发布资讯。完整版无法访问时，仍可在这里阅读。</p>
+  <nav><button id="refresh" type="button">刷新资讯</button><a href="https://dacong-weld.vercel.app/web/dynamics">重试完整版</a></nav>
+</header>
+<div id="status" role="status">正在加载资讯…</div>
+<main id="news"></main>
+<script>
+(function () {
+  'use strict';
+  var config = __PUBLIC_NEWS_CONFIG__;
+  var status = document.getElementById('status');
+  var refresh = document.getElementById('refresh');
+  var list = document.getElementById('news');
+  var pending = null;
+  function render(items) {
+    list.textContent = '';
+    items.forEach(function (item) {
+      var article = document.createElement('article');
+      var title = document.createElement('h2');
+      var summary = document.createElement('p');
+      var meta = document.createElement('small');
+      var actions = document.createElement('nav');
+      var translated = !!(item.title_zh && item.title_zh.trim() && item.summary_zh && item.summary_zh.trim());
+      function content() {
+        title.textContent = translated ? item.title_zh : item.title;
+        summary.textContent = translated ? item.summary_zh : item.summary;
+      }
+      content();
+      meta.textContent = (item.published_at || '').slice(0, 10);
+      article.appendChild(title);article.appendChild(meta);article.appendChild(summary);
+      if (translated) {
+        var toggle = document.createElement('button');
+        toggle.type = 'button';toggle.textContent = '查看原文';
+        toggle.onclick = function () {translated = !translated;content();toggle.textContent = translated ? '查看原文' : '翻译成中文';};
+        actions.appendChild(toggle);
+      }
+      var sources = item.ai_news_sources || [];
+      var source = sources.filter(function (entry) {return entry.is_primary;})[0] || sources[0];
+      if (source && /^https?:\/\//i.test(source.url)) {
+        var link = document.createElement('a');link.href = source.url;link.textContent = '阅读原文 ↗';link.rel = 'noopener noreferrer';actions.appendChild(link);
+      }
+      article.appendChild(actions);list.appendChild(article);
+    });
+  }
+  function load() {
+    if (pending) return;
+    status.className = '';status.textContent = '正在加载资讯…';refresh.disabled = true;
+    var xhr = new XMLHttpRequest();pending = xhr;
+    function failed() {status.className = 'error';status.textContent = '暂时无法读取资讯，请检查网络后点击刷新。';}
+    xhr.open('GET', config.url + '/rest/v1/ai_news_items?select=id,title,summary,title_zh,summary_zh,published_at,ai_news_sources(source,url,is_primary)&status=eq.published&order=published_at.desc,id.desc&limit=30');
+    xhr.setRequestHeader('apikey', config.key);xhr.setRequestHeader('Authorization', 'Bearer ' + config.key);xhr.timeout = 15000;
+    xhr.onload = function () {
+      try {
+        if (xhr.status !== 200) throw new Error('Request failed');
+        var items = JSON.parse(xhr.responseText);
+        if (!Array.isArray(items)) throw new Error('Invalid news');
+        render(items);status.textContent = items.length ? '最新 ' + items.length + ' 条资讯' : '暂无已发布资讯';
+      } catch (_) {failed();}
+    };
+    xhr.onerror = failed;xhr.ontimeout = failed;
+    xhr.onloadend = function () {pending = null;refresh.disabled = false;};
+    xhr.send();
+  }
+  refresh.onclick = load;load();
+})();
+</script>
+</html>
